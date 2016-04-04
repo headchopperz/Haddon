@@ -1,0 +1,29 @@
+/*
+    VT323 is licened under "Open Font OFL", and it has a blocky affect which i liked
+*/
+@import url(https://fonts.googleapis.com/css?family=VT323);
+
+canvas {
+    background-color: #2D5B8F;
+    
+    display:block;
+    
+    position:absolute;
+    top:0px;
+    left:0px;
+    right:0px;
+    min-height:100%;
+    
+}
+
+html {
+    background-color:black;
+    /*
+        VT323 is licened under "Open Font OFL", and it has a blocky affect which i liked
+    */
+    font-family:VT323;
+}
+
+body {
+    min-height:100%;
+}
