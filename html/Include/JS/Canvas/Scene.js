@@ -25,6 +25,15 @@ var Scene = new (function (settings) {
     this.updateViewport = function() {
         this.Viewport.Width = $(window).width();
         this.Viewport.Height = $(window).height();
+        
+        var Coords = window.findButton('intrCont').getCoords();
+        
+        if ((Coords) && (TimelineElements.length)) {
+            var Y = Coords.Y + Coords.Height + 50 + ((TimelineElements.length + 1) * 250);
+            if (this.Viewport.Height < Y) {
+                this.Viewport.Height = Y;
+            }
+        }
 
         Scene.context.canvas.width = this.Viewport.Width;
         Scene.context.canvas.height = this.Viewport.Height;
@@ -39,5 +48,3 @@ var Scene = new (function (settings) {
         updateViewport: this.updateViewport
     };
 });
-
-Scene.updateViewport();

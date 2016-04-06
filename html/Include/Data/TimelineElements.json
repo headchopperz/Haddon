@@ -1,0 +1,46 @@
+[
+    {
+        "Data": {
+            "Title": "michael.haddon.me",
+            "Images": [
+                "/Include/Images/Me1.jpg"
+            ],
+            "Date": "Sunday 10th of April",
+            "Description": "I have wanted to create a website for myself for a while. However, i have never previously had the time.\r\n\r\nMy goal with this website was to show off my previous work and to make it into a learning exercise.\r\n\r\nThis website is created with the canvas element, and the rendered elements are not HTML.\r\nI thought this would be an interesting challenge."
+        }  
+    }, {
+        "Data": {
+            "Title": "Alien Escape",
+            "Images": [
+                "/Include/Images/Hackathon.jpg",
+                "/Include/Images/AlienEscape1.png",
+                "/Include/Images/AlienEscape2.jpg",
+                "/Include/Images/HackJSY3.jpg",
+                "/Include/Images/HackJSY2.jpg"
+            ],
+            "Github": "https://github.com/headchopperz/HackJSY",
+            "Download": "https://github.com/headchopperz/HackJSY/archive/master.zip",
+            "Date": "Sunday 20th of March",
+            "Description": "Alien Escape is a small game I made within 36 hours for Digital Jersey's Hackathon.\r\n\r\nI wanted to create something fun and retroy.\r\nIt was made mainly in Javascript, using the canvas element to draw and render the various elements.\r\n\r\nThe code is available below to look at on Github. You can also download & play the game yourself!"
+        }  
+    }, {
+        "Data": {
+            "Title": "NestedBird.com",
+            "Images": [
+                "/Include/Images/NestedBird1.jpg",
+                "/Include/Images/NestedBird2.jpg"
+            ],
+            "Date": "Sunday 20th of March",
+            "Description": "NestedBird has been an ongoing project of mine for a very long time.\r\nI have always had a passion for programming and music, and NestedBird was the fusion of both of these passions.\r\n\r\nNestedBird is a service for local communities to support their local bands.\r\nIt is written in PHP, HTML, JS & SCSS and uses technologies like Amazon AWS."
+        }  
+    }, {
+        "Data": {
+            "Title": "SelectAllDeleteSaveAs.com",
+            "Images": [
+                "/Include/Images/SADSA.jpg"
+            ],
+            "Date": "Sunday 20th of March",
+            "Description": "I developed the website for the local band \"Select All Delete Save As\".\r\n\r\nIf i could go back to this project i would have many design decisions i would definitely make.\r\nMost of my understanding of website design came after this project.\r\n\r\nHowever the actual experience of working on this website was amazing."
+        }  
+    }
+]

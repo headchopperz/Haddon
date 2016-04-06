@@ -17,9 +17,6 @@ var requestAnimFrame = (function () {
 
 var lastTime = 0;
 
-var image = new Image();
-image.src = '/Include/Images/Hackathon.jpg';
-
 
 /**
  * This is the program loop, but it isnt named that as i want to split the loop up
@@ -38,90 +35,8 @@ function main() {
      */
     if (dt < 1000) {
         Scene.sync();
-
-        var Coords = findButton('intrCont').getCoords();
-
-
-
-        Scene.context.globalAlpha = 0.75;
-        Scene.context.beginPath();
-        Scene.context.arc(Coords.X + (Coords.Width / 2), Coords.Y + Coords.Height, 7, 0, Math.PI);
-        Scene.context.fillStyle = "grey";
-        Scene.context.fill();
-        Scene.context.stroke();
-        Scene.context.closePath();
-        Scene.context.globalAlpha = 1;
-
-        var sinnum = 0;
         
-        var size = 250;
-        var X = Coords.X + (Coords.Width / 2) - (size / 2);
-        var Y = Coords.Y + Coords.Height + 50;
-        
-        Scene.context.globalAlpha = 0.15;
-        Scene.context.beginPath();
-        Scene.context.arc(X + (size / 2), Y + (size / 2), size / 2, 0, Math.PI * 2, true);
-        Scene.context.rect(X - (size * 1.5), Y, size * 2, size);
-        Scene.context.fillStyle = "black";
-        Scene.context.fill();
-        Scene.context.closePath();
-        Scene.context.globalAlpha = 1;
-        
-        var size = 250;
-        var X = Coords.X + (Coords.Width / 2) - (size / 2);
-        var Y = Coords.Y + Coords.Height + 300;
-        
-        Scene.context.globalAlpha = 0.15;
-        Scene.context.beginPath();
-        Scene.context.arc(X + (size / 2), Y + (size / 2), size / 2, 0, Math.PI * 2, true);
-        Scene.context.rect(X + (size / 2), Y, size * 2, size);
-        Scene.context.fillStyle = "black";
-        Scene.context.fill();
-        Scene.context.closePath();
-        Scene.context.globalAlpha = 1;
-
-        for (var i = 1; i < 50; i++) {
-
-            var X = Coords.X + (Coords.Width / 2);
-            var Y = Coords.Y + Coords.Height + (21.5 * i);
-
-            if (i > 2) {
-                X += Math.sin(sinnum += 0.27) * 125;
-            }
-
-
-            Scene.context.globalAlpha = 0.75;
-            Scene.context.beginPath();
-            Scene.context.arc(X, Y, 4, 0, 2 * Math.PI);
-            Scene.context.fillStyle = "grey";
-            Scene.context.fill();
-            Scene.context.stroke();
-            Scene.context.closePath();
-            Scene.context.globalAlpha = 1;
-        }
-
-        var size = 150;
-        var X = Coords.X + (Coords.Width / 2) - (size / 2);
-        var Y = Coords.Y + Coords.Height + 100;
-        Scene.context.save();
-        Scene.context.beginPath();
-        Scene.context.arc(X + (size / 2), Y + (size / 2), size / 2, 0, Math.PI * 2, true);
-        Scene.context.fillStyle = "black";
-        Scene.context.fill();
-        Scene.context.closePath();
-        Scene.context.clip();
-        
-
-        Scene.context.drawImage(image, X, Y, size, size);
-
-        Scene.context.beginPath();
-        Scene.context.arc(X, Y, size / 2, 0, Math.PI * 2, true);
-        Scene.context.clip();
-        Scene.context.closePath();
-        
-        
-        Scene.context.restore();
-
+        drawTimeline(dt);
         drawButtons(dt);
     }
 
@@ -142,6 +57,7 @@ function main() {
  * This block of code is also what runs main() for the first time
  */
 $(document).ready(function () {
+    Scene.updateViewport();
     window.addEventListener('resize', function (e) {
         Scene.updateViewport();
     }, true);
@@ -179,6 +95,20 @@ $(document).ready(function () {
 
         findButton('intrCont').Data.Fill.On = true;
         findButton('intrSub').Data.Text.Value = "My name is Michael Haddon";
+
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "/Include/Data/TimelineElements.json"
+    }).success(function (obj) {
+        //var obj = $.parseJSON(html);
+
+        obj.forEach(function (e) {
+            TimelineElements.push(new TimelineElement(e));
+        });
+        
+        Scene.updateViewport();
 
     });
 

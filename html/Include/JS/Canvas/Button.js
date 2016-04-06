@@ -161,24 +161,30 @@ var Button = function (name, settings) {
 
     this.getCoords = function () {
         var offset = Scene.Viewport;
+        
+        //offset.Height = $(window).height();
 
         if (typeof this.Data.Position.Parent === 'string') {
             var Parent = findButton(this.Data.Position.Parent);
             
-            offset = ((Parent !== null) && (Parent.getCoords())) ? Parent.getCoords() : Scene.Viewport;
+            offset = ((Parent !== null) && (Parent.getCoords())) ? Parent.getCoords() : offset;
         }
 
         if ((offset.Visible) && (this.Data.Status.Visible)) {
             var X = this.Data.Position.X + offset.X;
             var Y = this.Data.Position.Y + offset.Y;
 
-            if (this.Data.Position.CenterOffset) {
+            if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "X")) {
                 X += offset.Width / 2;
+            }
+            if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "Y")) {
                 Y += offset.Height / 2;
             }
 
-            if (this.Data.Position.Centered) {
+            if ((this.Data.Position.Centered === true) || (this.Data.Position.Centered === "X")) {
                 X -= (this.Data.Position.Width / 2);
+            }
+            if ((this.Data.Position.Centered === true) || (this.Data.Position.Centered === "Y")) {
                 Y -= (this.Data.Position.Height / 2);
             }
 
@@ -285,10 +291,10 @@ Buttons.push(new Button('intrCont', {
     Data: {
         Position: {
             X: 0,
-            Y: -200,
+            Y: 200,
             Width: 400,
             Height: 150,
-            CenterOffset: true,
+            CenterOffset: "X",
             Centered: true
         },
         Fill: {
