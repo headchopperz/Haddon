@@ -15,29 +15,32 @@ var Scene = new (function (settings) {
         Y: 0,
         Down: false
     };
-    
+
     this.TimelineElementHeight = 255;
 
     this.SelectedButton = null;
 
-    this.sync = function() {
+    this.sync = function () {
         this.context.clearRect(0, 0, this.Viewport.Width, this.Viewport.Height)
     }
 
-    this.updateViewport = function() {
+    this.updateViewport = function () {
         this.Viewport.Width = $(window).width();
         this.Viewport.Height = $(window).height();
-        
+
         var Coords = window.findButton('intrCont').getCoords();
-        
+
         if ((Coords) && (TimelineElements.length)) {
             var Y = Coords.Y + Coords.Height + 50 + ((TimelineElements.length + 1) * this.TimelineElementHeight);
             if (this.Viewport.Height < Y) {
                 this.Viewport.Height = Y;
             }
-            
+
             if (this.Viewport.Width < 1030) {
+                $('body').css('overflow-x', 'auto');
                 this.Viewport.Width = 1030;
+            } else {
+                $('body').css('overflow-x', 'hidden');
             }
         }
 

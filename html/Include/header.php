@@ -19,7 +19,7 @@ $header = "
         <![endif]-->
     </head>
 
-    <body style='overflow:hidden;overflow-y:auto;overflow-x:auto;'>    
+    <body style='overflow-x:hidden;overflow-y:auto;'>    
 ";
 
 
