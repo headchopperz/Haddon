@@ -288,7 +288,7 @@ function splitText(Text, Size, MaxLength) {
             var splitCharacter = Math.floor(e.length * (MaxLength / Scene.context.measureText(e).width));
             
             var ClosestSpace = getClosestSpace(e, splitCharacter);
-            if (splitCharacter - ClosestSpace < 12) {
+            if (splitCharacter - ClosestSpace < 13) {
                 splitCharacter = ClosestSpace;
             }
             
