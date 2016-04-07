@@ -3,44 +3,93 @@
         "Data": {
             "Title": "michael.haddon.me",
             "Images": [
-                "/Include/Images/Me1.jpg"
+                "/Include/Images/Me/1.jpg"
             ],
-            "Date": "Sunday 10th of April",
+            "Github": "https://github.com/headchopperz/HackJSY",
+            "Date": "Sunday 10th of April 2016",
             "Description": "I have wanted to create a website for myself for a while. However, i have never previously had the time.\r\n\r\nMy goal with this website was to show off my previous work and to make it into a learning exercise.\r\n\r\nThis website is created with the canvas element, and the rendered elements are not HTML.\r\nI thought this would be an interesting challenge."
         }  
     }, {
         "Data": {
             "Title": "Alien Escape",
             "Images": [
-                "/Include/Images/Hackathon.jpg",
-                "/Include/Images/AlienEscape1.png",
-                "/Include/Images/AlienEscape2.jpg",
-                "/Include/Images/HackJSY3.jpg",
-                "/Include/Images/HackJSY2.jpg"
+                "/Include/Images/HackJSY1/1.jpg",
+                "/Include/Images/HackJSY1/3.jpg",
+                "/Include/Images/HackJSY1/4.jpg"
             ],
             "Github": "https://github.com/headchopperz/HackJSY",
             "Download": "https://github.com/headchopperz/HackJSY/archive/master.zip",
-            "Date": "Sunday 20th of March",
-            "Description": "Alien Escape is a small game I made within 36 hours for Digital Jersey's Hackathon.\r\n\r\nI wanted to create something fun and retroy.\r\nIt was made mainly in Javascript, using the canvas element to draw and render the various elements.\r\n\r\nThe code is available below to look at on Github. You can also download & play the game yourself!"
+            "Date": "Sunday 20th of March 2016",
+            "Description": "Alien Escape is a small game I made within 36 hours for Digital Jersey's Hackathon.\r\n\r\nI wanted to create something fun and retroy.\r\nIt was made mainly in Javascript, using the canvas element to draw and render the various elements.\r\n\r\nThe code is available below to look at on Github. You can also download & play the game yourself!\r\nThe code may be a little messy as it was a rush."
+        }  
+    }, {
+        "Data": {
+            "Title": "Little Spark",
+            "Images": [
+                "/Include/Images/LittleSpark/1.png",
+                "/Include/Images/LittleSpark/2.png"
+            ],
+            "Date": "Wednesday 14th of January 2015",
+            "Description": "Little Spark was to be a gift to someone very dear to me. Unfortunately i was unable to finish the project in time.\r\n\r\nIt was meant to be a sidescrolling platformer game, which was intended to tell a specific story.\r\nI however was only able to get part of the level designer working.\r\nI learnt a lot about the javascript canvas, and i would go on to use this knowledge for Alien Escape."
         }  
     }, {
         "Data": {
             "Title": "NestedBird.com",
             "Images": [
-                "/Include/Images/NestedBird1.jpg",
-                "/Include/Images/NestedBird2.jpg"
+                "/Include/Images/NestedBird/1.jpg",
+                "/Include/Images/NestedBird/2.jpg"
             ],
-            "Date": "Sunday 20th of March",
-            "Description": "NestedBird has been an ongoing project of mine for a very long time.\r\nI have always had a passion for programming and music, and NestedBird was the fusion of both of these passions.\r\n\r\nNestedBird is a service for local communities to support their local bands.\r\nIt is written in PHP, HTML, JS & SCSS and uses technologies like Amazon AWS."
+            "Date": "Ongoing since 2012",
+            "Description": "NestedBird has been an ongoing project of mine for a very long time.\r\nI have always had a passion for programming and music, and NestedBird was the fusion of both of these passions.\r\n\r\nNestedBird is a service for local communities to support their local bands.\r\nIt is written in PHP, HTML, JS and SCSS and uses technologies like Amazon AWS, MySQL and Nginx."
         }  
     }, {
         "Data": {
             "Title": "SelectAllDeleteSaveAs.com",
             "Images": [
-                "/Include/Images/SADSA.jpg"
+                "/Include/Images/SADSA/1.jpg"
             ],
-            "Date": "Sunday 20th of March",
+            "Date": "Revised on Saturday 18th of January 2014",
             "Description": "I developed the website for the local band \"Select All Delete Save As\".\r\n\r\nIf i could go back to this project i would have many design decisions i would definitely make.\r\nMost of my understanding of website design came after this project.\r\n\r\nHowever the actual experience of working on this website was amazing."
+        }  
+    }, {
+        "Data": {
+            "Title": "GuildFreaks.com",
+            "Images": [
+                "/Include/Images/GuildFreaks/1.png",
+                "/Include/Images/GuildFreaks/2.jpg",
+                "/Include/Images/GuildFreaks/3.jpg",
+                "/Include/Images/GuildFreaks/4.png",
+                "/Include/Images/GuildFreaks/5.jpg",
+                "/Include/Images/GuildFreaks/6.png",
+                "/Include/Images/GuildFreaks/7.png",
+                "/Include/Images/GuildFreaks/8.jpg"
+            ],
+            "Date": "Wednesday 24th of November 2010",
+            "Description": "GuildFreaks was a fun little side project of mine for about a year.\r\n\r\nThe website was based on the MMORPG \"GuildWars\" which at the time was my favourite game\r\n\r\nI had hoped to create a little community of people who also liked the game as i did, however i never managed to garner any interest.\r\n\r\nThe website is not available online anymore."
+        }  
+    }, {
+        "Data": {
+            "Title": "CoreConceptLearning.com",
+            "Images": [
+                "/Include/Images/CCL/1.png",
+                "/Include/Images/CCL/2.png",
+                "/Include/Images/CCL/3.jpg",
+                "/Include/Images/CCL/4.jpg"
+            ],
+            "Date": "Friday 27th of August 2010",
+            "Description": "This was the first website i made for someone commercially\r\n\r\nIt was written in PHP, HTML, CSS, JS & MySQL.\r\n\r\nThe website has since been redone by someone else in Flash."
+        }  
+    }, {
+        "Data": {
+            "Title": "Noob2Pro (unregistered website)",
+            "Images": [
+                
+                "/Include/Images/Noob2Pro/1.jpg",
+                "/Include/Images/Noob2Pro/2.jpg",
+                "/Include/Images/Noob2Pro/3.jpg"
+            ],
+            "Date": "Wednesday 24th of June 2009",
+            "Description": "Noob2Pro was one of (but not the) first websites i ever made. I was making it with a friend from USA, who was mostly responsible for getting me into web development.\r\n\r\nThe goal of the website was to create a service where people could help eachother get better at their favourite video games.\r\nShare tips, create guides and have fun!\r\nHowever, it never left early development.\r\n\r\n"
         }  
     }
 ]

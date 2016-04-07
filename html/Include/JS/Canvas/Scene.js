@@ -15,6 +15,8 @@ var Scene = new (function (settings) {
         Y: 0,
         Down: false
     };
+    
+    this.TimelineElementHeight = 255;
 
     this.SelectedButton = null;
 
@@ -29,7 +31,7 @@ var Scene = new (function (settings) {
         var Coords = window.findButton('intrCont').getCoords();
         
         if ((Coords) && (TimelineElements.length)) {
-            var Y = Coords.Y + Coords.Height + 50 + ((TimelineElements.length + 1) * 250);
+            var Y = Coords.Y + Coords.Height + 50 + ((TimelineElements.length + 1) * this.TimelineElementHeight);
             if (this.Viewport.Height < Y) {
                 this.Viewport.Height = Y;
             }
@@ -44,6 +46,7 @@ var Scene = new (function (settings) {
         context: this.context,
         Viewport: this.Viewport,
         SelectedButton: this.SelectedButton,
+        TimelineElementHeight: this.TimelineElementHeight,
         sync: this.sync,
         updateViewport: this.updateViewport
     };

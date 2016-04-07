@@ -35,12 +35,14 @@ var TimelineElement = function (settings) {
                 }
             }
         }
+        
+        
     }
 
     this.getCoords = function (OffsetID) {
         var Coords = findButton('intrCont').getCoords();
 
-        var Size = 250;
+        var Size = Scene.TimelineElementHeight;
         var X = Coords.X + (Coords.Width / 2) - (Size / 2);
         var Y = Coords.Y + Coords.Height + 50 + (Size * OffsetID);
 
@@ -110,7 +112,7 @@ var TimelineElement = function (settings) {
                     LoadedImages[ImageName] = new Image();
                     LoadedImages[ImageName].src = cImage;
                 } else if (LoadedImages[ImageName].complete) {
-                    var imageSize = 150;
+                    var imageSize = 200;
                     Y += (Size - imageSize) / 2;
                     X += (Size - imageSize) / 2;
 
@@ -138,8 +140,9 @@ var TimelineElement = function (settings) {
 
         var drawText = function (X, Y, Size, OffsetID, dt) {
             var Title = {
-                X: (OffsetID % 2 === 1) ? X + (Size * 2) : X - Size,
+                X: (OffsetID % 2 === 1) ? X + (Size * 2.5) - 25 : X - (Size * 1.5) + 25,
                 Y: Y,
+                Align: (OffsetID % 2 === 1) ? "right" : "left",
                 Size: 24
             };
 
@@ -147,7 +150,7 @@ var TimelineElement = function (settings) {
             Scene.context.font = Title.Size + "px Roboto,Georgia";
             Scene.context.globalAlpha = 1;
             Scene.context.fillStyle = "white";
-            Scene.context.textAlign = 'center';
+            Scene.context.textAlign = Title.Align;
             Scene.context.fillText(this.Data.Title, Title.X, Title.Y);
             Scene.context.globalAlpha = 1;
 
@@ -169,6 +172,19 @@ var TimelineElement = function (settings) {
                 Scene.context.fillText(DescriptionText[i], Description.X + Description.Padding, Description.Y + Description.Padding + (i * (Description.Size + Description.LineGap)));
                 Scene.context.globalAlpha = 1;
             }
+            
+            var DateText = {
+                X: (OffsetID % 2 === 1) ? X + (Size) + 15 : X - (Size * 1.5) + 15,
+                Y: Y + Size - 5,
+                Size: 12
+            }
+            
+            Scene.context.font = DateText.Size + "px Roboto,Georgia";
+            Scene.context.globalAlpha = 0.65;
+            Scene.context.fillStyle = "white";
+            Scene.context.textAlign = 'left';
+            Scene.context.fillText(this.Data.Date, DateText.X, DateText.Y);
+            Scene.context.globalAlpha = 1;
         }
 
         var drawDots = function (X, Y, Size, OffsetID, dt) {
