@@ -1,11 +1,12 @@
 var Key = new (function (settings) {
-    var keyArray = new Array();
+    this.keyArray = new Array();
 
     this.isKeyPressed = function(keyCode, getIndex) {
         var keyIndex = false;
-        for (var i = 0; 0 < keyArray.length; i++) {
-            if (keyArray[i] === keyCode) {
+        for (var i = 0; 0 < this.keyArray.length; i++) {
+            if (this.keyArray[i] === keyCode) {
                 keyIndex = i;
+                break;
             }
         }
         return keyIndex !== false ? (getIndex ? keyIndex : true) : false; //because 0 may be considered as false
@@ -16,7 +17,7 @@ var Key = new (function (settings) {
          * If the key has not already been pressed, then we add it to our list of keys that the user is pressing
          */
         if (!this.isKeyPressed(e.keyCode, false)) {
-            keyArray.push(e.keyCode);
+            this.keyArray.push(e.keyCode);
         }
         
         /**
@@ -26,6 +27,8 @@ var Key = new (function (settings) {
          * but something like shift would put funny \000 and stuff in the system and will break the highscores,
          * would have to google
          */
+        
+        
         if (Scene.SelectedButton !== null) {
             Scene.SelectedButton.TextBox.Value = String(Scene.SelectedButton.TextBox.Value);
             if ((e.keyCode == KEY.ENTER) || (e.keyCode == KEY.ESCAPE)) { //If the user pressed enter of escape, we can assume they want to stop editing this textbox
@@ -40,6 +43,7 @@ var Key = new (function (settings) {
              * We run the event that tells us the element has also changed its text, i dont actually use this
              * i was planning on doing something with it on the highscores, but i changed my mind
              */
+        
             if ((Scene.SelectedButton !== null) && (Scene.SelectedButton.TextBox._oldValue !== Scene.SelectedButton.TextBox.Value))
                 Scene.SelectedButton._onChanged();
         }
@@ -49,19 +53,16 @@ var Key = new (function (settings) {
         /**
          * If the user releases their key, then we must remove it from our list of keys they are holding down
          */
-        var keyIndex = getKeyPressed(e.keyCode, true);
+        var keyIndex = this.isKeyPressed(e.keyCode, true);
         if (keyIndex !== false) {
-            keyArray.splice(keyIndex, 1);
+            this.keyArray.splice(keyIndex, 1);
         }    
     }
 
     return {
         isKeyPressed: this.isKeyPressed,
         onKeyPressed: this.onKeyPressed,
-        Viewport: this.Viewport,
-        SelectedButton: this.SelectedButton,
-        Mouse: this.Mouse,
-        sync: this.sync,
-        updateViewport: this.updateViewport
+        onKeyUp: this.onKeyUp,
+        keyArray: this.keyArray,
     };
 });

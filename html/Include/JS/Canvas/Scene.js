@@ -35,6 +35,10 @@ var Scene = new (function (settings) {
             if (this.Viewport.Height < Y) {
                 this.Viewport.Height = Y;
             }
+            
+            if (this.Viewport.Width < 1030) {
+                this.Viewport.Width = 1030;
+            }
         }
 
         Scene.context.canvas.width = this.Viewport.Width;

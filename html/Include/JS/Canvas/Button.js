@@ -13,7 +13,14 @@ var Button = function (name, settings) {
         },
         Status: {
             Visible: true,
-            Pressed: false
+            Pressed: false,
+            Hovered: false
+        },
+        Hover: {
+            On: false,
+            ChangeCursor: true,
+            Colour: "black",
+            Opacity: 1
         },
         Fill: {
             On: false,
@@ -53,7 +60,8 @@ var Button = function (name, settings) {
         onChanged: [],
         onClick: [],
         onRelease: [],
-        onLeave: []
+        onLeave: [],
+        onHover: []
     }
 
     this.constructor = function (name, settings) {
@@ -61,7 +69,7 @@ var Button = function (name, settings) {
          * I need to recode this function, i just cant think at the moment
          */
         for (var greaterPropertyName in settings) {
-            if (greaterPropertyName === 'Data') {
+            if ((greaterPropertyName === 'Data') || (greaterPropertyName === 'Events')) {
                 for (var majorPropertyName in settings[greaterPropertyName]) {
 
                     var majorProperty = settings[greaterPropertyName][majorPropertyName];
@@ -70,10 +78,10 @@ var Button = function (name, settings) {
                         for (var minorPropertyName in majorProperty) {
                             var minorProperty = majorProperty[minorPropertyName];
 
-                            this.Data[majorPropertyName][minorPropertyName] = minorProperty;
+                            this[greaterPropertyName][majorPropertyName][minorPropertyName] = minorProperty;
                         }
                     } else {
-                        this.Data[majorPropertyName] = majorProperty;
+                        this[greaterPropertyName][majorPropertyName] = majorProperty;
                     }
 
                 }
@@ -96,9 +104,30 @@ var Button = function (name, settings) {
             for (var i = 0; i < this.Events.onChanged.length; i++) {
                 var e = this.Events.onChanged[i];
 
-                var fn = window[e];
+                var fn = window[e.Function];
                 if (typeof fn === "function") {
-                    fn.apply(null, [this]);
+                    fn.apply(this, [e.Parameters]);
+                }
+            }
+        }
+    }
+
+    /**
+     * When the button has been hovered over by the mouse
+     * This function operates behind the scenes
+     * @type function
+     * @returns {null}
+     */
+    this._onHover = function () {
+        this.Data.Status.Hovered = true;
+
+        if (this.Events.onHover.length > 0) {
+            for (var i = 0; i < this.Events.onHover.length; i++) {
+                var e = this.Events.onHover[i];
+
+                var fn = window[e.Function];
+                if (typeof fn === "function") {
+                    fn.apply(this, [e.Parameters]);
                 }
             }
         }
@@ -120,9 +149,9 @@ var Button = function (name, settings) {
             for (var i = 0; i < this.Events.onClick.length; i++) {
                 var e = this.Events.onClick[i];
 
-                var fn = window[e];
+                var fn = window[e.Function];
                 if (typeof fn === "function") {
-                    fn.apply(null, [this]);
+                    fn.apply(this, [e.Parameters]);
                 }
             }
         }
@@ -141,9 +170,9 @@ var Button = function (name, settings) {
             for (var i = 0; i < this.Events.onRelease.length; i++) {
                 var e = this.Events.onRelease[i];
 
-                var fn = window[e];
+                var fn = window[e.Function];
                 if (typeof fn === "function") {
-                    fn.apply(null, [this]);
+                    fn.apply(this, [e.Parameters]);
                 }
             }
         }
@@ -157,6 +186,7 @@ var Button = function (name, settings) {
      */
     this._onLeave = function () {
         this.Data.Status.Pressed = false;
+        this.Data.Status.Hovered = false;
     }
 
     this.getCoords = function () {
@@ -207,7 +237,7 @@ var Button = function (name, settings) {
             if (this.Data.Fill.On) {
                 if (this.Data.Fill.Colour !== null) {
                     Scene.context.globalAlpha = this.Data.Fill.Opacity;
-                    Scene.context.fillStyle = (this.Data.Status.Pressed) ? this.Data.Fill.Pressed : this.Data.Fill.Colour;
+                    Scene.context.fillStyle = (this.Data.Status.Pressed) ? this.Data.Fill.Pressed : (this.Data.Status.Hovered && this.Data.Hover.On) ? this.Data.Hover.Colour : this.Data.Fill.Colour;
                     Scene.context.fill();
                     Scene.context.globalAlpha = 1;
                 }
@@ -276,6 +306,10 @@ var Button = function (name, settings) {
         Events: this.Events,
         load: constructor,
         _onChanged: this._onChanged,
+        _onRelease: this._onRelease,
+        _onClick: this._onClick,
+        _onLeave: this._onLeave,
+        _onHover: this._onHover,
         draw: this.draw,
         getCoords: this.getCoords
     };
@@ -358,13 +392,11 @@ function drawButtons(dt) {
 }
 
 function findButton(name) {
-    var foundElement = false;
-    Buttons.forEach(function (e) {
+    for (var i = 0; i < Buttons.length; i++) {
+        var e = Buttons[i];
         if (name === e.Data.Description) {
-            foundElement = e;
-            return;
+            return e;
         }
-    });
-
-    return foundElement;
+    }
+    return false;
 }

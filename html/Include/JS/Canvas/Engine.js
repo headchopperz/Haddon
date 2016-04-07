@@ -17,6 +17,8 @@ var requestAnimFrame = (function () {
 
 var lastTime = 0;
 
+var FPS = [];
+
 
 /**
  * This is the program loop, but it isnt named that as i want to split the loop up
@@ -35,9 +37,29 @@ function main() {
      */
     if (dt < 1000) {
         Scene.sync();
-        
+
         drawTimeline(dt);
         drawButtons(dt);
+
+
+        FPS.push(Math.round(1000 / dt));
+
+        var total = 0;
+
+        FPS.forEach(function (e) {
+            total += e;
+        });
+
+        if (FPS.length > Math.round(total / FPS.length)) //the seconds average... about
+            FPS.shift();
+
+        if (Key.isKeyPressed(KeyCode.D, false)) {
+
+            Scene.context.font = "16px Georgia";
+            Scene.context.textAlign = 'left';
+            Scene.context.fillStyle = "white";
+            Scene.context.fillText("FPS: " + Math.round(total / FPS.length), 25, 25);
+        }
     }
 
     lastTime = now;
@@ -107,7 +129,7 @@ $(document).ready(function () {
         obj.forEach(function (e) {
             TimelineElements.push(new TimelineElement(e));
         });
-        
+
         Scene.updateViewport();
 
     });

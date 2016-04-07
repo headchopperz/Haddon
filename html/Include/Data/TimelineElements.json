@@ -5,10 +5,21 @@
             "Images": [
                 "/Include/Images/Me/1.jpg"
             ],
-            "Github": "https://github.com/headchopperz/HackJSY",
+            "Buttons": [
+                {
+                    "Name": "www",
+                    "URL": "https://michael.haddon.me"
+                }, {
+                    "Name": "GH",
+                    "URL": "https://github.com/mhaddon/Haddon"
+                }, {
+                    "Name": "DL",
+                    "URL": "https://github.com/mhaddon/Haddon/archive/master.zip"
+                }
+            ],
             "Date": "Sunday 10th of April 2016",
             "Description": "I have wanted to create a website for myself for a while. However, I have never previously had the time.\r\n\r\nMy goal with this website was to show off my previous work and to make it into a learning exercise.\r\n\r\nThis website is created with the canvas element, and the rendered elements are not HTML.\r\nI thought this would be an interesting challenge."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Alien Escape",
@@ -17,11 +28,18 @@
                 "/Include/Images/HackJSY1/3.jpg",
                 "/Include/Images/HackJSY1/4.jpg"
             ],
-            "Github": "https://github.com/headchopperz/HackJSY",
-            "Download": "https://github.com/headchopperz/HackJSY/archive/master.zip",
+            "Buttons": [
+                {
+                    "Name": "GH",
+                    "URL": "https://github.com/mhaddon/HackJSY"
+                }, {
+                    "Name": "DL",
+                    "URL": "https://github.com/mhaddon/HackJSY/archive/master.zip"
+                }
+            ],
             "Date": "Sunday 20th of March 2016",
             "Description": "Alien Escape is a small game I made within 36 hours for Digital Jersey's Hackathon.\r\n\r\nI wanted to create something fun and retroy.\r\nIt was made mainly in Javascript, using the canvas element to draw and render the various elements.\r\n\r\nThe code is available below to look at on Github. You can also download and play the game yourself!\r\nThe code may be a little messy as it was a rush."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Little Spark",
@@ -31,7 +49,7 @@
             ],
             "Date": "Wednesday 14th of January 2015",
             "Description": "Little Spark was to be a gift to someone very dear to me. Unfortunately I was unable to finish the project in time.\r\n\r\nIt was meant to be a sidescrolling platformer game, which was intended to tell a specific story.\r\nI however was only able to get part of the level designer working.\r\nI learnt a lot about the javascript canvas, and I would go on to use this knowledge for Alien Escape."
-        }  
+        }
     }, {
         "Data": {
             "Title": "NestedBird.com",
@@ -39,9 +57,21 @@
                 "/Include/Images/NestedBird/1.jpg",
                 "/Include/Images/NestedBird/2.jpg"
             ],
+            "Buttons": [
+                {
+                    "Name": "www",
+                    "URL": "https://www.nestedbird.com"
+                }, {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=b3HLC8WEnMA"
+                }, {
+                    "Name": "FB",
+                    "URL": "https://www.facebook.com/NestedBird/"
+                }
+            ],
             "Date": "Ongoing since 2012",
             "Description": "NestedBird has been an ongoing project of mine for a very long time.\r\nI have always had a passion for programming and music, and NestedBird was the fusion of both of these passions.\r\n\r\nNestedBird is a service for local communities to support their local bands.\r\nIt is written in PHP, HTML, JS and SCSS and uses technologies like Amazon AWS, MySQL and Nginx."
-        }  
+        }
     }, {
         "Data": {
             "Title": "TW ToolKit",
@@ -52,16 +82,41 @@
             ],
             "Date": "Wednesday 23rd of April 2014",
             "Description": "When I play video games competitively I usually like to spend a lot of time researching the game mechanics and how certain calculations are made.\r\nOne of these games I spent a lot of time researching is a strategy game called Tribal Wars.\r\n\r\nI created a tool with C# forms to do vast bruteforcing calculations to try to accurately guess the opponents strategy and also perfect my own strategy."
-        }  
+        }
     }, {
         "Data": {
             "Title": "SelectAllDeleteSaveAs.com",
             "Images": [
                 "/Include/Images/SADSA/1.jpg"
             ],
+            "Buttons": [
+                {
+                    "Name": "www",
+                    "URL": "http://www.selectalldeletesaveas.com"
+                }
+            ],
             "Date": "Revised on Saturday 18th of January 2014",
             "Description": "I developed the website for the local band \"Select All Delete Save As\".\r\n\r\nIf I could go back to this project I would have many design decisions I would definitely make.\r\nMost of my understanding of website design came after this project.\r\n\r\nHowever the actual experience of working on this website was amazing."
-        }  
+        }
+    }, {
+        "Data": {
+            "Title": "Minecraft Mods",
+            "Images": [
+                "/Include/Images/MinecraftMods/1.jpg",
+                "/Include/Images/MinecraftMods/2.jpg"
+            ],
+            "Buttons": [
+                {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=7hxBlbQoao8"
+                }, {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=AZuu7d1smmw"
+                }
+            ],
+            "Date": "Saturday 8th of June 2013",
+            "Description": "I wanted to learn Java, so I decided around this time that I would try to create some simple mods for a video game called Minecraft. I also tried creating some simple Android apps around this time too.\r\n\r\nBelow i have videos of some of mods in action.\r\nThey are nothing special, but quite fun to make.\r\n\r\nYou will have to excuse the music in the videos, at the time I dont think I expected to show them off."
+        }
     }, {
         "Data": {
             "Title": "GuildFreaks.com",
@@ -77,7 +132,7 @@
             ],
             "Date": "Wednesday 24th of November 2010",
             "Description": "GuildFreaks was a fun little side project of mine for about a year.\r\n\r\nThe website was based on the MMORPG \"GuildWars\" which at the time was my favourite game\r\n\r\nI had hoped to create a little community of people who also liked the game as i did, however i never managed to garner any interest.\r\n\r\nThe website is not available online anymore."
-        }  
+        }
     }, {
         "Data": {
             "Title": "World Builder",
@@ -86,7 +141,7 @@
             ],
             "Date": "Monday 21st of November 2010",
             "Description": "One of the things i wanted to do was to create my own world builder for a 3d RPG game i was planning on making... It wasn't long into the project until I realised how much work 3d world builders are...\r\n\r\nI never managed to put as much time into this project as I wanted as I was also trying to work on my GuildFreaks project.\r\n\r\nThis project was written in C++ with the library DarkGDK."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Empire",
@@ -95,10 +150,15 @@
                 "/Include/Images/Empire/2.jpg",
                 "/Include/Images/Empire/3.jpg"
             ],
-            "YouTube": "https://www.youtube.com/watch?v=hSxBWLz5l0E",
+            "Buttons": [
+                {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=hSxBWLz5l0E"
+                }
+            ],
             "Date": "Monday 21st of November 2010",
             "Description": "Empire is another game i made written in C++ that uses the DarkGDK library.\r\n\r\nOne of my favourite video games ever, is a strategy game called \"Rome: Total War\". I wanted to create my own verison of this game (and still do to be honest).\r\n\r\nThe game was still very early development when i left it, and i was struggling a great deal with linker errors in C++."
-        }  
+        }
     }, {
         "Data": {
             "Title": "X Hunter",
@@ -107,22 +167,32 @@
                 "/Include/Images/XHunter/2.png",
                 "/Include/Images/XHunter/3.png"
             ],
-            "YouTube": "https://www.youtube.com/watch?v=rHxs7vuj1Hc",
+            "Buttons": [
+                {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=rHxs7vuj1Hc"
+                }
+            ],
             "Date": "Sunday 3rd of October 2010",
             "Description": "X Hunter was a really fun game to make.\r\nIt is a C# console application that uses many threads in order to work.\r\n\r\nThe aim of the game is for you to walk around and shoot at the evil enemy X's while avoiding being shot yourself.\r\n\r\nThis was a great project for me to learn how threading works, and was one of my most fun to date to work on."
-        }  
+        }
     }, {
         "Data": {
             "Title": "A* Pathfinding",
             "Images": [
-                
+
                 "/Include/Images/Pathfinding/1.jpg",
                 "/Include/Images/Pathfinding/2.jpg"
             ],
-            "YouTube": "https://www.youtube.com/watch?v=fG7bH8DYnsw",
+            "Buttons": [
+                {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=fG7bH8DYnsw"
+                }
+            ],
             "Date": "Tuesday 31st of August 2010",
             "Description": "This might be the project i am most proud with, and i may consider it to still be the most complicated algorithm i have implemented to date.\r\n\r\nI wanted to learn a lot about AI so I could implement what I learnt into my games I made. One of the features every good AI needs is... Good pathfinding.\r\n\r\nSo I decided I would learn how to implement the A* Pathfinding algorithm into C++. The graphics are rendered with DarkGDK."
-        }  
+        }
     }, {
         "Data": {
             "Title": "CoreConceptLearning.com",
@@ -134,7 +204,7 @@
             ],
             "Date": "Friday 27th of August 2010",
             "Description": "This was the first website i made for someone commercially\r\n\r\nIt was written in PHP, HTML, CSS, JS & MySQL.\r\n\r\nThe website has since been redone by someone else in Flash."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Space Invaders",
@@ -144,57 +214,70 @@
             ],
             "Date": "Tuesday 2nd of February 2010",
             "Description": "While i was at Highlands, we were given a project to create a game using C# forms. I decided that i wanted to create and clone Space Invaders.\r\n\r\nIt had many features including achievements, levels, perks, highscores and you could even play it ontop of your current window!"
-        }  
+        }
     }, {
         "Data": {
             "Title": "Unnamed Russian Shooter Game",
             "Images": [
-                
+
                 "/Include/Images/Russian/1.png",
                 "/Include/Images/Russian/2.png"
             ],
-            "YouTube": "https://www.youtube.com/watch?v=X-7KAvDYbrg",
+            "Buttons": [
+                {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=X-7KAvDYbrg"
+                }, {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=EdUGgr0gV0M"
+                }
+            ],
             "Date": "Monday 30th of November 2009",
             "Description": "This was my first shooter game, the idea behind it was that you were living in a post apocalyptic russia. I'm not sure why russia, but it was russia.\r\n\r\nI had a lot of ideas for this game, but they never reached fruition as I would go on to spend the next few months learning about AI for this game... But never returning to it to implement what I learnt.\r\n\r\nThis was written in C++ using a library called DarkGDK for the graphics rendering."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Archer FPS",
             "Images": [
-                
+
                 "/Include/Images/ArcherFPS/1.jpg",
                 "/Include/Images/ArcherFPS/2.jpg"
             ],
-            "YouTube": "https://www.youtube.com/watch?v=fdve-13-Usw",
+            "Buttons": [
+                {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=fdve-13-Usw"
+                }
+            ],
             "Date": "Sunday 15th of November 2009",
             "Description": "\"Archer FPS\" was a team based game i made in Dark Basic, i believe inspired by EA's Battlefield.\r\n\r\nThe purpose of the game was to capture key locations with your team, while trying to defend your own locations.\r\nHowever, instead of guns, everyone had bows and arrows.\r\n\r\nI Had hoped to add multiplayer capability, but it was beyond me at the time."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Find and Replace",
             "Images": [
-                
+
                 "/Include/Images/FandR/1.png"
             ],
             "Date": "Saturday 10th of October 2009",
             "Description": "I wanted to learn C# and i also wanted to create a tool for mass search and replacing.\r\n\r\nAt the time i did most of my programming in notepad, and when i needed to do a large find and replace... well notepad didn't support that.\r\nSo i decided i would make my own tool.\r\n\r\nThese days I almost always use a fully fledged IDE that would support this by default."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Noob2Pro (unregistered website)",
             "Images": [
-                
+
                 "/Include/Images/Noob2Pro/1.jpg",
                 "/Include/Images/Noob2Pro/2.jpg",
                 "/Include/Images/Noob2Pro/3.jpg"
             ],
             "Date": "Wednesday 24th of June 2009",
             "Description": "Noob2Pro was one of (but not the) first websites i ever made. I was making it with a friend from USA, who was mostly responsible for getting me into web development.\r\n\r\nThe goal of the website was to create a service where people could help eachother get better at their favourite video games.\r\nShare tips, create guides and have fun!\r\nHowever, it never left early development.\r\n\r\n"
-        }  
+        }
     }, {
         "Data": {
             "Title": "God Almighty",
-            "Images": [                
+            "Images": [
                 "/Include/Images/GodAlmighty/1.jpg",
                 "/Include/Images/GodAlmighty/2.jpg",
                 "/Include/Images/GodAlmighty/3.jpg",
@@ -203,27 +286,37 @@
             ],
             "Date": "Saturday 11th of November 2008",
             "Description": "\"God Almighty\" was one of my first 3d games that i wrote in a language called Dark Basic.\r\n\r\nI do not at all remember the point of the game, and i do not have a copy of the latest version of it.\r\nHowever, i believe you just went around killing random zombies and... butterflies."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Outscape ~ The Annhilation",
-            "Images": [                
+            "Images": [
                 "/Include/Images/OTA/1.jpg"
             ],
-            "YouTube": "https://www.youtube.com/watch?v=BiAecC0xm5U",
+            "Buttons": [
+                {
+                    "Name": "YT",
+                    "URL": "https://www.youtube.com/watch?v=BiAecC0xm5U"
+                }
+            ],
             "Date": "Monday 28th of July 2008",
             "Description": "So, I am going to be honest with you...\r\nI am not completely sure i know the difference between this game and \"God Almighty\"...\r\nHowever, it has a different name, different code, and a different folder...\r\nI think \"God Almighty\" was meant to be an updated version of this game.\r\nEitherway, you killed spheres and butterflies in this one...\r\nMan, I must really hate butterflies."
-        }  
+        }
     }, {
         "Data": {
             "Title": "War Arena",
             "Images": [
                 "/Include/Images/WarArena/1.jpg"
             ],
+            "Buttons": [
+                {
+                    "Name": "www",
+                    "URL": "http://www.freewebs.com/outscape/wararena.htm"
+                }
+            ],
             "Date": "Early 2008",
-            "Website": "http://www.freewebs.com/outscape/wararena.htm",
             "Description": "War Arena was my first functional game (functional meaning it has a goal).\r\nThe aim of the game is that at the beginning of a round you would recruit certain troops, you would then fight a particular enemy, you would lose troops depending on how bad/good your composition was.\r\nAt the time i did not know what a loop was... and each round was hardcoded in...\r\nIt was also one of my longest projects to date."
-        }  
+        }
     }, {
         "Data": {
             "Title": "Other Projects",
@@ -231,6 +324,6 @@
             ],
             "Date": "",
             "Description": "I would like to start by saying that the above is not everything I have worked on, just everything of interest. Sometimes the displayed verison is not even the latest verison as some code I have lost, or I have the code but no binaries and no way to recompile."
-        }  
+        }
     }
 ]

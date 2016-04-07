@@ -1,71 +1,84 @@
 var Mouse = new (function (settings) {
     this.X = 0;
     this.Y = 0;
-    var Down = false;
-    
-    this.isDown = function() {
-        return Down;
-    }
-    
-    this.press = function(e) {
-        Down = true;
-        
-        Buttons.forEach(function (e) {
-            var Coords = e.getCoords();
-            if ((Coords) && (!e.Data.Status.Pressed)) {
-                var X = Coords.X;
-                var Y = Coords.Y;
+    this.Down = false;
 
-                if ((this.X < X + Coords.Width) &&
-                        (this.X > X) &&
-                        (this.Y < Y + Coords.Height) &&
-                        (this.Y > Y)) {
-                    e._onClick();
-                }
-            }
-        }); 
+    this.isDown = function () {
+        return this.Down;
     }
-    
-    this.release = function(e) {
-        Down = false;
-        
-        Buttons.forEach(function (e) {
-            var Coords = e.getCoords();
-            if ((Coords) && (e.Data.Status.Pressed)) {
-                var X = Coords.X;
-                var Y = Coords.Y;
 
-                if ((this.X < X + Coords.Width) &&
-                        (this.X > X) &&
-                        (this.Y < Y + Coords.Height) &&
-                        (this.Y > Y)) {
-                    e._onRelease();
-                }
+    this.press = function (en) {
+        this.Down = true;
+
+        /**
+         * I really wish ecmascript would make a good foreach loop...
+         * I had to move this from a foreach to a for because it was messing
+         * with the "this" variable
+         */
+        for (var i = 0; i < Buttons.length; i++) {
+            var e = Buttons[i];
+            var Coords = e.getCoords();
+            if ((Coords) && (!e.Data.Status.Pressed) &&
+                    ((this.X < Coords.X + Coords.Width) &&
+                            (this.X > Coords.X) &&
+                            (this.Y < Coords.Y + Coords.Height) &&
+                            (this.Y > Coords.Y))) {
+                e._onClick();
             }
-        });        
+        }
     }
-    
-    this.move = function(e) {
+
+    this.release = function (e) {
+        this.Down = false;
+
+
+        for (var i = 0; i < Buttons.length; i++) {
+            var e = Buttons[i];
+            var Coords = e.getCoords();
+            if ((Coords) && (e.Data.Status.Pressed) &&
+                    ((this.X < Coords.X + Coords.Width) &&
+                            (this.X > Coords.X) &&
+                            (this.Y < Coords.Y + Coords.Height) &&
+                            (this.Y > Coords.Y))) {
+                e._onRelease();
+            }
+        }
+    }
+
+    this.move = function (e) {
         this.X = Math.round(e.pageX - $('#scene').offset().left, 10);
         this.Y = Math.round(e.pageY - $('#scene').offset().top, 10);
-        
-        
-        Buttons.forEach(function (e) {
-            var Coords = e.getCoords();
-            if ((Coords) && (!e.Data.Status.Pressed)) {
-                var X = Coords.X;
-                var Y = Coords.Y;
 
-                if ((this.X < X + Coords.Width) &&
-                        (this.X > X) &&
-                        (this.Y < Y + Coords.Height) &&
-                        (this.Y > Y)) {
+        var HoveredElementsAm = 0;
+
+        for (var i = 0; i < Buttons.length; i++) {
+            var e = Buttons[i];
+            var Coords = e.getCoords();
+            if ((Coords) &&
+                    ((this.X < Coords.X + Coords.Width) &&
+                            (this.X > Coords.X) &&
+                            (this.Y < Coords.Y + Coords.Height) &&
+                            (this.Y > Coords.Y))) {
+                e._onHover();
+                if ((!e.Data.Status.Pressed) && this.Down) {
                     e._onClick();
                 }
+                if (e.Data.Hover.On && e.Data.Hover.ChangeCursor) {
+                    HoveredElementsAm++;
+                }
+            } else {
+                e._onLeave();
             }
-        }); 
+        }
+
+        if (HoveredElementsAm > 0) {
+            $('#scene').css('cursor', 'pointer');
+        } else {
+            $('#scene').css('cursor', '');
+
+        }
     }
-    
+
     return {
         X: this.X,
         Y: this.Y,
@@ -73,6 +86,6 @@ var Mouse = new (function (settings) {
         press: this.press,
         release: this.release,
         move: this.move
-        
+
     }
 });
