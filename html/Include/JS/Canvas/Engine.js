@@ -40,26 +40,7 @@ function main() {
 
         drawTimeline(dt);
         drawButtons(dt);
-
-
-        FPS.push(Math.round(1000 / dt));
-
-        var total = 0;
-
-        FPS.forEach(function (e) {
-            total += e;
-        });
-
-        if (FPS.length > Math.round(total / FPS.length)) //the seconds average... about
-            FPS.shift();
-
-        if (Key.isKeyPressed(KeyCode.D, false)) {
-
-            Scene.context.font = "16px Georgia";
-            Scene.context.textAlign = 'left';
-            Scene.context.fillStyle = "white";
-            Scene.context.fillText("FPS: " + Math.round(total / FPS.length), 25, 25);
-        }
+        showFPS(dt);
     }
 
     lastTime = now;
@@ -68,6 +49,28 @@ function main() {
      * rerun the function when the computer can render the animation frame
      */
     requestAnimFrame(main);
+}
+
+function showFPS(dt) {
+    FPS.push(Math.round(1000 / dt));
+
+    var total = 0;
+
+    FPS.forEach(function (e) {
+        total += e;
+    });
+
+    if (FPS.length > Math.round(1000 / dt)) { //the seconds average... about
+        FPS.shift();
+    }
+
+    if (Key.isKeyPressed(KeyCode.D, false)) {
+
+        Scene.context.font = "16px Georgia";
+        Scene.context.textAlign = 'left';
+        Scene.context.fillStyle = "white";
+        Scene.context.fillText("FPS: " + Math.round(total / FPS.length), 25, 25);
+    }
 }
 
 /**
