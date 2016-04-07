@@ -44,8 +44,8 @@
         "Data": {
             "Title": "Little Spark",
             "Images": [
-                "/Include/Images/LittleSpark/1.png",
-                "/Include/Images/LittleSpark/2.png"
+                "/Include/Images/LittleSpark/2.jpg",
+                "/Include/Images/LittleSpark/3.jpg"
             ],
             "Date": "Wednesday 14th of January 2015",
             "Description": "Little Spark was to be a gift to someone very dear to me. Unfortunately I was unable to finish the project in time.\r\n\r\nIt was meant to be a sidescrolling platformer game, which was intended to tell a specific story.\r\nI however was only able to get part of the level designer working.\r\nI learnt a lot about the javascript canvas, and I would go on to use this knowledge for Alien Escape."
@@ -76,9 +76,9 @@
         "Data": {
             "Title": "TW ToolKit",
             "Images": [
-                "/Include/Images/TWToolKit/1.png",
-                "/Include/Images/TWToolKit/2.png",
-                "/Include/Images/TWToolKit/3.png"
+                "/Include/Images/TWToolKit/1.jpg",
+                "/Include/Images/TWToolKit/2.jpg",
+                "/Include/Images/TWToolKit/3.jpg"
             ],
             "Date": "Wednesday 23rd of April 2014",
             "Description": "When I play video games competitively I usually like to spend a lot of time researching the game mechanics and how certain calculations are made.\r\nOne of these games I spent a lot of time researching is a strategy game called Tribal Wars.\r\n\r\nI created a tool with C# forms to do vast bruteforcing calculations to try to accurately guess the opponents strategy and also perfect my own strategy."
@@ -121,13 +121,13 @@
         "Data": {
             "Title": "GuildFreaks.com",
             "Images": [
-                "/Include/Images/GuildFreaks/1.png",
+                "/Include/Images/GuildFreaks/1.jpg",
                 "/Include/Images/GuildFreaks/2.jpg",
                 "/Include/Images/GuildFreaks/3.jpg",
-                "/Include/Images/GuildFreaks/4.png",
+                "/Include/Images/GuildFreaks/4.jpg",
                 "/Include/Images/GuildFreaks/5.jpg",
-                "/Include/Images/GuildFreaks/6.png",
-                "/Include/Images/GuildFreaks/7.png",
+                "/Include/Images/GuildFreaks/6.jpg",
+                "/Include/Images/GuildFreaks/7.jpg",
                 "/Include/Images/GuildFreaks/8.jpg"
             ],
             "Date": "Wednesday 24th of November 2010",
@@ -163,9 +163,9 @@
         "Data": {
             "Title": "X Hunter",
             "Images": [
-                "/Include/Images/XHunter/1.png",
-                "/Include/Images/XHunter/2.png",
-                "/Include/Images/XHunter/3.png"
+                "/Include/Images/XHunter/1.jpg",
+                "/Include/Images/XHunter/2.jpg",
+                "/Include/Images/XHunter/3.jpg"
             ],
             "Buttons": [
                 {
@@ -197,8 +197,8 @@
         "Data": {
             "Title": "CoreConceptLearning.com",
             "Images": [
-                "/Include/Images/CCL/1.png",
-                "/Include/Images/CCL/2.png",
+                "/Include/Images/CCL/1.jpg",
+                "/Include/Images/CCL/2.jpg",
                 "/Include/Images/CCL/3.jpg",
                 "/Include/Images/CCL/4.jpg"
             ],
@@ -209,7 +209,7 @@
         "Data": {
             "Title": "Space Invaders",
             "Images": [
-                "/Include/Images/SpaceInvaders/1.png",
+                "/Include/Images/SpaceInvaders/1.jpg",
                 "/Include/Images/SpaceInvaders/2.jpg"
             ],
             "Date": "Tuesday 2nd of February 2010",
@@ -220,8 +220,8 @@
             "Title": "Unnamed Russian Shooter Game",
             "Images": [
 
-                "/Include/Images/Russian/1.png",
-                "/Include/Images/Russian/2.png"
+                "/Include/Images/Russian/1.jpg",
+                "/Include/Images/Russian/2.jpg"
             ],
             "Buttons": [
                 {
@@ -257,7 +257,7 @@
             "Title": "Find and Replace",
             "Images": [
 
-                "/Include/Images/FandR/1.png"
+                "/Include/Images/FandR/1.jpg"
             ],
             "Date": "Saturday 10th of October 2009",
             "Description": "I wanted to learn C# and i also wanted to create a tool for mass search and replacing.\r\n\r\nAt the time i did most of my programming in notepad, and when i needed to do a large find and replace... well notepad didn't support that.\r\nSo i decided i would make my own tool.\r\n\r\nThese days I almost always use a fully fledged IDE that would support this by default."
