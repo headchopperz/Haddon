@@ -46,8 +46,8 @@ var Mouse = new (function (settings) {
     }
 
     this.move = function (e) {
-        this.X = Math.round(e.pageX - $('#scene').offset().left, 10);
-        this.Y = Math.round(e.pageY - $('#scene').offset().top, 10);
+        this.X = Math.round(e.pageX - Scene.getOffset().left, 10);
+        this.Y = Math.round(e.pageY - Scene.getOffset().top, 10);
 
         var HoveredElementsAm = 0;
 
@@ -72,9 +72,9 @@ var Mouse = new (function (settings) {
         }
 
         if (HoveredElementsAm > 0) {
-            $('#scene').css('cursor', 'pointer');
+            Scene.canvas.style.cursor = 'pointer';
         } else {
-            $('#scene').css('cursor', '');
+            Scene.canvas.style.cursor = '';
 
         }
     }

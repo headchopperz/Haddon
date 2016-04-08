@@ -24,9 +24,13 @@ var Scene = new (function (settings) {
         this.context.clearRect(0, 0, this.Viewport.Width, this.Viewport.Height)
     }
 
+    this.getOffset = function() {
+        return this.canvas.getBoundingClientRect();
+    }
+
     this.updateViewport = function () {
-        this.Viewport.Width = $(window).width();
-        this.Viewport.Height = $(window).height();
+        this.Viewport.Width = document.documentElement.clientWidth;
+        this.Viewport.Height = document.documentElement.clientHeight;
 
         var Coords = window.findButton('intrCont').getCoords();
 
@@ -37,10 +41,10 @@ var Scene = new (function (settings) {
             }
 
             if (this.Viewport.Width < 1030) {
-                $('body').css('overflow-x', 'auto');
+                document.body.style.overflowX = 'auto';
                 this.Viewport.Width = 1030;
             } else {
-                $('body').css('overflow-x', 'hidden');
+                document.body.style.overflowX = 'hidden';
             }
         }
 
@@ -55,6 +59,7 @@ var Scene = new (function (settings) {
         SelectedButton: this.SelectedButton,
         TimelineElementHeight: this.TimelineElementHeight,
         sync: this.sync,
-        updateViewport: this.updateViewport
+        updateViewport: this.updateViewport,
+        getOffset: this.getOffset
     };
 });

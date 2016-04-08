@@ -81,7 +81,7 @@ function showFPS(dt) {
  *
  * This block of code is also what runs main() for the first time
  */
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function() {
     Scene.updateViewport();
     window.addEventListener('resize', function (e) {
         Scene.updateViewport();
@@ -107,34 +107,22 @@ $(document).ready(function () {
     Scene.canvas.addEventListener("mousemove", function (e) {
         Mouse.move(e);
     });
-
-    $.ajax({
-        type: "GET",
-        url: "/Include/Data/Buttons.json"
-    }).success(function (obj) {
-        //var obj = $.parseJSON(html);
-
+    
+    loadJSON("/Include/Data/Buttons.json", function(obj) {
         obj.forEach(function (e) {
             Buttons.push(new Button(e.Data.Description, e));
         });
 
         findButton('intrCont').Data.Fill.On = true;
-        findButton('intrSub').Data.Text.Value = "My name is Michael Haddon";
-
+        findButton('intrSub').Data.Text.Value = "My name is Michael Haddon";    
     });
-
-    $.ajax({
-        type: "GET",
-        url: "/Include/Data/TimelineElements.json"
-    }).success(function (obj) {
-        //var obj = $.parseJSON(html);
-
+    
+    loadJSON("/Include/Data/TimelineElements.json", function(obj) {
         obj.forEach(function (e) {
             TimelineElements.push(new TimelineElement(e));
         });
 
-        Scene.updateViewport();
-
+        Scene.updateViewport();        
     });
 
     /**
@@ -142,3 +130,26 @@ $(document).ready(function () {
      */
     setTimeout(main, 150);
 });
+
+function loadJSON(URL, Func) {
+    var request = new XMLHttpRequest();
+    request.open('GET', URL, true);
+
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        // Success!
+        var obj = JSON.parse(request.responseText);
+        
+        Func(obj);
+      } else {
+        // We reached our target server, but it returned an error
+
+      }
+    };
+
+    request.onerror = function() {
+      // There was a connection error of some sort
+    };
+
+    request.send();
+}
