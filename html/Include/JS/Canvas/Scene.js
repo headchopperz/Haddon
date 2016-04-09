@@ -24,8 +24,12 @@ var Scene = new (function (settings) {
         this.context.clearRect(0, 0, this.Viewport.Width, this.Viewport.Height)
     }
 
-    this.getOffset = function() {
-        return this.canvas.getBoundingClientRect();
+    this.getOffset = function () {
+        var rect = this.canvas.getBoundingClientRect();
+        return {
+            left: rect.left + document.body.scrollLeft,
+            top: rect.top + document.body.scrollTop
+        };
     }
 
     this.updateViewport = function () {

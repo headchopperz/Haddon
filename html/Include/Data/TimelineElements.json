@@ -157,7 +157,7 @@
                 }
             ],
             "Date": "Monday 21st of November 2010",
-            "Description": "Empire is another game i made written in C++ that uses the DarkGDK library.\r\n\r\nOne of my favourite video games ever, is a strategy game called \"Rome: Total War\". I wanted to create my own verison of this game (and still do to be honest).\r\n\r\nThe game was still very early development when i left it, and i was struggling a great deal with linker errors in C++."
+            "Description": "Empire is another game I made written in C++ that uses the DarkGDK library.\r\n\r\nOne of my favourite video games ever, is a strategy game called \"Rome: Total War\". I wanted to create my own verison of this game (and still do to be honest).\r\n\r\nThe game was still very early development when I left it, and I was struggling a great deal with linker errors in C++."
         }
     }, {
         "Data": {
@@ -171,6 +171,10 @@
                 {
                     "Name": "YT",
                     "URL": "https://www.youtube.com/watch?v=rHxs7vuj1Hc"
+                },
+                {
+                    "Name": "DL",
+                    "URL": "/Downloads/XHunter/1.zip"
                 }
             ],
             "Date": "Sunday 3rd of October 2010",
@@ -191,7 +195,7 @@
                 }
             ],
             "Date": "Tuesday 31st of August 2010",
-            "Description": "This might be the project i am most proud with, and i may consider it to still be the most complicated algorithm i have implemented to date.\r\n\r\nI wanted to learn a lot about AI so I could implement what I learnt into my games I made. One of the features every good AI needs is... Good pathfinding.\r\n\r\nSo I decided I would learn how to implement the A* Pathfinding algorithm into C++. The graphics are rendered with DarkGDK."
+            "Description": "This might be the project i am most proud with, and I may consider it to still be the most complicated algorithm i have implemented to date.\r\n\r\nI wanted to learn a lot about AI so I could implement what I learnt into my games I made. One of the features every good AI needs is... Good pathfinding.\r\n\r\nSo I decided I would learn how to implement the A* Pathfinding algorithm into C++. The graphics are rendered with DarkGDK."
         }
     }, {
         "Data": {
@@ -203,7 +207,7 @@
                 "/Include/Images/CCL/4.jpg"
             ],
             "Date": "Friday 27th of August 2010",
-            "Description": "This was the first website i made for someone commercially\r\n\r\nIt was written in PHP, HTML, CSS, JS & MySQL.\r\n\r\nThe website has since been redone by someone else in Flash."
+            "Description": "This was the first website I made for someone commercially\r\n\r\nIt was written in PHP, HTML, CSS, JS & MySQL.\r\n\r\nThe website has since been redone by someone else in Flash."
         }
     }, {
         "Data": {
@@ -212,8 +216,14 @@
                 "/Include/Images/SpaceInvaders/1.jpg",
                 "/Include/Images/SpaceInvaders/2.jpg"
             ],
+            "Buttons": [
+                {
+                    "Name": "DL",
+                    "URL": "/Downloads/SpaceInvaders/1.zip"
+                }
+            ],
             "Date": "Tuesday 2nd of February 2010",
-            "Description": "While i was at Highlands, we were given a project to create a game using C# forms. I decided that i wanted to create and clone Space Invaders.\r\n\r\nIt had many features including achievements, levels, perks, highscores and you could even play it ontop of your current window!"
+            "Description": "While I was at Highlands, we were given a project to create a game using C# forms. I decided that I wanted to create and clone Space Invaders.\r\n\r\nIt had many features including achievements, levels, perks, highscores and you could even play it ontop of your current window!\r\n\r\nThere is a download below, but it may only work if you have 1920x1080 resolution."
         }
     }, {
         "Data": {
@@ -250,7 +260,7 @@
                 }
             ],
             "Date": "Sunday 15th of November 2009",
-            "Description": "\"Archer FPS\" was a team based game i made in Dark Basic, i believe inspired by EA's Battlefield.\r\n\r\nThe purpose of the game was to capture key locations with your team, while trying to defend your own locations.\r\nHowever, instead of guns, everyone had bows and arrows.\r\n\r\nI Had hoped to add multiplayer capability, but it was beyond me at the time."
+            "Description": "\"Archer FPS\" was a team based game I made in Dark Basic, I believe inspired by EA's Battlefield.\r\n\r\nThe purpose of the game was to capture key locations with your team, while trying to defend your own locations.\r\nHowever, instead of guns, everyone had bows and arrows.\r\n\r\nI had hoped to add multiplayer capability, but it was beyond me at the time."
         }
     }, {
         "Data": {
@@ -260,7 +270,7 @@
                 "/Include/Images/FandR/1.jpg"
             ],
             "Date": "Saturday 10th of October 2009",
-            "Description": "I wanted to learn C# and i also wanted to create a tool for mass search and replacing.\r\n\r\nAt the time i did most of my programming in notepad, and when i needed to do a large find and replace... well notepad didn't support that.\r\nSo i decided i would make my own tool.\r\n\r\nThese days I almost always use a fully fledged IDE that would support this by default."
+            "Description": "I wanted to learn C# and I also wanted to create a tool for mass search and replacing.\r\n\r\nAt the time i did most of my programming in notepad, and when i needed to do a large find and replace... well notepad didn't support that.\r\nSo i decided i would make my own tool.\r\n\r\nThese days I almost always use a fully fledged IDE that would support this by default."
         }
     }, {
         "Data": {
@@ -285,7 +295,7 @@
                 "/Include/Images/GodAlmighty/5.jpg"
             ],
             "Date": "Saturday 11th of November 2008",
-            "Description": "\"God Almighty\" was one of my first 3d games that i wrote in a language called Dark Basic.\r\n\r\nI do not at all remember the point of the game, and i do not have a copy of the latest version of it.\r\nHowever, i believe you just went around killing random zombies and... butterflies."
+            "Description": "\"God Almighty\" was one of my first 3d games that i wrote in a language called Dark Basic.\r\n\r\nI do not at all remember the point of the game, and I do not have a copy of the latest version of it.\r\nHowever, i believe you just went around killing random zombies and... butterflies."
         }
     }, {
         "Data": {
@@ -321,9 +331,10 @@
         "Data": {
             "Title": "Other Projects",
             "Images": [
+                "/Include/Images/Me/2.jpg"
             ],
             "Date": "",
-            "Description": "I would like to start by saying that the above is not everything I have worked on, just everything of interest. Sometimes the displayed verison is not even the latest verison as some code I have lost, or I have the code but no binaries and no way to recompile."
+            "Description": "I would like to start by saying that the above is not everything I have worked on, just most of the interesting things. Sometimes the displayed verison is not even the latest verison as some code I have lost, or I have the code but no binaries and no way to recompile.\r\n\r\n    \r\n\r\nThankyou for reading my little part of the internet."
         }
     }
 ]
