@@ -27,21 +27,29 @@ var Scene = new (function (settings) {
     this.getOffset = function () {
         var rect = this.canvas.getBoundingClientRect();
         return {
-            left: rect.left + document.body.scrollLeft,
-            top: rect.top + document.body.scrollTop
+            left: rect.left + (document.body.scrollLeft || document.documentElement.scrollLeft),
+            top: rect.top + (document.body.scrollTop || document.documentElement.scrollTop)
         };
     }
 
     this.updateViewport = function () {
         this.Viewport.Width = document.documentElement.clientWidth;
         this.Viewport.Height = document.documentElement.clientHeight;
+        
+        var highestPoint = 0;
+        
+        for (var i = 0; i < Containers.length; i++) {
+            var e = Containers[i];
+            var Coords = e.getCoords();
+            
+            if (Coords.Y + Coords.Height > highestPoint) {
+                highestPoint = Coords.Y + Coords.Height
+            }
+        }
 
-        var Coords = window.findButton('intrCont').getCoords();
-
-        if ((Coords) && (TimelineElements.length)) {
-            var Y = Coords.Y + Coords.Height + 50 + ((TimelineElements.length + 1) * this.TimelineElementHeight);
-            if (this.Viewport.Height < Y) {
-                this.Viewport.Height = Y;
+        if (highestPoint > 0) {
+            if (this.Viewport.Height < highestPoint) {
+                this.Viewport.Height = highestPoint;
             }
 
             if (this.Viewport.Width < 1030) {

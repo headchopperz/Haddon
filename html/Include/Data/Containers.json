@@ -1,7 +1,8 @@
 [
     {
+        "Type": "TextBox",
         "Data": {
-            "Description": "intrSub2",
+            "Description": "textTitleDescription2",
             "Position": {
                 "X": 0,
                 "Y": 45,
@@ -9,7 +10,7 @@
                 "Height": 100,
                 "CenterOffset": true,
                 "Centered": true,
-                "Parent": "intrCont"
+                "Parent": "containerTitle"
             },
             "Text": {
                 "On": true,

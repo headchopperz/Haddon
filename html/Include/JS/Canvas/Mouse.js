@@ -15,14 +15,10 @@ var Mouse = new (function (settings) {
          * I had to move this from a foreach to a for because it was messing
          * with the "this" variable
          */
-        for (var i = 0; i < Buttons.length; i++) {
-            var e = Buttons[i];
-            var Coords = e.getCoords();
-            if ((Coords) && (!e.Data.Status.Pressed) &&
-                    ((this.X < Coords.X + Coords.Width) &&
-                            (this.X > Coords.X) &&
-                            (this.Y < Coords.Y + Coords.Height) &&
-                            (this.Y > Coords.Y))) {
+        for (var i = 0; i < Containers.length; i++) {
+            var e = Containers[i];
+            
+            if ((!e.Data.Status.Pressed) && e.isHovered(this)) {
                 e._onClick();
             }
         }
@@ -32,14 +28,9 @@ var Mouse = new (function (settings) {
         this.Down = false;
 
 
-        for (var i = 0; i < Buttons.length; i++) {
-            var e = Buttons[i];
-            var Coords = e.getCoords();
-            if ((Coords) && (e.Data.Status.Pressed) &&
-                    ((this.X < Coords.X + Coords.Width) &&
-                            (this.X > Coords.X) &&
-                            (this.Y < Coords.Y + Coords.Height) &&
-                            (this.Y > Coords.Y))) {
+        for (var i = 0; i < Containers.length; i++) {
+            var e = Containers[i];
+            if ((e.Data.Status.Pressed) && e.isHovered(this)) {
                 e._onRelease();
             }
         }
@@ -51,14 +42,10 @@ var Mouse = new (function (settings) {
 
         var HoveredElementsAm = 0;
 
-        for (var i = 0; i < Buttons.length; i++) {
-            var e = Buttons[i];
-            var Coords = e.getCoords();
-            if ((Coords) &&
-                    ((this.X < Coords.X + Coords.Width) &&
-                            (this.X > Coords.X) &&
-                            (this.Y < Coords.Y + Coords.Height) &&
-                            (this.Y > Coords.Y))) {
+        for (var i = 0; i < Containers.length; i++) {
+            var e = Containers[i];
+            
+            if ((e.Data.Hover.On) && e.isHovered(this)) {
                 e._onHover();
                 if ((!e.Data.Status.Pressed) && this.Down) {
                     e._onClick();

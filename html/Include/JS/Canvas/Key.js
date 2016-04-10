@@ -3,7 +3,7 @@ var Key = new (function (settings) {
 
     this.isKeyPressed = function(keyCode, getIndex) {
         var keyIndex = false;
-        for (var i = 0; 0 < this.keyArray.length; i++) {
+        for (var i = 0; i < this.keyArray.length; i++) {
             if (this.keyArray[i] === keyCode) {
                 keyIndex = i;
                 break;
@@ -53,6 +53,7 @@ var Key = new (function (settings) {
         /**
          * If the user releases their key, then we must remove it from our list of keys they are holding down
          */
+        
         var keyIndex = this.isKeyPressed(e.keyCode, true);
         if (keyIndex !== false) {
             this.keyArray.splice(keyIndex, 1);
