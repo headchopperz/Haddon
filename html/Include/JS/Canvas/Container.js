@@ -180,6 +180,7 @@ var Container = function (name, settings) {
             getData: this.getData,
             getEvents: this.getEvents,
             RenderQueue: this.RenderQueue,
+            withinFrustrum: this.withinFrustrum,
             Data: this.Data,
             drawBackground: this.drawBackground,
             Events: this.Events,
@@ -246,6 +247,25 @@ Container.prototype.loadObject = function (name, settings) {
     this.import(settings);
 
     this.Data.Description = name;
+}
+
+/**
+ * Is this element actually within the users frustrum? 
+ * If it is not, then dont display it, huge waste of processing.
+ * 
+ * @returns {Boolean}
+ */
+Container.prototype.withinFrustrum = function (Coords) {
+    if ((typeof Coords === "undefined") || (Coords === null)) {
+        Coords = this.getCoords();
+    }
+    
+    var currentFrustrum = Scene.currentFrustrum();
+
+    return (((Coords.X < currentFrustrum.X + currentFrustrum.Width) &&
+            (Coords.X + Coords.Width > currentFrustrum.X)) &&
+            ((Coords.Y < currentFrustrum.Y + currentFrustrum.Height) &&
+                    (Coords.Y + Coords.Height > currentFrustrum.Y)));
 }
 
 
@@ -409,7 +429,7 @@ Container.prototype.drawBackground = function (X, Y, dt) {
  */
 Container.prototype.draw = function (dt) {
     var Coords = this.getCoords();
-    if (Coords) {
+    if ((Coords) && (this.withinFrustrum(Coords))) {
         for (var i = 0; i < this.RenderQueue.Items.length; i++) {
             var e = this.RenderQueue.Items[i];
             if (typeof this[e] === 'function') {

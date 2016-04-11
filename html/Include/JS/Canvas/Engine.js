@@ -111,7 +111,7 @@ function showFPS(dt) {
 document.addEventListener('DOMContentLoaded', function () {
     Scene.updateViewport();
     window.addEventListener('resize', function (e) {
-        Scene.updateViewport();
+        Scene.onResize();
     }, true);
 
     window.addEventListener("keydown", function (e) {
@@ -233,6 +233,9 @@ function loadTimelineElement(Coords, data, OffsetID) {
                 On: true,
                 Opacity: 0.25,
                 ChangeCursor: false
+            },
+            Dots: {
+                On: true
             }
         }
     }));

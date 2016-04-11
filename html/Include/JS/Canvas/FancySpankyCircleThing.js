@@ -8,6 +8,13 @@ var FancySpankyCircleThing = function (name, settings) {
             },
             Status: {
                 SpinnyThing: 0
+            },
+            Dots: {
+                On: false,
+                GapBetweenDots: 22,
+                Animate: true,
+                AnimateID: 0,
+                AnimateSpeed: 1
             }
         }
     });
@@ -64,7 +71,7 @@ FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
 
     Scene.context.globalAlpha = 0.05;
     Scene.context.beginPath();
-    
+
     this.Data.Status.SpinnyThing += (this.Data.Position.Direction === 'Left') ? (dt * 0.0005) : -(dt * 0.0005);
     Scene.context.arc(Pos.Arc.X, Pos.Arc.Y, Pos.Arc.Radius - 5, this.Data.Status.SpinnyThing, Math.PI + this.Data.Status.SpinnyThing, true);
     //Scene.context.rect(Pos.Box.X, Pos.Box.Y, Pos.Box.Width, Pos.Box.Height);
@@ -73,27 +80,54 @@ FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
     Scene.context.closePath();
     Scene.context.globalAlpha = 1;
 
-    for (var nY = -Pos.Size; nY < Pos.Size; nY += 22) {
+    if (this.Data.Dots.On) {
 
-        var tY = Y + (Pos.Size / 2) + nY;
+        var dotAmount = Math.floor(this.Data.Position.Height / this.Data.Dots.GapBetweenDots);
 
+        this.Data.Dots.AnimateID += (dt * 0.001) * this.Data.Dots.AnimateSpeed
 
-        var sphereEdge = Math.sqrt(Math.pow(Pos.Size / 2, 2) - Math.pow(Math.abs(nY), 2));
-
-        if (this.Data.Position.Direction === 'Left') {
-            sphereEdge = -sphereEdge;
+        if (this.Data.Dots.AnimateID > dotAmount + 1) {
+            this.Data.Dots.AnimateID = 0;
         }
 
-        var tX = X + (Pos.Size / 2) + sphereEdge;
+        for (var i = 0; i <= dotAmount; i++) {
+            var dotYOffset = (i - (dotAmount / 2)) * this.Data.Dots.GapBetweenDots;
 
-        Scene.context.globalAlpha = 0.75;
-        Scene.context.beginPath();
-        Scene.context.arc(tX, tY, 4, 0, 2 * Math.PI);
-        Scene.context.fillStyle = "grey";
-        Scene.context.fill();
-        Scene.context.stroke();
-        Scene.context.closePath();
-        Scene.context.globalAlpha = 1;
+            var dot = {
+                X: Pos.Arc.X,
+                Y: Pos.Arc.Y + dotYOffset
+            }
+
+            var sphereEdgeX = Math.sqrt(Math.pow(Pos.Size / 2, 2) - Math.pow(Math.abs(dotYOffset), 2));
+
+            if (this.Data.Position.Direction === 'Left') {
+                sphereEdgeX = -sphereEdgeX;
+            }
+            
+            
+            var opacity = 0.25;
+            
+            if (Math.abs(i - this.Data.Dots.AnimateID) <= 1) {
+                var difference = 1 - Math.abs(i - this.Data.Dots.AnimateID);
+                
+                opacity += difference * 0.75;
+            } else if ((i === 0) && (this.Data.Dots.AnimateID > dotAmount)) {
+                var difference = 1 - Math.abs((dotAmount + 1) - this.Data.Dots.AnimateID);
+                
+                opacity += difference * 0.75;
+            }
+
+            dot.X += sphereEdgeX;
+
+            Scene.context.globalAlpha = opacity;
+            Scene.context.beginPath();
+            Scene.context.arc(dot.X, dot.Y, 4, 0, 2 * Math.PI);
+            Scene.context.fillStyle = "grey";
+            Scene.context.fill();
+            Scene.context.stroke();
+            Scene.context.closePath();
+            Scene.context.globalAlpha = 1;
+        }
     }
 }
 
