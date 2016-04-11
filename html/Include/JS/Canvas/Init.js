@@ -1,5 +1,9 @@
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
-
+/**
+ * Below is an ECMA6 Object.assign polyfill, as shown on mozilla
+ * To be honest, i dont agree with the code, but if it works, i guess its ok?
+ * 
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+ */
 if (typeof Object.assign !== 'function') {
     (function () {
         Object.assign = function (target) {
@@ -26,7 +30,10 @@ if (typeof Object.assign !== 'function') {
 
 
 /**
- * Simple is object check.
+ * This checks if the passed parameter is an object, not an array and not null.
+ * 
+ * http://stackoverflow.com/a/34750146/1507692
+ * 
  * @param item
  * @returns {boolean}
  */

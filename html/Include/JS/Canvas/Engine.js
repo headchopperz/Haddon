@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.addEventListener("keydown", function (e) {
         Key.onKeyPressed(e);
-        e.preventDefault(); //stops the browser from doing what it was meant to do
+        //e.preventDefault(); //stops the browser from doing what it was meant to do
     });
 
     window.addEventListener("keyup", function (e) {

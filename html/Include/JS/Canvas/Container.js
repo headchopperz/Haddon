@@ -1,32 +1,98 @@
+/**
+ * Container is the parent class for all the other page elements
+ * 
+ * Container controls the majority of events, sets up the renderqueue and defines
+ * the base data variables
+ * 
+ * 
+ * 
+ * @param {String} name
+ * @param {Object} settings
+ * @returns {Container.returnArray.Items}
+ */
+
 var Container = function (name, settings) {
+    /**
+     * This variable is responsible for holding all the data relevent to this object
+     * The classes that extend this class will add/modify these values and not
+     * all of them will be used at a time
+     */
     this.Data = {
+        /**
+         * How shall we identify this container, keep this unique if you want to 
+         * find it in future, the findContainer function references this
+         */
         Description: "None",
+        /**
+         * Where is this button on the page? 
+         * These values may not actually be the absolute coordinates of this item
+         * but it could be the relative coordinates to another container, or
+         * even to the center of the page.
+         * If you want the absolute values, you need to call this.getCoords()
+         */
         Position: {
             X: 0,
             Y: 0,
             Width: 0,
             Height: 0,
+            /**
+             * To define the parent, you need to pass the description of the parent here
+             * (so a string)
+             * This container will be positioned relatively to the parent, and
+             * if the parent is hidden, then this container will be hidden
+             */
             Parent: null,
+            /**
+             * By default the positioning of the element is done from the top left corner,
+             * if this is set to true, then the element will be positioned relatively to
+             * the center of the element
+             * 
+             * If you only want to center it according to one axis you can define that by
+             * settings this value to "x" or "y", true centers it by both
+             */
             Centered: false,
+            /**
+             * Do you want to center this element to the center of its parent?
+             * If so, put a true here.
+             * If you have no parent then the center of the page will be used.
+             * 
+             * If you only want to center it according to one axis you can define that by
+             * settings this value to "x" or "y", true centers it by both
+             */
             CenterOffset: false
         },
+        /**
+         * The status of the element, is it currently visible, is it currently pressed,
+         * is it currently hovered over? 
+         * That sort of stuff
+         */
         Status: {
             Visible: true,
             Pressed: false,
             Hovered: false
         },
+        /**
+         * If the element is hovered over, should we do anything about it?
+         * This class defines how we should react if its hovered over
+         */
         Hover: {
             On: false,
             ChangeCursor: true,
             Colour: "black",
             Opacity: 1
         },
+        /**
+         * Do we want to give the element a background colour?
+         */
         Fill: {
             On: false,
             Colour: "black",
             Pressed: "black",
             Opacity: 1
         },
+        /**
+         * Do we want to give the element an outline?
+         */
         Outline: {
             On: false,
             Colour: "white",
@@ -35,6 +101,22 @@ var Container = function (name, settings) {
         }
     };
 
+    /**
+     * This class holds all the events that we can assign to an element.
+     * The events are stored in arrays as you can assign multiple functions to
+     * happen per event.
+     * 
+     * The syntax for an event is such:
+     *     {
+     *         Function: "FunctionNameAsString",
+     *         Parameters: [
+     *             "eachParameterInOrder",
+     *             "TheyCanBeAnything"
+     *         ]
+     *     }
+     *     
+     * The function needs to be a child of window[]
+     */
     this.Events = {
         onChanged: [],
         onClick: [],
@@ -43,15 +125,41 @@ var Container = function (name, settings) {
         onHover: []
     };
 
+    /**
+     * The RenderQueue lists the various functions that are used to render this element
+     * Each of these render functions are ran every loop, so they should try
+     * to avoid large processing
+     * 
+     * The names of the functions are stored in the Items array, and the order is
+     * the order in which they will operate, so the later ones will display ontop
+     * the previous ones
+     * 
+     * The functions in the render queue need to be a child of this[]
+     */
     this.RenderQueue = {
+        /**
+         * The functions in the current render queue
+         */
         Items: [
             "drawBackground"
         ],
+        /**
+         * This method adds a function to the renderQueue, the reason to use
+         * this function is that it will avoid duplication.
+         * 
+         * @param {string} Item
+         * @returns {undefined}
+         */
         add: function (Item) {
             if (this.Items.indexOf(Item) === -1) {
                 this.Items.push(Item);
             }
         },
+        /**
+         * This method will remove a function from the renderQueue
+         * @param {string} Item
+         * @returns {undefined}
+         */
         remove: function (Item) {
             var ItemIndex = this.Items.indexOf(Item);
             if (ItemIndex !== -1) {
@@ -60,6 +168,11 @@ var Container = function (name, settings) {
         }
     };
 
+    /**
+     * This class holds the various return information from the container
+     * The reason this is seperated is that we can append new return information to this
+     * This is so the children can append whichever return data they need
+     */
     this.returnArray = {
         Items: {
             draw: this.draw,
@@ -90,48 +203,49 @@ var Container = function (name, settings) {
         }
     };
 
+    /**
+     * We load the inserted settings into the current class
+     */
     this.loadObject(name, settings);
 
     return this.returnArray.Items;
 }
 
+/**
+ * This function is responsible for importing an object of data into this class
+ * It uses a deepmerge in order to achieve this.
+ * 
+ * 
+ * @param {Object} settings
+ * @returns {undefined}
+ */
 Container.prototype.import = function (settings) {
     /**
      * I need to recode this function, i just cant think at the moment
      */
     for (var greaterPropertyName in settings) {
+        /**
+         * We dont want to overide variables that should be protected
+         */
         if ((greaterPropertyName === 'Data') || (greaterPropertyName === 'Events')) {
-
             mergeDeep(this[greaterPropertyName], settings[greaterPropertyName]);
         }
     }
 }
 
+/**
+ * This class will load a current object into the system, it will also ensure that
+ * the Description contains the correct name. This is so we can find this object
+ * in future.
+ * 
+ * @param {String} name
+ * @param {Object} settings
+ * @returns {undefined}
+ */
 Container.prototype.loadObject = function (name, settings) {
     this.import(settings);
 
     this.Data.Description = name;
-}
-
-/**
- * When the textbox info has changed
- * This function operates behind the scenes
- * @type function
- * @returns {null}
- */
-Container.prototype._onChanged = function () {
-    this.Data.TextBox._oldValue = this.Data.TextBox.Value;
-
-    if (this.Events.onChanged.length > 0) {
-        for (var i = 0; i < this.Events.onChanged.length; i++) {
-            var e = this.Events.onChanged[i];
-
-            var fn = window[e.Function];
-            if (typeof fn === "function") {
-                fn.apply(this, [e.Parameters]);
-            }
-        }
-    }
 }
 
 
@@ -210,10 +324,13 @@ Container.prototype._onLeave = function () {
     this.Data.Status.Hovered = false;
 }
 
+/**
+ * Get the current containers absolute coordinates from the top left of the canvas.
+ * 
+ * @returns {Container.prototype.getCoords.ContainerAnonym$3|Boolean}
+ */
 Container.prototype.getCoords = function () {
     var offset = Scene.Viewport;
-
-    //offset.Height = $(window).height();
 
     if (typeof this.Data.Position.Parent === 'string') {
         var Parent = findContainer(this.Data.Position.Parent);
@@ -250,30 +367,46 @@ Container.prototype.getCoords = function () {
     return false;
 }
 
+/**
+ * Draw the containers background and outline, this is the most basic renderqueue item
+ * 
+ * 
+ * @param {Integer} X
+ * @param {Integer} Y
+ * @param {Integer} dt
+ * @returns {undefined}
+ */
 Container.prototype.drawBackground = function (X, Y, dt) {
-    Scene.context.beginPath();
-    Scene.context.rect(X, Y, this.Data.Position.Width, this.Data.Position.Height);
+    if ((this.Data.Fill.On) || (this.Data.Outline.On)) {
+        Scene.context.beginPath();
+        Scene.context.rect(X, Y, this.Data.Position.Width, this.Data.Position.Height);
 
-    if (this.Data.Fill.On) {
-        if (this.Data.Fill.Colour !== null) {
+        if ((this.Data.Fill.On) && (this.Data.Fill.Colour !== null)) {
             Scene.context.globalAlpha = this.Data.Fill.Opacity;
             Scene.context.fillStyle = (this.Data.Status.Pressed) ? this.Data.Fill.Pressed : (this.Data.Status.Hovered && this.Data.Hover.On) ? this.Data.Hover.Colour : this.Data.Fill.Colour;
             Scene.context.fill();
             Scene.context.globalAlpha = 1;
         }
-        //there will be an else here for sprites
-    }
 
-    if (this.Data.Outline.On) {
-        Scene.context.globalAlpha = this.Data.Outline.Opacity;
-        Scene.context.strokeStyle = (this.Data.Status.Pressed) ? this.Data.Outline.Pressed : this.Data.Outline.Colour;
-        Scene.context.stroke();
-        Scene.context.globalAlpha = 1;
-    }
+        if (this.Data.Outline.On) {
+            Scene.context.globalAlpha = this.Data.Outline.Opacity;
+            Scene.context.strokeStyle = (this.Data.Status.Pressed) ? this.Data.Outline.Pressed : this.Data.Outline.Colour;
+            Scene.context.stroke();
+            Scene.context.globalAlpha = 1;
+        }
 
-    Scene.context.closePath();
+        Scene.context.closePath();
+    }
 }
 
+/**
+ * This function is responsible for all the containers drawing.
+ * Child classes should not modify this class, but instead modify the renderqueue
+ * 
+ * 
+ * @param {Integer} dt
+ * @returns {undefined}
+ */
 Container.prototype.draw = function (dt) {
     var Coords = this.getCoords();
     if (Coords) {
@@ -283,8 +416,6 @@ Container.prototype.draw = function (dt) {
                 this[e].apply(this, [Coords.X, Coords.Y, dt]);
             }
         }
-        //this.drawBackground(Coords.X, Coords.Y, dt);
-        //this.drawText(Coords.X, Coords.Y, dt);
     }
 }
 
@@ -296,19 +427,27 @@ Container.prototype.getData = function () {
     return this.Data;
 }
 
+/**
+ * Is this element currently being hovered over?
+ * 
+ * @param {Object} _Mouse
+ * @returns {Container.prototype.isHovered.Coords|Container.getCoords|Boolean}
+ */
 Container.prototype.isHovered = function (_Mouse) {
     var Coords = this.getCoords();
     return ((Coords) && ((_Mouse.X < Coords.X + Coords.Width) &&
-                            (_Mouse.X > Coords.X) &&
-                            (_Mouse.Y < Coords.Y + Coords.Height) &&
-                            (_Mouse.Y > Coords.Y)));
+            (_Mouse.X > Coords.X) &&
+            (_Mouse.Y < Coords.Y + Coords.Height) &&
+            (_Mouse.Y > Coords.Y)));
 }
 
-if (typeof Containers === "undefined") {
-    var Containers = new Array();
-} else {
-
-}
+/**
+ * Containers is responsible for storing all the information regarding the
+ * containers in one easy to reference place.
+ * This is so we can loop over the items when we need to reference all of them.
+ * @type Array
+ */
+var Containers = new Array();
 
 /**
  * This function draws the buttons to the screen
@@ -317,10 +456,17 @@ if (typeof Containers === "undefined") {
  */
 function drawContainers(dt) {
     Containers.forEach(function (e) {
-        e.draw();
+        e.draw(dt);
     });
 }
 
+/**
+ * This function will find a container with a particular description.
+ * This is referenced and used when finding parent classes.
+ * 
+ * @param {String} name
+ * @returns {findContainer.e|Boolean}
+ */
 function findContainer(name) {
     for (var i = 0; i < Containers.length; i++) {
         var e = Containers[i];

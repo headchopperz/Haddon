@@ -1,3 +1,6 @@
+/**
+ * This class is responsible for handling the mouse and its various events.
+ */
 var Mouse = new (function (settings) {
     this.X = 0;
     this.Y = 0;
@@ -7,6 +10,16 @@ var Mouse = new (function (settings) {
         return this.Down;
     }
 
+    /**
+     * This method is called when the mouse is pressed down.
+     * The purpose of this method is to find and trigger any relevent callbacks
+     * that should be called when the mouse is clicked
+     * An example would be clicking on a button, the relevent button needs to be
+     * updated
+     * 
+     * @param {type} en
+     * @returns {undefined}
+     */
     this.press = function (en) {
         this.Down = true;
 
@@ -24,7 +37,18 @@ var Mouse = new (function (settings) {
         }
     }
 
-    this.release = function (e) {
+
+    /**
+     * This method is called when the mouse is released.
+     * The purpose of this method is to find and trigger any relevent callbacks
+     * that should be called when the mouse is released
+     * An example would be releaseing your mouse from a button, the relevent 
+     * button needs to be updated
+     * 
+     * @param {type} en
+     * @returns {undefined}
+     */
+    this.release = function (en) {
         this.Down = false;
 
 
@@ -36,9 +60,19 @@ var Mouse = new (function (settings) {
         }
     }
 
-    this.move = function (e) {
-        this.X = Math.round(e.pageX - Scene.getOffset().left, 10);
-        this.Y = Math.round(e.pageY - Scene.getOffset().top, 10);
+    /**
+     * This method is called when the mouse is moved.
+     * The purpose of this method is to find and trigger any relevent callbacks
+     * that should be called when the mouse is moved
+     * An example would be when you hover an element on the page, the element 
+     * may need to update to show that it is actionable.
+     * 
+     * @param {type} en
+     * @returns {undefined}
+     */
+    this.move = function (en) {
+        this.X = Math.round(en.pageX - Scene.getOffset().left, 10);
+        this.Y = Math.round(en.pageY - Scene.getOffset().top, 10);
 
         var HoveredElementsAm = 0;
 
@@ -58,11 +92,17 @@ var Mouse = new (function (settings) {
             }
         }
 
+        /**
+         * Did we encounter any elements that require the mouse cursor to change
+         * its pointer?
+         * If so then we want to change for the entire page... (its the only way
+         * that i could find). However, since we turn it back just as fast, it
+         * seems fluid.
+         */
         if (HoveredElementsAm > 0) {
             Scene.canvas.style.cursor = 'pointer';
         } else {
             Scene.canvas.style.cursor = '';
-
         }
     }
 
@@ -73,6 +113,5 @@ var Mouse = new (function (settings) {
         press: this.press,
         release: this.release,
         move: this.move
-
     }
 });

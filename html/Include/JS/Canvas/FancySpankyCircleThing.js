@@ -5,6 +5,9 @@ var FancySpankyCircleThing = function (name, settings) {
         Data: {
             Position: {
                 Direction: "Left"
+            },
+            Status: {
+                SpinnyThing: 0
             }
         }
     });
@@ -45,8 +48,27 @@ FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
     Scene.context.globalAlpha = (this.Data.Status.Hovered) ? this.Data.Hover.Opacity : this.Data.Fill.Opacity;
     Scene.context.beginPath();
     Scene.context.arc(Pos.Arc.X, Pos.Arc.Y, Pos.Arc.Radius, 0, Math.PI * 2, true);
+    //Scene.context.rect(Pos.Box.X, Pos.Box.Y, Pos.Box.Width, Pos.Box.Height);
+    Scene.context.fillStyle = "black";
+    Scene.context.fill();
+    Scene.context.closePath();
+    Scene.context.globalAlpha = 1;
+
+    Scene.context.globalAlpha = (this.Data.Status.Hovered) ? this.Data.Hover.Opacity : this.Data.Fill.Opacity;
+    Scene.context.beginPath();
     Scene.context.rect(Pos.Box.X, Pos.Box.Y, Pos.Box.Width, Pos.Box.Height);
     Scene.context.fillStyle = "black";
+    Scene.context.fill();
+    Scene.context.closePath();
+    Scene.context.globalAlpha = 1;
+
+    Scene.context.globalAlpha = 0.05;
+    Scene.context.beginPath();
+    
+    this.Data.Status.SpinnyThing += (this.Data.Position.Direction === 'Left') ? (dt * 0.0005) : -(dt * 0.0005);
+    Scene.context.arc(Pos.Arc.X, Pos.Arc.Y, Pos.Arc.Radius - 5, this.Data.Status.SpinnyThing, Math.PI + this.Data.Status.SpinnyThing, true);
+    //Scene.context.rect(Pos.Box.X, Pos.Box.Y, Pos.Box.Width, Pos.Box.Height);
+    Scene.context.fillStyle = "white";
     Scene.context.fill();
     Scene.context.closePath();
     Scene.context.globalAlpha = 1;
@@ -54,6 +76,7 @@ FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
     for (var nY = -Pos.Size; nY < Pos.Size; nY += 22) {
 
         var tY = Y + (Pos.Size / 2) + nY;
+
 
         var sphereEdge = Math.sqrt(Math.pow(Pos.Size / 2, 2) - Math.pow(Math.abs(nY), 2));
 

@@ -24,8 +24,18 @@ var Scene = new (function (settings) {
         this.context.clearRect(0, 0, this.Viewport.Width, this.Viewport.Height)
     }
 
+    /**
+     * The purpose of this function is to retrieve the current page offset,
+     * this is incase we embed the canvas inside a div or another html element.
+     * 
+     * @returns {Scene.getOffset.SceneAnonym$0}
+     */
     this.getOffset = function () {
         var rect = this.canvas.getBoundingClientRect();
+        /**
+         * Firefox uses document.documentElement.scrollLeft
+         * When everyone else uses document.body.scrollLeft
+         */
         return {
             left: rect.left + (document.body.scrollLeft || document.documentElement.scrollLeft),
             top: rect.top + (document.body.scrollTop || document.documentElement.scrollTop)
