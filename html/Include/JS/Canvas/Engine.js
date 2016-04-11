@@ -319,6 +319,7 @@ function loadTimelineElement(Coords, data, OffsetID) {
             },
             Image: {
                 On: true,
+                Circle: true,
                 Sources: data.Data.Images
             }
         }
