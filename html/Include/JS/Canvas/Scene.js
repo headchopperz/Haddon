@@ -25,6 +25,7 @@ var Scene = new (function (settings) {
 
     this.delayedResizeTimeout = null;
     this.isMobile = false;
+    this.cachedID = 0;
 
     /**
      * On each loop this clears the canvas so we can redraw everything.
@@ -151,6 +152,7 @@ var Scene = new (function (settings) {
         Viewport: this.Viewport,
         onResize: this.onResize,
         delayedResize: this.delayedResize,
+        cachedID: this.cachedID,
         currentFrustrum: this.currentFrustrum,
         sync: this.sync,
         updateViewport: this.updateViewport,

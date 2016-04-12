@@ -36,6 +36,19 @@ var Container = function (name, settings) {
             Width: 0,
             Height: 0,
             /**
+             * Should the absolute positioning of this element be cached?
+             * The cache lasts from the start of a loop for the entirety of that one loop
+             * So if this element is changed in that loop, you will have to wait a whole
+             * loop for it to be redrawn differently.
+             * The benefit is that it does a lot less processing.
+             */
+            CacheAbsolute: true,
+            /**
+             * At the start of each loop a random number is generated, this number is
+             * used to find out which cached variables should be invalidated.
+             */
+            currentCacheID: 0,
+            /**
              * To define the parent, you need to pass the description of the parent here
              * (so a string)
              * This container will be positioned relatively to the parent, and
@@ -108,6 +121,8 @@ var Container = function (name, settings) {
             Opacity: 1
         }
     };
+
+    this.AbsolutePosition = null;
 
     /**
      * This class holds all the events that we can assign to an element.
@@ -188,6 +203,7 @@ var Container = function (name, settings) {
             getData: this.getData,
             getEvents: this.getEvents,
             RenderQueue: this.RenderQueue,
+            resetCache: this.resetCache,
             withinFrustrum: this.withinFrustrum,
             Data: this.Data,
             drawBackground: this.drawBackground,
@@ -269,7 +285,7 @@ Container.prototype.withinFrustrum = function (Coords) {
     }
 
     var currentFrustrum = Scene.currentFrustrum();
-    
+
     /**
      * Are the X axis corners within the users frusturm?
      * @type Boolean
@@ -283,7 +299,7 @@ Container.prototype.withinFrustrum = function (Coords) {
      */
     var yWithinFrustrum = ((Coords.Y < currentFrustrum.Y + currentFrustrum.Height) &&
             (Coords.Y + Coords.Height > currentFrustrum.Y));
-    
+
     /**
      * If the object exceeds the size of the frustrum, then it will say its not inside the frustrum
      * so we need to check to see if it exceeds the frustrums size
@@ -291,15 +307,15 @@ Container.prototype.withinFrustrum = function (Coords) {
      */
     var xLargerThanFrustrum = ((Coords.X < currentFrustrum.X) && (Coords.X + Coords.Width > currentFrustrum.X + currentFrustrum.Width));
     var yLargerThanFrustrum = ((Coords.Y < currentFrustrum.Y) && (Coords.Y + Coords.Height > currentFrustrum.Y + currentFrustrum.Height));
-    
+
     /**
      * This should find out for us whether or not the object is within the users frustrum.
      * 
      * @type Boolean
-     */    
-    var isWithinFrustrum = (((xWithinFrustrum || (xLargerThanFrustrum && yWithinFrustrum)) && (yWithinFrustrum || (yLargerThanFrustrum && xWithinFrustrum))) || (xLargerThanFrustrum && yLargerThanFrustrum));   
-    
-    
+     */
+    var isWithinFrustrum = (((xWithinFrustrum || (xLargerThanFrustrum && yWithinFrustrum)) && (yWithinFrustrum || (yLargerThanFrustrum && xWithinFrustrum))) || (xLargerThanFrustrum && yLargerThanFrustrum));
+
+
     return isWithinFrustrum;
 }
 
@@ -385,41 +401,87 @@ Container.prototype._onLeave = function () {
  * @returns {Container.prototype.getCoords.ContainerAnonym$3|Boolean}
  */
 Container.prototype.getCoords = function () {
-    var offset = Scene.Viewport;
+    /**
+     * This function can actually take a while to process, because it can start scanning parents
+     * then parents of parents etc
+     * 
+     * So we cache the result for the current loop. This cache can be disabled by setting
+     * this.Data.Position.CacheAbsolute to false
+     * 
+     * If it has not been currently cached this loop, then we must regenerate its positional
+     * information
+     */
+    if ((this.Data.Position.CacheAbsolute) &&
+            ((typeof this.AbsolutePosition === "undefined") || (this.AbsolutePosition === null) || (this.Data.Position.currentCacheID !== Scene.cachedID))) {
+        
+        /**
+         * First we need to figure out where on this page this element is relative to (What parent it has)
+         * If it has no parent, then its relative directly to the canvas.
+         */
+        var offset = Scene.Viewport;
 
-    if (typeof this.Data.Position.Parent === 'string') {
-        var Parent = findContainer(this.Data.Position.Parent);
+        if (typeof this.Data.Position.Parent === 'string') {
+            var Parent = findContainer(this.Data.Position.Parent);
 
-        offset = ((Parent !== null) && (Parent.getCoords())) ? Parent.getCoords() : offset;
+            offset = ((Parent !== null) && (Parent.getCoords())) ? Parent.getCoords() : offset;
+        }
+
+        /**
+         * If the parent is visible and the current element is visible...
+         */
+        if ((offset.Visible) && (this.Data.Status.Visible)) {
+            /**
+             * We position the element relative to the parents position,
+             * we also take into account any mobile positional information here too
+             */
+            var X = (((this.Data.Position.Mobile.On) && (Scene.Viewport.Width < Scene.Viewport.MobileWidth)) ? this.Data.Position.Mobile.X : this.Data.Position.X) + offset.X;
+            var Y = (((this.Data.Position.Mobile.On) && (Scene.Viewport.Width < Scene.Viewport.MobileWidth)) ? this.Data.Position.Mobile.Y : this.Data.Position.Y) + offset.Y;
+
+            /**
+             * If the element has the CenterOffset attribute, then it is positioned in the center of its
+             * parent.
+             * You can position it according to X/Y and X and Y independantly.
+             */
+            if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "X")) {
+                X += offset.Width / 2;
+            }
+            if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "Y")) {
+                Y += offset.Height / 2;
+            }
+
+            /**
+             * If the element has the Centered attribute, then it is automatically realigned so the given coordinates
+             * are the center, rather than the top left.
+             */
+            if ((this.Data.Position.Centered === true) || (this.Data.Position.Centered === "X")) {
+                X -= (this.Data.Position.Width / 2);
+            }
+            if ((this.Data.Position.Centered === true) || (this.Data.Position.Centered === "Y")) {
+                Y -= (this.Data.Position.Height / 2);
+            }
+
+            /*
+             * We cache the result
+             */
+            this.AbsolutePosition = {
+                X: X,
+                Y: Y,
+                Width: this.Data.Position.Width,
+                Height: this.Data.Position.Height,
+                Visible: this.Data.Status.Visible
+            }
+        } else {
+            /**
+             * If it is not visible then we bluntly return false, because we dont care about hidden stuff
+             */
+            this.AbsolutePosition = false;
+        }
+        /**
+         * Update the current cache ID, for cache invalidation
+         */
+        this.Data.Position.currentCacheID = Scene.cachedID;
     }
-
-    if ((offset.Visible) && (this.Data.Status.Visible)) {
-        var X = (((this.Data.Position.Mobile.On) && (Scene.Viewport.Width < Scene.Viewport.MobileWidth)) ? this.Data.Position.Mobile.X : this.Data.Position.X) + offset.X;
-        var Y = (((this.Data.Position.Mobile.On) && (Scene.Viewport.Width < Scene.Viewport.MobileWidth)) ? this.Data.Position.Mobile.Y : this.Data.Position.Y) + offset.Y;
-
-        if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "X")) {
-            X += offset.Width / 2;
-        }
-        if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "Y")) {
-            Y += offset.Height / 2;
-        }
-
-        if ((this.Data.Position.Centered === true) || (this.Data.Position.Centered === "X")) {
-            X -= (this.Data.Position.Width / 2);
-        }
-        if ((this.Data.Position.Centered === true) || (this.Data.Position.Centered === "Y")) {
-            Y -= (this.Data.Position.Height / 2);
-        }
-
-        return {
-            X: X,
-            Y: Y,
-            Width: this.Data.Position.Width,
-            Height: this.Data.Position.Height,
-            Visible: this.Data.Status.Visible
-        }
-    }
-    return false;
+    return this.AbsolutePosition;
 }
 
 /**
@@ -480,6 +542,10 @@ Container.prototype.getEvents = function () {
 
 Container.prototype.getData = function () {
     return this.Data;
+}
+
+Container.prototype.resetCache = function () {
+    this.AbsolutePosition = null;
 }
 
 /**

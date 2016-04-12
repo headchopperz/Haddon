@@ -38,6 +38,7 @@ function main() {
     if (dt < 1000) {
         Scene.sync();
 
+        Scene.cachedID = now;
         drawIntroDots(dt);
         drawContainers(dt);
         showFPS(dt);
