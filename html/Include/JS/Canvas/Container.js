@@ -269,17 +269,34 @@ Container.prototype.withinFrustrum = function (Coords) {
     }
 
     var currentFrustrum = Scene.currentFrustrum();
-
+    
+    /**
+     * Are the X axis corners within the users frusturm?
+     * @type Boolean
+     */
     var xWithinFrustrum = ((Coords.X < currentFrustrum.X + currentFrustrum.Width) &&
             (Coords.X + Coords.Width > currentFrustrum.X));
 
+    /**
+     * Are the Y axis corners within the users frusturm?
+     * @type Boolean
+     */
     var yWithinFrustrum = ((Coords.Y < currentFrustrum.Y + currentFrustrum.Height) &&
             (Coords.Y + Coords.Height > currentFrustrum.Y));
     
+    /**
+     * If the object exceeds the size of the frustrum, then it will say its not inside the frustrum
+     * so we need to check to see if it exceeds the frustrums size
+     * @type Boolean
+     */
     var xLargerThanFrustrum = ((Coords.X < currentFrustrum.X) && (Coords.X + Coords.Width > currentFrustrum.X + currentFrustrum.Width));
     var yLargerThanFrustrum = ((Coords.Y < currentFrustrum.Y) && (Coords.Y + Coords.Height > currentFrustrum.Y + currentFrustrum.Height));
     
-    
+    /**
+     * This should find out for us whether or not the object is within the users frustrum.
+     * 
+     * @type Boolean
+     */    
     var isWithinFrustrum = (((xWithinFrustrum || (xLargerThanFrustrum && yWithinFrustrum)) && (yWithinFrustrum || (yLargerThanFrustrum && xWithinFrustrum))) || (xLargerThanFrustrum && yLargerThanFrustrum));   
     
     
