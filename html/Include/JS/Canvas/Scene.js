@@ -119,7 +119,17 @@ var Scene = new (function (settings) {
         this.Viewport.Height = document.documentElement.clientHeight;
 
         var highestPoint = 0;
+        
+        /**
+         * Because we need to know the exact results now, and not next loop,
+         * we want to invalidate all positioning cache.
+         */
+        this.cachedID = 0;
 
+        /**
+         * Find the Y of the bottom-most element, so we know how large the 
+         * page should be, in order to show everything.
+         */
         for (var i = 0; i < Containers.length; i++) {
             var e = Containers[i];
             var Coords = e.getCoords();
@@ -129,11 +139,18 @@ var Scene = new (function (settings) {
             }
         }
 
-        if (highestPoint > 0) {
-            if (this.Viewport.Height < highestPoint) {
+        if (highestPoint > 0) { //If theres actually any elements on the page
+            
+            /**
+             * Make sure the viewport doesnt need resizing
+             */
+            if (highestPoint > this.currentFrustrum().Height) {
                 this.Viewport.Height = highestPoint;
             }
 
+            /**
+             * Make sure the X does not need resizing
+             */
             if (this.Viewport.Width < this.Viewport.MinWidth) {
                 document.body.style.overflowX = 'auto';
                 this.Viewport.Width = this.Viewport.MinWidth;
