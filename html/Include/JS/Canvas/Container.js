@@ -276,8 +276,11 @@ Container.prototype.withinFrustrum = function (Coords) {
     var yWithinFrustrum = ((Coords.Y < currentFrustrum.Y + currentFrustrum.Height) &&
             (Coords.Y + Coords.Height > currentFrustrum.Y));
     
+    var xLargerThanFrustrum = ((Coords.X < currentFrustrum.X) && (Coords.X + Coords.Width > currentFrustrum.X + currentFrustrum.Width));
+    var yLargerThanFrustrum = ((Coords.Y < currentFrustrum.Y) && (Coords.Y + Coords.Height > currentFrustrum.Y + currentFrustrum.Height));
     
     
+    var isWithinFrustrum = (((xWithinFrustrum || (xLargerThanFrustrum && yWithinFrustrum)) && (yWithinFrustrum || (yLargerThanFrustrum && xWithinFrustrum))) || (xLargerThanFrustrum && yLargerThanFrustrum));   
     
     
     return isWithinFrustrum;
