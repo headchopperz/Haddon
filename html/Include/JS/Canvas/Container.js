@@ -59,7 +59,15 @@ var Container = function (name, settings) {
              * If you only want to center it according to one axis you can define that by
              * settings this value to "x" or "y", true centers it by both
              */
-            CenterOffset: false
+            CenterOffset: false,
+            /**
+             * On mobiles should be position this element in a different place?
+             */
+            Mobile: {
+                On: false,
+                Y: 0,
+                X: 0
+            }
         },
         /**
          * The status of the element, is it currently visible, is it currently pressed,
@@ -259,13 +267,20 @@ Container.prototype.withinFrustrum = function (Coords) {
     if ((typeof Coords === "undefined") || (Coords === null)) {
         Coords = this.getCoords();
     }
-    
+
     var currentFrustrum = Scene.currentFrustrum();
 
-    return (((Coords.X < currentFrustrum.X + currentFrustrum.Width) &&
-            (Coords.X + Coords.Width > currentFrustrum.X)) &&
-            ((Coords.Y < currentFrustrum.Y + currentFrustrum.Height) &&
-                    (Coords.Y + Coords.Height > currentFrustrum.Y)));
+    var xWithinFrustrum = ((Coords.X < currentFrustrum.X + currentFrustrum.Width) &&
+            (Coords.X + Coords.Width > currentFrustrum.X));
+
+    var yWithinFrustrum = ((Coords.Y < currentFrustrum.Y + currentFrustrum.Height) &&
+            (Coords.Y + Coords.Height > currentFrustrum.Y));
+    
+    
+    
+    
+    
+    return isWithinFrustrum;
 }
 
 
@@ -359,8 +374,8 @@ Container.prototype.getCoords = function () {
     }
 
     if ((offset.Visible) && (this.Data.Status.Visible)) {
-        var X = this.Data.Position.X + offset.X;
-        var Y = this.Data.Position.Y + offset.Y;
+        var X = (((this.Data.Position.Mobile.On) && (Scene.Viewport.Width < Scene.Viewport.MobileWidth)) ? this.Data.Position.Mobile.X : this.Data.Position.X) + offset.X;
+        var Y = (((this.Data.Position.Mobile.On) && (Scene.Viewport.Width < Scene.Viewport.MobileWidth)) ? this.Data.Position.Mobile.Y : this.Data.Position.Y) + offset.Y;
 
         if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "X")) {
             X += offset.Width / 2;

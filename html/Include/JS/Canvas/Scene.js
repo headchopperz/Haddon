@@ -1,9 +1,9 @@
 /**
  * This class is responsible for handling and controlling the pages canvas scene
- * 
+ *
  */
 var Scene = new (function (settings) {
-    this.canvas = document.getElementById("scene"); 
+    this.canvas = document.getElementById("scene");
     this.context = this.canvas.getContext("2d");
 
     /**
@@ -16,12 +16,14 @@ var Scene = new (function (settings) {
     this.Viewport = {
         X: 0,
         Y: 0,
-        Width: 1200,
+        Width: 1800,
         Height: 500,
-        Visible: true
+        Visible: true,
+        MobileWidth: 1030,
+        MinWidth: 660
     };
 
-    this.delayedResizeTimeout = null;    
+    this.delayedResizeTimeout = null;
     this.isMobile = false;
 
     /**
@@ -55,41 +57,41 @@ var Scene = new (function (settings) {
      * When browsers resize, they send A LOT of resize event updates, and if too
      * many events are fired, then it is easy to overload the system and completely
      * freeze the browser.
-     * 
+     *
      * So to fix this, we need to create a system that updates the Scene less frequently
      * This method will be called after 300ms have passed since the last screen resize
-     * 
-     * If the screen is constantly resizing, then this function will not run, as it 
+     *
+     * If the screen is constantly resizing, then this function will not run, as it
      * will wait until the user stops being a ******
-     * 
+     *
      * @returns {undefined}
      */
-    this.delayedResize = function() {
+    this.delayedResize = function () {
         this.delayedResizeTimeout = null;
         this.updateViewport();
     }
-    
+
     /**
      * What region can the user currently see?
      * @returns {undefined}
      */
-    this.currentFrustrum = function() {
+    this.currentFrustrum = function () {
         return {
             X: (document.body.scrollLeft || document.documentElement.scrollLeft),
             Y: (document.body.scrollTop || document.documentElement.scrollTop),
-            Width: document.documentElement.clientWidth,
-            Height: document.documentElement.clientHeight
+            Width: (window.innerWidth || document.documentElement.clientWidth),
+            Height: (window.innerHeight || document.documentElement.clientHeight)
         }
     }
 
     /**
      * This method is called every time the browser resizes. Try to avoid putting
      * heavy computational code in here. As browsers will fire this method A LOT.
-     * 
+     *
      * @returns {undefined}
      */
-    this.onResize = function() {
-        
+    this.onResize = function () {
+
         /**
          * In order to make this.delayedResize work, we need to clear the currentTimeout
          * (its not necessary, but it can cause bugs otherwise), then otherride the
@@ -99,12 +101,12 @@ var Scene = new (function (settings) {
         if (this.delayedResizeTimeout !== null) {
             window.clearTimeout(this.delayedResizeTimeout);
         }
-        
+
         this.delayedResizeTimeout = window.setTimeout(this.delayedResize.bind(this), 300);
     }
 
     /**
-     * This method updates the current viewport, this includes resizing the 
+     * This method updates the current viewport, this includes resizing the
      * viewport to encapsulate the entire screen.
      * This method also resizes the page, in order for scrollbars to work with
      * the canvas element.
@@ -131,9 +133,9 @@ var Scene = new (function (settings) {
                 this.Viewport.Height = highestPoint;
             }
 
-            if (this.Viewport.Width < 1030) {
+            if (this.Viewport.Width < this.Viewport.MinWidth) {
                 document.body.style.overflowX = 'auto';
-                this.Viewport.Width = 1030;
+                this.Viewport.Width = this.Viewport.MinWidth;
             } else {
                 document.body.style.overflowX = 'hidden';
             }

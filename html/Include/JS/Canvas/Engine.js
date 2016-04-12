@@ -209,7 +209,12 @@ function loadTimelineElement(Coords, data, OffsetID) {
                 Height: Element.Height,
                 CenterOffset: "X",
                 Centered: "X",
-                Parent: "containerTitle"
+                Parent: "containerTitle",
+                Mobile: {
+                    On: true,
+                    Y: Coords.Height + 50 + ((Element.Height + 70) * OffsetID),
+                    X: (OffsetID % 2 === 1) ? 50 : -50
+                }
             }
         }
     }));
@@ -217,11 +222,10 @@ function loadTimelineElement(Coords, data, OffsetID) {
     Containers.push(new FancySpankyCircleThing(TimelineName + '-FSCT', {
         Data: {
             Position: {
-                X: ((OffsetID % 2 === 1) ? 0 : Element.Width),
-                Y: Element.Height / 2,
-                Width: 250,
-                Height: 250,
-                Centered: true,
+                X: 0,
+                Y: 0,
+                Width: Element.Width,
+                Height: Element.Height,
                 Direction: (OffsetID % 2 === 1) ? 'Left' : 'Right',
                 Parent: TimelineName + '-Container'
             },

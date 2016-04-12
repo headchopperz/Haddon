@@ -28,18 +28,19 @@ FancySpankyCircleThing.prototype = Object.create(Container.prototype);
 FancySpankyCircleThing.prototype.constructor = Container;
 
 FancySpankyCircleThing.prototype.calcPosInfo = function (X, Y) {
-    var Size = (this.Data.Position.Width + this.Data.Position.Height) / 2;
+    var Size = this.Data.Position.Height;
+    
     var Arc = {
-        X: X + (Size / 2),
+        X: (this.Data.Position.Direction === 'Left') ? X : X + this.Data.Position.Width,
         Y: Y + (Size / 2),
         Radius: Size / 2
     };
 
     var Box = {
-        X: (this.Data.Position.Direction === 'Left') ? X + (Size * 0.5) : X - (Size * 1.5),
+        X: X,
         Y: Y,
-        Width: Size * 2,
-        Height: Size
+        Width: this.Data.Position.Width,
+        Height: this.Data.Position.Height
     }
 
     return {
