@@ -140,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function () {
         obj.forEach(function (e) {
             if (e.Type === "TextBox") {
                 Containers.push(new TextBox(e.Data.Description, e));
+            } else if (e.Type === "PictureBox") {
+                Containers.push(new PictureBox(e.Data.Description, e));
             } else {
                 Containers.push(new Container(e.Data.Description, e));
             }
