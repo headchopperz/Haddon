@@ -79,7 +79,27 @@ function drawIntroDots(dt) {
     }
 }
 
+/**
+ * This function will display the users current FPS in the top left corner if
+ * the key D is currently being pressed.
+ * 
+ * This is for debugging performance.
+ * 
+ * @param {Number} dt
+ * @returns {undefined}
+ */
 function showFPS(dt) {
+    /**
+     * First we need to record the current FPS  in order to average out
+     * all the recent records
+     * 
+     * The reason why it needs to be averaged is that it fluctuates too much to
+     * even be read.
+     * 
+     * This code will attempt to average it to whatever the last second was.
+     * So the more frames the user has, the more frames it will reference when
+     * averaging.
+     */
     FPS.push(Math.round(1000 / dt));
 
     var total = 0;
@@ -92,8 +112,12 @@ function showFPS(dt) {
         FPS.shift();
     }
 
+    /**
+     * Now we dont want to show this information all the time,
+     * so we only show it when the user pressed the D key.
+     */
     if (Key.isKeyPressed(KeyCode.D, false)) {
-
+        Scene.context.globalAlpha = 1;
         Scene.context.font = "16px Georgia";
         Scene.context.textAlign = 'left';
         Scene.context.fillStyle = "white";
@@ -136,6 +160,12 @@ document.addEventListener('DOMContentLoaded', function () {
         Mouse.move(e);
     });
 
+    /**
+     * Load all the additional containers for the page.
+     * 
+     * @param {type} obj
+     * @returns {undefined}
+     */
     loadJSON("/Include/Data/Containers.json", function (obj) {
         obj.forEach(function (e) {
             if (e.Type === "TextBox") {
@@ -151,12 +181,17 @@ document.addEventListener('DOMContentLoaded', function () {
         findContainer('textTitleDescription').Data.Text.Value = "My name is Michael Haddon";
     });
 
+    /**
+     * Load all the timeline information and create Containers to hold all of it
+     * 
+     * @param {type} obj
+     * @returns {undefined}
+     */
     loadJSON("/Include/Data/TimelineElements.json", function (obj) {
         var Coords = findContainer('containerTitle').getCoords();
 
         obj.forEach(function (e, i) {
             loadTimelineElement(Coords, e, i);
-            //TimelineElements.push(new TimelineElement(e));
         });
 
         Scene.updateViewport();
@@ -168,6 +203,14 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(main, 150);
 });
 
+/**
+ * This is a native way to just do an AJAX request for a JSON file. It may need
+ * to be extended upon for further browser support.
+ * 
+ * @param {String} URL
+ * @param {Function} Func
+ * @returns {undefined}
+ */
 function loadJSON(URL, Func) {
     var request = new XMLHttpRequest();
     request.open('GET', URL, true);
@@ -191,6 +234,32 @@ function loadJSON(URL, Func) {
     request.send();
 }
 
+/**
+ * This function adds a new timeline element to the page.
+ * This information is usually loaded from TimelineElements.json under /Include/Data/
+ * 
+ * This function has three requirements.
+ * 1. Coords - The Coords of the parent element that we will base these elements off
+ *             Most of the positioning will be calculated live from the parent, however
+ *             We still need this to find out the height of the parent, so we can
+ *             make sure we actually position it below the parent
+ * 
+ * 2. Data   - The Timeline elements actual data. This includes Images, Text, all sorts
+ * 
+ * 3. OffsetID - The Timeline Elements ID. This stops timeline elements from overlapping
+ *               As we can ensure they are positioned below all the other elements.
+ *               We also use it with modulus to find out which direction this element will
+ *               face.
+ *               
+ *                
+ * This function will create a series of Containers, it is within these where the
+ * information is stored and manipulated.
+ * 
+ * @param {Object} Coords
+ * @param {Object} data
+ * @param {Number} OffsetID
+ * @returns {undefined}
+ */
 function loadTimelineElement(Coords, data, OffsetID) {
 
     var TimelineName = 'Timeline-' + OffsetID;
@@ -332,6 +401,9 @@ function loadTimelineElement(Coords, data, OffsetID) {
         }
     }));
 
+    /**
+     * Does this element have buttons? If so we need the load those too.
+     */
     if (typeof data.Data.Buttons !== 'undefined') {
         for (var i = 0; i < data.Data.Buttons.length; i++) {
             var e = data.Data.Buttons[i];

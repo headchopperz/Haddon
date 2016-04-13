@@ -498,6 +498,9 @@ Container.prototype.drawBackground = function (X, Y, dt) {
         Scene.context.beginPath();
         Scene.context.rect(X, Y, this.Data.Position.Width, this.Data.Position.Height);
 
+        /**
+         * If the container has a background colour
+         */
         if ((this.Data.Fill.On) && (this.Data.Fill.Colour !== null)) {
             Scene.context.globalAlpha = this.Data.Fill.Opacity;
             Scene.context.fillStyle = (this.Data.Status.Pressed) ? this.Data.Fill.Pressed : (this.Data.Status.Hovered && this.Data.Hover.On) ? this.Data.Hover.Colour : this.Data.Fill.Colour;
@@ -505,6 +508,9 @@ Container.prototype.drawBackground = function (X, Y, dt) {
             Scene.context.globalAlpha = 1;
         }
 
+        /**
+         * If the container has an outline
+         */
         if (this.Data.Outline.On) {
             Scene.context.globalAlpha = this.Data.Outline.Opacity;
             Scene.context.strokeStyle = (this.Data.Status.Pressed) ? this.Data.Outline.Pressed : this.Data.Outline.Colour;
@@ -544,6 +550,10 @@ Container.prototype.getData = function () {
     return this.Data;
 }
 
+/**
+ * This removes any cached data
+ * @returns {undefined}
+ */
 Container.prototype.resetCache = function () {
     this.AbsolutePosition = null;
 }

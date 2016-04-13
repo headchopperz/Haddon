@@ -1,3 +1,13 @@
+/**
+ * This class is responsible for the background bit behind each timeline element
+ * 
+ * It is a child of Container as i did not want to hardcode this weird behaviour
+ * into Container directly.
+ * 
+ * @param {String} name
+ * @param {Object} settings
+ * @returns {FancySpankyCircleThing}
+ */
 var FancySpankyCircleThing = function (name, settings) {
     this.constructor(name, settings);
 
@@ -27,6 +37,17 @@ var FancySpankyCircleThing = function (name, settings) {
 FancySpankyCircleThing.prototype = Object.create(Container.prototype);
 FancySpankyCircleThing.prototype.constructor = Container;
 
+/**
+ * Because this element actually has a weird shape, i need to do some special calculations
+ * in regard to the arc and box.
+ * 
+ * It might be a better idea to split the arc and box into their own seperate classes, with a link
+ * between them.
+ * 
+ * @param {Number} X
+ * @param {Number} Y
+ * @returns {FancySpankyCircleThing.prototype.calcPosInfo.FancySpankyCircleThingAnonym$1}
+ */
 FancySpankyCircleThing.prototype.calcPosInfo = function (X, Y) {
     var Size = this.Data.Position.Height;
     
@@ -132,6 +153,14 @@ FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
     }
 }
 
+/**
+ * Because this element containers a sphere edge aswell as a square background,
+ * we will detect if the mouse is within the sphere, or within the box, to be
+ * able to find out if it is being hovered over.
+ * 
+ * @param {Mouse} _Mouse
+ * @returns {Boolean}
+ */
 FancySpankyCircleThing.prototype.isHovered = function (_Mouse) {
     var Coords = this.getCoords();
     var Pos = this.calcPosInfo(Coords.X, Coords.Y);

@@ -1,3 +1,16 @@
+/**
+ * This class is responsible for handling container elements with text 
+ * 
+ * Text drawing is suprisingly computational heavy, and some things may need to
+ * be done to speed this up
+ * 
+ * 1. WebGL rendering
+ * 2. Caching the rendering of text to an image, then rendering the image
+ * 
+ * @param {String} name
+ * @param {String} settings
+ * @returns {TextBox}
+ */
 var TextBox = function (name, settings) {
     this.constructor(name, settings);
     this.import({
@@ -148,6 +161,9 @@ TextBox.prototype._onChanged = function () {
 }
 
 /**
+ * This method draws the text to the screen, it is added to the RenderQueue in
+ * Container
+ * 
  * 
  * @param {Integer} X
  * @param {Integer} Y
@@ -198,6 +214,16 @@ TextBox.prototype.drawText = function (X, Y, dt) {
     }
 }
 
+/**
+ * This method is for editable TextBox elements, but is not fully supported as 
+ * the site does not have any editable TextBox elements.
+ * 
+ * It is meant to record that the element is currently being selected, for future
+ * keyboard inputs.
+ * 
+ * @param {type} target
+ * @returns {undefined}
+ */
 TextBox.prototype.selectTextBox = function (target) {
     if (this.Data.TextBox.On) {
         Scene.SelectedButton = target;
