@@ -27,3 +27,16 @@ html {
 body {
     min-height:100%;
 }
+
+.noscriptblock {
+    color:white;
+    position:relative;
+    z-index:100;
+    width:100%;
+    line-height:1.1em;
+}
+
+.noscriptblock a {
+    color: rgb(200,200,220);
+    text-decoration: none;
+}

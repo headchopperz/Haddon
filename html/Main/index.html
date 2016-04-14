@@ -15,9 +15,23 @@
         <![endif]-->
     </head>
     <body style='overflow-x:hidden;overflow-y:auto;'>
-        <canvas id='scene' oncontextmenu='return true'>
-            This text is displayed if your browser does not support HTML5 Canvas.
-        </canvas>
+        <noscript class='noscriptblock'>
+            This website is partly experimental and uses Javascript extensively in order to function.<br/>
+            Please enable Javascript.<br/>
+            If you are cautious about the pages code, then it is available here: <a href='https://github.com/mhaddon/Haddon'>https://github.com/mhaddon/Haddon</a><br/>
+            If your browser does not support Javascript, then please try one of these following browsers:<br/>
+            <a href='https://www.google.com/chrome/browser/'>Google Chrome</a>,<br/>
+            <a href='https://www.mozilla.org/'>Mozilla Firefox</a>,<br/>
+            <a href='https://www.microsoft.com/en-us/windows/microsoft-edge'>Microsoft Edge</a>,<br/>
+            <a href='http://midori-browser.org/'>Midori</a> or<br/>
+            <a href='https://www.opera.com/download'>Opera</a>.<br/><br/>
+            Thankyou.<br/>
+            - Michael Haddon
+        </noscript>
+        <canvas id='scene' oncontextmenu='return true'></canvas>
+        <!-- Detect old browsers -->
+        <script type='text/javascript' src='/Include/JS/old_browser_detect.js'></script>
+        
         <!-- This file contains a list of all the possible keyboard KeyCodes that javascript can record -->
         <script type='text/javascript' src='/Include/JS/Canvas/KeyCodes.js'></script>
         
