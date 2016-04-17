@@ -15,33 +15,115 @@ var TextBox = function (name, settings) {
     this.constructor(name, settings);
     this.import({
         Data: {
+            /**
+             * This class controls the basic text element
+             */
             Text: {
                 On: false,
+                /**
+                 * Is the text centered?
+                 * This will override the align setting
+                 */
                 Center: true,
+                /**
+                 * What colour is the text
+                 */
                 Colour: "white",
+                /**
+                 * What colour is the text if this element is clicked on
+                 */
                 Pressed: "white",
+                /**
+                 * Does the text have an outline?
+                 */
                 Outline: false,
+                /**
+                 * What does the text say?
+                 */
                 Value: "...",
+                /**
+                 * What is the texts padding, from the outside of the container
+                 */
                 Padding: 15,
+                /**
+                 * Is there a space between the letters? Unfortunantely i cannot
+                 * define this space in px or em, but it is either true or false
+                 * 
+                 * i f   t h e r e   i s   s p a c i n g <- it will be like that if true 
+                 * 
+                 */
                 LetterSpacing: false,
+                /**
+                 * What is the font?
+                 * You can list multiple fonts here, seperate them with a ,
+                 * It will prefer the first font it encounters, but if it has not
+                 * loaded that font, it will fallback to the next font.
+                 */
                 Font: "VT323,Georgia",
+                /**
+                 * What is the alignment of the text, you can set this to
+                 * left, middle or right
+                 */
                 Align: "middle",
+                /**
+                 * What is the size of the text in px
+                 */
                 Size: 16,
+                /**
+                 * What is the gap between multiple lines of this text?
+                 * This goes well with wraptext
+                 */
                 LineGap: 6,
+                /**
+                 * What is the opacity of the text.
+                 */
                 Opacity: 1
             },
+            /**
+             * Do we want to wrap this text to fit the container it is in?
+             */
             WrapText: {
                 On: false,
+                /**
+                 * The below three variables are used to cache the result so we 
+                 * do not have to constantly rewrap the text
+                 */
                 Value: "",
                 UnwrappedText: "",
+                currentCacheID: 0,
+                /**
+                 * The wrapping is done to the closest space, to try to not split
+                 * words in half.
+                 * The SpaceDistance is the amount of distance that the wrapper will
+                 * look back to find the last space.
+                 * If no space exists in range, then it will split the word in half.
+                 * If you set this to 0, it will always split a word in half.
+                 */
                 SpaceDistance: 14
             },
+            /**
+             * The below is a class for an editable version of the text container
+             * The textbox feature is currently not fully implemented
+             */
             TextBox: {
                 On: false,
+                /**
+                 * What is the value of the textbox
+                 */
                 Value: "",
                 _oldValue: "",
+                /**
+                 * Should inputs be forced to be an integer? Making the user unable
+                 * to enter non-number symbols (negative is allowed if it is at the start)
+                 */
                 forceInt: false,
+                /**
+                 * Should inputs be forced to be number AND positive numbers
+                 */
                 forcePositive: false,
+                /**
+                 * Whats the max length that the user can input
+                 */
                 maxLength: 21
             }
         }
@@ -86,16 +168,17 @@ TextBox.prototype.constructor = Container;
  * @returns {Array}
  */
 TextBox.prototype.wrapText = function () {
-    if ((this.Data.WrapText.On) && (this.Data.Text.Value !== this.Data.WrapText.UnwrappedText)) {
+    if ((this.Data.WrapText.On) && ((this.Data.Text.Value !== this.Data.WrapText.UnwrappedText) || (this.Data.WrapText.currentCacheID !== Scene.resizeCachedID))) {
         var Text = this.Data.Text.Value.split(/\r?\n/g);
+        var Coords = this.getCoords();
 
         for (var i = 0; i < Text.length; i++) {
             Text[i] = Text[i].trim();
             var e = Text[i];
             
             Scene.context.font = this.Data.Text.Size + "px " + this.Data.Text.Font;
-            if (Scene.context.measureText(e).width > this.Data.Position.Width) {
-                var splitCharacter = Math.floor(e.length * (this.Data.Position.Width / Scene.context.measureText(e).width));
+            if (Scene.context.measureText(e).width > Coords.Width) {
+                var splitCharacter = Math.floor(e.length * (Coords.Width / Scene.context.measureText(e).width));
 
                 var ClosestSpace = this.getClosestSpace(e, splitCharacter);
                 if (splitCharacter - ClosestSpace < this.Data.WrapText.SpaceDistance) {
@@ -113,6 +196,7 @@ TextBox.prototype.wrapText = function () {
         this.Data.WrapText.Value = Text;
 
         this.Data.WrapText.UnwrappedText = this.Data.Text.Value;
+        this.Data.WrapText.currentCacheID = Scene.resizeCachedID;
     }
     return (this.Data.WrapText.On) ? this.Data.WrapText.Value : [this.Data.Text.Value.trim()];
 }
@@ -172,6 +256,7 @@ TextBox.prototype._onChanged = function () {
  */
 TextBox.prototype.drawText = function (X, Y, dt) {
     if (this.Data.Text.On) {
+        var Coords = this.getCoords();
 
         var arrText = this.wrapText();
 
@@ -187,11 +272,11 @@ TextBox.prototype.drawText = function (X, Y, dt) {
             
             if (this.Data.Text.Center) {
                 Scene.context.textAlign = 'center';
-                Text.X += (this.Data.Position.Width / 2);
-                Text.Y += (this.Data.Position.Height / 2) + (this.Data.Text.Size / 4);
+                Text.X += (Coords.Width / 2);
+                Text.Y += (Coords.Height / 2) + (this.Data.Text.Size / 4);
             } else if (this.Data.Text.Align === 'right') {
                 Scene.context.textAlign = this.Data.Text.Align;
-                Text.X += (this.Data.Position.Width);
+                Text.X += (Coords.Width);
             } else {
                 Scene.context.textAlign = this.Data.Text.Align;
             }

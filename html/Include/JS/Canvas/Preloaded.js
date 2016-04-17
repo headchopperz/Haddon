@@ -6,7 +6,17 @@ Containers.push(new Container('containerTitle', {
             Width: 400,
             Height: 150,
             CenterOffset: "X",
-            Centered: true
+            Centered: true,
+            Responsive: {
+                On: true,
+                Queries: [
+                    {
+                        On: true,
+                        maxWidth: 400,
+                        Width: "100%"
+                    }
+                ]
+            }
         },
         Fill: {
             On: false,

@@ -1,11 +1,11 @@
 /**
  * Container is the parent class for all the other page elements
- * 
+ *
  * Container controls the majority of events, sets up the renderqueue and defines
  * the base data variables
- * 
- * 
- * 
+ *
+ *
+ *
  * @param {String} name
  * @param {Object} settings
  * @returns {Container.returnArray.Items}
@@ -19,12 +19,12 @@ var Container = function (name, settings) {
      */
     this.Data = {
         /**
-         * How shall we identify this container, keep this unique if you want to 
+         * How shall we identify this container, keep this unique if you want to
          * find it in future, the findContainer function references this
          */
         Description: "None",
         /**
-         * Where is this button on the page? 
+         * Where is this button on the page?
          * These values may not actually be the absolute coordinates of this item
          * but it could be the relative coordinates to another container, or
          * even to the center of the page.
@@ -42,7 +42,7 @@ var Container = function (name, settings) {
              * loop for it to be redrawn differently.
              * The benefit is that it does a lot less processing.
              */
-            CacheAbsolute: true,
+            CachePositioning: true,
             /**
              * At the start of each loop a random number is generated, this number is
              * used to find out which cached variables should be invalidated.
@@ -59,7 +59,7 @@ var Container = function (name, settings) {
              * By default the positioning of the element is done from the top left corner,
              * if this is set to true, then the element will be positioned relatively to
              * the center of the element
-             * 
+             *
              * If you only want to center it according to one axis you can define that by
              * settings this value to "x" or "y", true centers it by both
              */
@@ -68,23 +68,50 @@ var Container = function (name, settings) {
              * Do you want to center this element to the center of its parent?
              * If so, put a true here.
              * If you have no parent then the center of the page will be used.
-             * 
+             *
              * If you only want to center it according to one axis you can define that by
              * settings this value to "x" or "y", true centers it by both
              */
             CenterOffset: false,
             /**
-             * On mobiles should be position this element in a different place?
+             * This elements responsiveness to the page being resized.
              */
-            Mobile: {
+            Responsive: {
+                /**
+                 * Does this element actually do anything at all? This will
+                 * override all of the queries individually
+                 */
                 On: false,
-                Y: 0,
-                X: 0
+                /**
+                 * The Queries are a list of all the responsive positional information 
+                 * of this Container.
+                 * 
+                 * The order of the queries is important, later queries will override
+                 * previous ones.
+                 * 
+                 * The syntax is as follows:
+                 * (If an element is not entered, than it resorts to the containers default
+                 * value)
+                 * {
+                 *    X: 0, //The new X coordinate
+                 *    Y: 0, //The new Y coordinate
+                 *    Width: 0, //The new Width
+                 *    Height: 0, //The new Height
+                 *    maxWidth: 0, //The maximum page width for this query to be considered valid
+                 *    maxHeight: 0, //The maximum page height for this query to be considered valid
+                 *    minWidth:0, //The minimum page width for this query to be considered valid
+                 *    minHeight:0, //The minimum page height for this query to be considered valid
+                 *    CenterOffset:false, //new CenterOffset
+                 *    Centered: false //new Centered
+                 * }
+                 * 
+                 */
+                Queries: []
             }
         },
         /**
          * The status of the element, is it currently visible, is it currently pressed,
-         * is it currently hovered over? 
+         * is it currently hovered over?
          * That sort of stuff
          */
         Status: {
@@ -122,13 +149,20 @@ var Container = function (name, settings) {
         }
     };
 
-    this.AbsolutePosition = null;
+    this.AbsolutePosition = {
+        X: 0,
+        Y: 0,
+        Width: 0,
+        Height: 0,
+        Visible: false,
+        Parent: {}
+    };
 
     /**
      * This class holds all the events that we can assign to an element.
      * The events are stored in arrays as you can assign multiple functions to
      * happen per event.
-     * 
+     *
      * The syntax for an event is such:
      *     {
      *         Function: "FunctionNameAsString",
@@ -137,7 +171,7 @@ var Container = function (name, settings) {
      *             "TheyCanBeAnything"
      *         ]
      *     }
-     *     
+     *
      * The function needs to be a child of window[]
      */
     this.Events = {
@@ -152,11 +186,11 @@ var Container = function (name, settings) {
      * The RenderQueue lists the various functions that are used to render this element
      * Each of these render functions are ran every loop, so they should try
      * to avoid large processing
-     * 
+     *
      * The names of the functions are stored in the Items array, and the order is
      * the order in which they will operate, so the later ones will display ontop
      * the previous ones
-     * 
+     *
      * The functions in the render queue need to be a child of this[]
      */
     this.RenderQueue = {
@@ -169,7 +203,7 @@ var Container = function (name, settings) {
         /**
          * This method adds a function to the renderQueue, the reason to use
          * this function is that it will avoid duplication.
-         * 
+         *
          * @param {string} Item
          * @returns {undefined}
          */
@@ -213,6 +247,16 @@ var Container = function (name, settings) {
             _onClick: this._onClick,
             _onLeave: this._onLeave,
             _onHover: this._onHover,
+            getWidth: this.getWidth,
+            getHeight: this.getHeight,
+            getParent: this.getParent,
+            parseResponsiveQueries: this.parseResponsiveQueries,
+            convertPositionalString: this.convertPositionalString,
+            getX: this.getX,
+            getY: this.getY,
+            getCache: this.getCache,
+            calculatePosition: this.calculatePosition,
+            getVisible: this.getVisible,
             isHovered: this.isHovered
 
         },
@@ -239,8 +283,8 @@ var Container = function (name, settings) {
 /**
  * This function is responsible for importing an object of data into this class
  * It uses a deepmerge in order to achieve this.
- * 
- * 
+ *
+ *
  * @param {Object} settings
  * @returns {undefined}
  */
@@ -262,7 +306,7 @@ Container.prototype.import = function (settings) {
  * This class will load a current object into the system, it will also ensure that
  * the Description contains the correct name. This is so we can find this object
  * in future.
- * 
+ *
  * @param {String} name
  * @param {Object} settings
  * @returns {undefined}
@@ -274,9 +318,9 @@ Container.prototype.loadObject = function (name, settings) {
 }
 
 /**
- * Is this element actually within the users frustrum? 
+ * Is this element actually within the users frustrum?
  * If it is not, then dont display it, huge waste of processing.
- * 
+ *
  * @returns {Boolean}
  */
 Container.prototype.withinFrustrum = function (Coords) {
@@ -310,7 +354,7 @@ Container.prototype.withinFrustrum = function (Coords) {
 
     /**
      * This should find out for us whether or not the object is within the users frustrum.
-     * 
+     *
      * @type Boolean
      */
     var isWithinFrustrum = (((xWithinFrustrum || (xLargerThanFrustrum && yWithinFrustrum)) && (yWithinFrustrum || (yLargerThanFrustrum && xWithinFrustrum))) || (xLargerThanFrustrum && yLargerThanFrustrum));
@@ -396,98 +440,588 @@ Container.prototype._onLeave = function () {
 }
 
 /**
- * Get the current containers absolute coordinates from the top left of the canvas.
- * 
- * @returns {Container.prototype.getCoords.ContainerAnonym$3|Boolean}
+ * Retrieves the absolute positional information of the parents element.
+ * If the element has no parent, then the parent is the Scene.
+ *
+ * @returns {Scene.Viewport|Container.getCoords()}
  */
-Container.prototype.getCoords = function () {
-    /**
-     * This function can actually take a while to process, because it can start scanning parents
-     * then parents of parents etc
-     * 
-     * So we cache the result for the current loop. This cache can be disabled by setting
-     * this.Data.Position.CacheAbsolute to false
-     * 
-     * If it has not been currently cached this loop, then we must regenerate its positional
-     * information
-     */
-    if ((this.Data.Position.CacheAbsolute) &&
-            ((typeof this.AbsolutePosition === "undefined") || (this.AbsolutePosition === null) || (this.Data.Position.currentCacheID !== Scene.cachedID))) {
-        
-        /**
-         * First we need to figure out where on this page this element is relative to (What parent it has)
-         * If it has no parent, then its relative directly to the canvas.
-         */
-        var offset = Scene.Viewport;
+Container.prototype.getParent = function () {
+    var returnVar = Scene.Viewport;
 
-        if (typeof this.Data.Position.Parent === 'string') {
-            var Parent = findContainer(this.Data.Position.Parent);
+    if (typeof this.Data.Position.Parent === 'string') {
+        var Parent = findContainer(this.Data.Position.Parent);
 
-            offset = ((Parent !== null) && (Parent.getCoords())) ? Parent.getCoords() : offset;
-        }
-
-        /**
-         * If the parent is visible and the current element is visible...
-         */
-        if ((offset.Visible) && (this.Data.Status.Visible)) {
-            /**
-             * We position the element relative to the parents position,
-             * we also take into account any mobile positional information here too
-             */
-            var X = (((this.Data.Position.Mobile.On) && (Scene.Viewport.Width < Scene.Viewport.MobileWidth)) ? this.Data.Position.Mobile.X : this.Data.Position.X) + offset.X;
-            var Y = (((this.Data.Position.Mobile.On) && (Scene.Viewport.Width < Scene.Viewport.MobileWidth)) ? this.Data.Position.Mobile.Y : this.Data.Position.Y) + offset.Y;
-
-            /**
-             * If the element has the CenterOffset attribute, then it is positioned in the center of its
-             * parent.
-             * You can position it according to X/Y and X and Y independantly.
-             */
-            if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "X")) {
-                X += offset.Width / 2;
-            }
-            if ((this.Data.Position.CenterOffset === true) || (this.Data.Position.CenterOffset === "Y")) {
-                Y += offset.Height / 2;
-            }
-
-            /**
-             * If the element has the Centered attribute, then it is automatically realigned so the given coordinates
-             * are the center, rather than the top left.
-             */
-            if ((this.Data.Position.Centered === true) || (this.Data.Position.Centered === "X")) {
-                X -= (this.Data.Position.Width / 2);
-            }
-            if ((this.Data.Position.Centered === true) || (this.Data.Position.Centered === "Y")) {
-                Y -= (this.Data.Position.Height / 2);
-            }
-
-            /*
-             * We cache the result
-             */
-            this.AbsolutePosition = {
-                X: X,
-                Y: Y,
-                Width: this.Data.Position.Width,
-                Height: this.Data.Position.Height,
-                Visible: this.Data.Status.Visible
-            }
-        } else {
-            /**
-             * If it is not visible then we bluntly return false, because we dont care about hidden stuff
-             */
-            this.AbsolutePosition = false;
-        }
-        /**
-         * Update the current cache ID, for cache invalidation
-         */
-        this.Data.Position.currentCacheID = Scene.cachedID;
+        returnVar = ((Parent !== null) && (Parent !== false) && (Parent.getCoords())) ? Parent.getCoords() : returnVar;
     }
+
+    return returnVar;
+}
+
+/**
+ * This method parses all of the Responsive Queries that this container has
+ * It returns a class with all the updated relative positional information.
+ * 
+ * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @returns {Container.prototype.parseResponsiveQueries.returnVar}
+ */
+Container.prototype.parseResponsiveQueries = function (Parent) {
+    /**
+     * Retrieve the current relative positional information
+     * @type {object}
+     */
+    var returnVar = {
+        X: this.Data.Position.X,
+        Y: this.Data.Position.Y,
+        Width: this.Data.Position.Width,
+        Height: this.Data.Position.Height,
+        CenterOffset: this.Data.Position.CenterOffset,
+        Centered: this.Data.Position.Centered
+    }
+
+    /**
+     * If this element supports responsiveness, and it has responsive queries...
+     */
+    if ((this.Data.Position.Responsive.On) && (this.Data.Position.Responsive.Queries.length)) {
+
+        /**
+         * Make sure we know the parents positional information
+         */
+        if ((typeof Parent === "undefined") || (Parent === null)) {
+            Parent = this.getParent();
+        }
+
+        for (var i = 0; i < this.Data.Position.Responsive.Queries.length; i++) {
+            var e = this.Data.Position.Responsive.Queries[i];
+
+            /**
+             * If this responsive query is active
+             */
+            if (e.On) {
+
+                /**
+                 * If the pages width DOES NOT exceed the responsive queries max width
+                 * 
+                 * Percentages need to be converted to pixels so we can do the calculations
+                 */
+                var validMaxWidth = true;
+                if (typeof e.maxWidth !== 'undefined') {
+                    var maxWidth = this.convertPositionalString(e.maxWidth, Parent.Width);
+                    validMaxWidth = (Scene.Viewport.Width < maxWidth);
+                }
+
+                /**
+                 * If the pages height DOES NOT exceed the responsive queries max height
+                 * 
+                 * Percentages need to be converted to pixels so we can do the calculations
+                 */
+                var validMaxHeight = true;
+                if (typeof e.maxHeight !== 'undefined') {
+                    var maxHeight = this.convertPositionalString(e.maxHeight, Parent.Height);
+                    validMaxHeight = (Scene.Viewport.Height < maxHeight);
+                }
+
+                /**
+                 * If the pages height DOES exceed the responsive queries min height
+                 * 
+                 * Percentages need to be converted to pixels so we can do the calculations
+                 */
+                var validMinHeight = true;
+                if (typeof e.minHeight !== 'undefined') {
+                    var minHeight = this.convertPositionalString(e.minHeight, Parent.Height);
+                    validMinHeight = (Scene.Viewport.Height > minHeight);
+                }
+
+                /**
+                 * If the pages width DOES exceed the responsive queries min width
+                 * 
+                 * Percentages need to be converted to pixels so we can do the calculations
+                 */
+                var validMinWidth = true;
+                if (typeof e.minWidth !== 'undefined') {
+                    var minWidth = this.convertPositionalString(e.minWidth, Parent.Width);
+                    validMinWidth = (Scene.Viewport.Height > minWidth);
+                }
+
+                /**
+                 * If all of these queries are valid, then we make any changes that this
+                 * query has listed
+                 */
+                if (validMaxWidth && validMaxHeight && validMinHeight && validMinWidth) {
+                    mergeDeep(returnVar, e);
+                }
+            }
+        }
+    }
+
+
+    return returnVar;
+}
+
+/**
+ * Calculates and returns the absolute width of this container in pixels.
+ *
+ * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @returns {Number}
+ */
+Container.prototype.getWidth = function (Parent, ResponsiveSize) {
+    var returnVar = this.Data.Position.Width;
+
+    /**
+     * Make sure we know the parents positional information
+     */
+    if ((typeof Parent === "undefined") || (Parent === null)) {
+        Parent = this.getParent();
+    }
+
+    /**
+     * Make sure we know this updated responsive info
+     */
+    if ((typeof ResponsiveSize === "undefined") || (ResponsiveSize === null)) {
+        ResponsiveSize = this.parseResponsiveQueries(Parent);
+    }
+
+    /**
+     * Update the width to the new responsive width
+     */
+    returnVar = ResponsiveSize.Width;
+
+
+    /**
+     * If the element is a string than we need to parse it to a Number
+     */
+    if (typeof returnVar === "string") {
+        returnVar = this.convertPositionalString(returnVar, Parent.Width);
+    }
+
+    /**
+     * If we got here, and we dont have a number, then something has gone wrong.
+     * Probably someone wrote the wrong positional information in this.Data.Position.Width
+     */
+    if (typeof returnVar !== "number") {
+        throw new Error("Failure to read element width for Container: \"" + this.Data.Description + "\"");
+        ;
+    }
+
+    return returnVar;
+}
+
+
+/**
+ * Calculates and returns the absolute height of this container in pixels.
+ *
+ * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @returns {Number}
+ */
+Container.prototype.getHeight = function (Parent, ResponsiveSize) {
+    var returnVar = this.Data.Position.Height;
+
+    /**
+     * Make sure we know the parents positional information
+     */
+    if ((typeof Parent === "undefined") || (Parent === null)) {
+        Parent = this.getParent();
+    }
+
+    /**
+     * Make sure we know this updated responsive info
+     */
+    if ((typeof ResponsiveSize === "undefined") || (ResponsiveSize === null)) {
+        ResponsiveSize = this.parseResponsiveQueries(Parent);
+    }
+
+    /**
+     * Update the width to the new responsive height
+     */
+    returnVar = ResponsiveSize.Height;
+
+    /**
+     * If the element is a string than we need to parse it to a Number
+     */
+    if (typeof returnVar === "string") {
+        returnVar = this.convertPositionalString(returnVar, Parent.Height);
+    }
+
+    /**
+     * If we got here, and we dont have a number, then something has gone wrong.
+     * Probably someone wrote the wrong positional information in this.Data.Position.Height
+     */
+    if (typeof returnVar !== "number") {
+        throw new Error("Failure to read element height for Container: \"" + this.Data.Description + "\"");
+    }
+
+    return returnVar;
+}
+
+/**
+ * Calculates and returns the absolute X of this container in pixels.
+ *
+ * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @param {Number} Width
+ * @returns {Number}
+ */
+Container.prototype.getX = function (Parent, ResponsiveSize, Width) {
+    /**
+     * When we calculate the current X, we want to take into account the different
+     * size information for small monitors
+     * @type Number
+     */
+    var returnVar = this.Data.Position.X;
+
+    /**
+     * Make sure we know the parents positional information
+     */
+    if ((typeof Parent === "undefined") || (Parent === null)) {
+        Parent = this.getParent();
+    }
+
+    /**
+     * Make sure we know this updated responsive info
+     */
+    if ((typeof ResponsiveSize === "undefined") || (ResponsiveSize === null)) {
+        ResponsiveSize = this.parseResponsiveQueries(Parent);
+    }
+
+    /**
+     * Update the width to the new responsive X
+     */
+    returnVar = ResponsiveSize.X;
+
+    /**
+     * If the element is a string than we need to parse it to a Number
+     */
+    if (typeof returnVar === "string") {
+        returnVar = this.convertPositionalString(returnVar, Parent.Width);
+    }
+
+    /**
+     * If we got here, and we dont have a number, then something has gone wrong.
+     * Probably someone wrote the wrong positional information in this.Data.Position.Height
+     */
+    if (typeof returnVar !== "number") {
+        throw new Error("Failure to read element X for Container: \"" + this.Data.Description + "\"");
+    }
+
+    /**
+     * We want to simply add this position to the parents absolute X.
+     * This is because this element is relative to its parent.
+     */
+    returnVar += Parent.X;
+
+
+    /**
+     * If the element has the CenterOffset attribute, then it is positioned in the center of its
+     * parent.
+     * You can position it according to X/Y and X and Y independantly.
+     */
+    if ((ResponsiveSize.CenterOffset === true) || (ResponsiveSize.CenterOffset === "X")) {
+        returnVar += Parent.Width / 2;
+    }
+
+    /**
+     * If the element has the Centered attribute, then it is automatically realigned so the given coordinates
+     * are the center, rather than the top left.
+     * You can position it according to X/Y and X and Y independantly.
+     */
+    if ((ResponsiveSize.Centered === true) || (ResponsiveSize.Centered === "X")) {
+        if ((typeof Width === "undefined") || (Width === null)) {
+            Width = this.getWidth(Parent);
+        }
+
+        returnVar -= (Width / 2);
+    }
+
+    return returnVar;
+}
+
+
+/**
+ * Calculates and returns the absolute Y of this container in pixels.
+ *
+ * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @param {Number} Height
+ * @returns {Number}
+ */
+Container.prototype.getY = function (Parent, ResponsiveSize, Height) {
+    /**
+     * When we calculate the current Y, we want to take into account the different
+     * size information for small monitors
+     * @type Number
+     */
+    var returnVar = this.Data.Position.Y;
+
+    /**
+     * Make sure we know the parents positional information
+     */
+    if ((typeof Parent === "undefined") || (Parent === null)) {
+        Parent = this.getParent();
+    }
+
+    /**
+     * Make sure we know this updated responsive info
+     */
+    if ((typeof ResponsiveSize === "undefined") || (ResponsiveSize === null)) {
+        ResponsiveSize = this.parseResponsiveQueries(Parent);
+    }
+
+    /**
+     * Update the width to the new responsive Y
+     */
+    returnVar = ResponsiveSize.Y;
+
+    /**
+     * If the element is a string than we need to parse it to a Number
+     */
+    if (typeof returnVar === "string") {
+        returnVar = this.convertPositionalString(returnVar, Parent.Height);
+    }
+
+    /**
+     * If we got here, and we dont have a number, then something has gone wrong.
+     * Probably someone wrote the wrong positional information in this.Data.Position.Height
+     */
+    if (typeof returnVar !== "number") {
+        throw new Error("Failure to read element Y for Container: \"" + this.Data.Description + "\"");
+    }
+
+    /**
+     * We want to simply add this position to the parents absolute Y.
+     * This is because this element is relative to its parent.
+     */
+    returnVar += Parent.Y;
+
+    /**
+     * If the element has the CenterOffset attribute, then it is positioned in the center of its
+     * parent.
+     * You can position it according to X/Y and X and Y independantly.
+     */
+    if ((ResponsiveSize.CenterOffset === true) || (ResponsiveSize.CenterOffset === "Y")) {
+        returnVar += Parent.Height / 2;
+    }
+
+    /**
+     * If the element has the Centered attribute, then it is automatically realigned so the given coordinates
+     * are the center, rather than the top left.
+     * You can position it according to X/Y and X and Y independantly.
+     */
+    if ((ResponsiveSize.Centered === true) || (ResponsiveSize.Centered === "Y")) {
+        if ((typeof Height === "undefined") || (Height === null)) {
+            Height = this.getHeight(Parent);
+        }
+
+        returnVar -= (Height / 2);
+    }
+
+    return returnVar;
+}
+
+/**
+ * This method finds out if the current element is visible.
+ * It will also check its parent to make sure its parent is visible too.
+ *
+ * @param {Container.getCoords()|Scene} Parent
+ * @returns {Boolean}
+ */
+Container.prototype.getVisible = function (Parent) {
+    var returnVar = this.Data.Status.Visible;
+
+    /**
+     * We only need to check the parent if this current element is visible
+     */
+    if (returnVar) {
+        /**
+         * Make sure we know the parents positional information
+         */
+        if ((typeof Parent === "undefined") || (Parent === null)) {
+            Parent = this.getParent();
+        }
+
+        returnVar = Parent.Visible;
+    }
+
+    return returnVar;
+}
+
+/**
+ * This function converts a positional string to a hard number.
+ * 
+ * For example, if "100px" is passed through, 100 will be returned
+ * if "5%" is passed  through, then 5% of the parents width/height will be returned as a Number
+ * if "5%+100px" is passed through, then 5% of the parents width/height and 100px will be returned, as a number.
+ * 
+ * 
+ * @param {String} PositionalValue
+ * @param {Number} ParentSizeModifier
+ * @returns {Number}
+ */
+Container.prototype.convertPositionalString = function (PositionalValue, ParentSizeModifier) {
+    var returnVar = PositionalValue;
+
+    if (typeof returnVar === 'string') {
+        if (!isNaN(returnVar)) {
+            /**
+             * If this string is just a number, then we just want to convert it
+             * to a number.
+             */
+            returnVar = parseInt(returnVar, 10);
+        } else if (returnVar.match(/^([0-9]+)px$/g)) {
+            /**
+             * If this string is a number followed by px, than we just want to strip
+             * the px away.
+             *
+             * for example: "100px" = 100
+             */
+            returnVar = parseInt(returnVar.match(/^([0-9]+)px$/g)[0], 10);
+        } else if (returnVar.match(/^([0-9]+)\%$/g)) {
+            /**
+             * If this string is a number followed by a %, then it is a percentage.
+             * We convert this number into a decimal so we can play with it.
+             *
+             * for example: "50%" = 50 = 0.50
+             *
+             * We then times this number by the parents size modifier to figure the
+             * position of this element.
+             */
+            var percent = parseInt(returnVar.match(/^([0-9]+)\%$/g)[0], 10) / 100;
+
+            returnVar = parseInt(ParentSizeModifier * percent, 10);
+        } else if (returnVar.match(/^([0-9]+)(\%|px)(\-|\+)([0-9]+)(\%|px)$/g)) {
+            /**
+             * This is an advanced string, it works similar to the above two,
+             * it allows for very simple calculations. 
+             * It will allow you to do stuff like this:
+             * 100%-50px
+             * 50px-100%
+             * 100%+50px
+             * 50px+100%
+             */
+
+            var re = /^([0-9]+)(\%|px)(\-|\+)([0-9]+)(\%|px)$/gi;
+            var regexinfo = re.exec(returnVar);
+
+            /**
+             * Currently we only support two numbers to be played with, there is probably
+             * a better method to do this, with a loop. However, i can only imagine
+             * ever using two numbers.
+             */
+
+            /**
+             * First we figure out what the first number is
+             */
+            var num1 = parseInt(regexinfo[1], 10);
+            if (regexinfo[2] === '%') {
+                var percent = parseInt(num1, 10) / 100;
+                num1 = parseInt(ParentSizeModifier * percent, 10);
+            }
+
+            /**
+             * Then we figure out what the second number is
+             */
+            var num2 = parseInt(regexinfo[4], 10);
+            if (regexinfo[5] === '%') {
+                var percent = parseInt(num1, 10) / 100;
+                num2 = parseInt(ParentSizeModifier * percent, 10);
+            }
+
+            /**
+             * Now we simply do the arithmetic with these numbers.
+             */
+            if (regexinfo[3] === '+') {
+                returnVar = num1 + num2;
+            } else {
+                returnVar = num1 - num2;
+            }
+        }
+    }
+
+    return returnVar;
+}
+
+/**
+ * Returns the absolute positioning information of this container that is
+ * stored in cache.
+ *
+ * If the cache is invalid, then this method will return false.
+ *
+ * @returns {Boolean|Container.AbsolutePosition}
+ */
+Container.prototype.getCache = function () {
+    var returnVar = ((this.Data.Position.CachePositioning) &&
+            (typeof this.AbsolutePosition !== "undefined") && (this.AbsolutePosition !== null) && (this.Data.Position.currentCacheID === Scene.cachedID));
+
+    return (returnVar ? this.AbsolutePosition : false);
+}
+
+/**
+ * This calculates the current absolute position of the container.
+ *
+ * This method saves the calculations to a cache, and the cache should be referenced
+ * with this.getCache(), this method should only be called if this.getCache() returns false
+ * (meaning the cache is invalid).
+ *
+ * @returns {Container.AbsolutePosition}
+ */
+Container.prototype.calculatePosition = function () {
+    /**
+     * Calculate the various positional information.
+     * These methods share similar reference variables (IE the current parents position).
+     * It is not required to pass through these common variables, but it will save
+     * them from having to figure it out themselves.
+     */
+    var Parent = this.getParent();
+    var ResponsiveSize = this.parseResponsiveQueries(Parent);
+    var Visible = this.getVisible(Parent, ResponsiveSize);
+    var Width = this.getWidth(Parent, ResponsiveSize);
+    var Height = this.getHeight(Parent, ResponsiveSize);
+    var X = this.getX(Parent, ResponsiveSize, Width);
+    var Y = this.getY(Parent, ResponsiveSize, Height);
+
+    /**
+     * We save the data to a cache class stored in this.
+     */
+    this.AbsolutePosition = {
+        Parent: Parent,
+        Visible: Visible,
+        Width: Width,
+        Height: Height,
+        X: X,
+        Y: Y
+    }
+
+    /**
+     * Update the currentCacheID's so future getCache requests should return true
+     */
+    this.Data.Position.currentCacheID = Scene.cachedID;
+
+    /**
+     * Return the relevent positional information
+     */
     return this.AbsolutePosition;
 }
 
 /**
+ * Get the current containers absolute coordinates from the top left of the canvas.
+ *
+ * @returns {Container.AbsolutePosition}
+ */
+Container.prototype.getCoords = function () {
+    /**
+     * If this information has been stored in a cache then we just want to simply
+     * restore the information from the cache.
+     *
+     * Otherwise, we want to generate this information and save it to the cache.
+     */
+    var returnVar = this.getCache();
+    if (!returnVar) {
+        returnVar = this.calculatePosition();
+    }
+
+    return returnVar;
+}
+
+/**
  * Draw the containers background and outline, this is the most basic renderqueue item
- * 
- * 
+ *
+ *
  * @param {Integer} X
  * @param {Integer} Y
  * @param {Integer} dt
@@ -525,8 +1059,8 @@ Container.prototype.drawBackground = function (X, Y, dt) {
 /**
  * This function is responsible for all the containers drawing.
  * Child classes should not modify this class, but instead modify the renderqueue
- * 
- * 
+ *
+ *
  * @param {Integer} dt
  * @returns {undefined}
  */
@@ -560,7 +1094,7 @@ Container.prototype.resetCache = function () {
 
 /**
  * Is this element currently being hovered over?
- * 
+ *
  * @param {Object} _Mouse
  * @returns {Container.prototype.isHovered.Coords|Container.getCoords|Boolean}
  */
@@ -594,7 +1128,7 @@ function drawContainers(dt) {
 /**
  * This function will find a container with a particular description.
  * This is referenced and used when finding parent classes.
- * 
+ *
  * @param {String} name
  * @returns {findContainer.e|Boolean}
  */

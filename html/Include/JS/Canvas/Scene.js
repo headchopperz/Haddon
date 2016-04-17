@@ -19,13 +19,13 @@ var Scene = new (function (settings) {
         Width: 1800,
         Height: 500,
         Visible: true,
-        MobileWidth: 1030,
-        MinWidth: 660
+        MinWidth: 345
     };
 
     this.delayedResizeTimeout = null;
     this.isMobile = false;
     this.cachedID = 0;
+    this.resizeCachedID = 0;
 
     /**
      * On each loop this clears the canvas so we can redraw everything.
@@ -125,6 +125,8 @@ var Scene = new (function (settings) {
          * we want to invalidate all positioning cache.
          */
         this.cachedID = 0;
+        
+        this.resizeCachedID = Date.now();
 
         /**
          * Find the Y of the bottom-most element, so we know how large the 
@@ -171,6 +173,7 @@ var Scene = new (function (settings) {
         delayedResize: this.delayedResize,
         cachedID: this.cachedID,
         currentFrustrum: this.currentFrustrum,
+        resizeCachedID: this.resizeCachedID,
         sync: this.sync,
         updateViewport: this.updateViewport,
         getOffset: this.getOffset

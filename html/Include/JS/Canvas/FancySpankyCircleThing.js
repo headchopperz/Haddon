@@ -1,9 +1,12 @@
 /**
  * This class is responsible for the background bit behind each timeline element
- * 
+ *
  * It is a child of Container as i did not want to hardcode this weird behaviour
  * into Container directly.
- * 
+ *
+ * This class is kinda bodged together really quickly... It should be ideally
+ * remade... Hammered a triangle peg into a circle hole type thing.
+ *
  * @param {String} name
  * @param {Object} settings
  * @returns {FancySpankyCircleThing}
@@ -40,19 +43,20 @@ FancySpankyCircleThing.prototype.constructor = Container;
 /**
  * Because this element actually has a weird shape, i need to do some special calculations
  * in regard to the arc and box.
- * 
+ *
  * It might be a better idea to split the arc and box into their own seperate classes, with a link
  * between them.
- * 
+ *
  * @param {Number} X
  * @param {Number} Y
  * @returns {FancySpankyCircleThing.prototype.calcPosInfo.FancySpankyCircleThingAnonym$1}
  */
 FancySpankyCircleThing.prototype.calcPosInfo = function (X, Y) {
-    var Size = this.Data.Position.Height;
-    
+    var Coords = this.getCoords();
+    var Size = Coords.Height;
+
     var Arc = {
-        X: (this.Data.Position.Direction === 'Left') ? X : X + this.Data.Position.Width,
+        X: (this.Data.Position.Direction === 'Left') ? X : X + Coords.Width,
         Y: Y + (Size / 2),
         Radius: Size / 2
     };
@@ -60,8 +64,8 @@ FancySpankyCircleThing.prototype.calcPosInfo = function (X, Y) {
     var Box = {
         X: X,
         Y: Y,
-        Width: this.Data.Position.Width,
-        Height: this.Data.Position.Height
+        Width: Coords.Width,
+        Height: Coords.Height
     }
 
     return {
@@ -73,15 +77,7 @@ FancySpankyCircleThing.prototype.calcPosInfo = function (X, Y) {
 
 FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
     var Pos = this.calcPosInfo(X, Y);
-
-    Scene.context.globalAlpha = (this.Data.Status.Hovered) ? this.Data.Hover.Opacity : this.Data.Fill.Opacity;
-    Scene.context.beginPath();
-    Scene.context.arc(Pos.Arc.X, Pos.Arc.Y, Pos.Arc.Radius, 0, Math.PI * 2, true);
-    //Scene.context.rect(Pos.Box.X, Pos.Box.Y, Pos.Box.Width, Pos.Box.Height);
-    Scene.context.fillStyle = "black";
-    Scene.context.fill();
-    Scene.context.closePath();
-    Scene.context.globalAlpha = 1;
+    var Coords = this.getCoords();
 
     Scene.context.globalAlpha = (this.Data.Status.Hovered) ? this.Data.Hover.Opacity : this.Data.Fill.Opacity;
     Scene.context.beginPath();
@@ -91,64 +87,75 @@ FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
     Scene.context.closePath();
     Scene.context.globalAlpha = 1;
 
-    Scene.context.globalAlpha = 0.05;
-    Scene.context.beginPath();
+    if (Scene.Viewport.Width > 700) {
+        Scene.context.globalAlpha = (this.Data.Status.Hovered) ? this.Data.Hover.Opacity : this.Data.Fill.Opacity;
+        Scene.context.beginPath();
+        Scene.context.arc(Pos.Arc.X, Pos.Arc.Y, Pos.Arc.Radius, 0, Math.PI * 2, true);
+        //Scene.context.rect(Pos.Box.X, Pos.Box.Y, Pos.Box.Width, Pos.Box.Height);
+        Scene.context.fillStyle = "black";
+        Scene.context.fill();
+        Scene.context.closePath();
+        Scene.context.globalAlpha = 1;
 
-    this.Data.Status.SpinnyThing += (this.Data.Position.Direction === 'Left') ? (dt * 0.0005) : -(dt * 0.0005);
-    Scene.context.arc(Pos.Arc.X, Pos.Arc.Y, Pos.Arc.Radius - 5, this.Data.Status.SpinnyThing, Math.PI + this.Data.Status.SpinnyThing, true);
-    //Scene.context.rect(Pos.Box.X, Pos.Box.Y, Pos.Box.Width, Pos.Box.Height);
-    Scene.context.fillStyle = "white";
-    Scene.context.fill();
-    Scene.context.closePath();
-    Scene.context.globalAlpha = 1;
+        Scene.context.globalAlpha = 0.05;
+        Scene.context.beginPath();
 
-    if (this.Data.Dots.On) {
+        this.Data.Status.SpinnyThing += (this.Data.Position.Direction === 'Left') ? (dt * 0.0005) : -(dt * 0.0005);
+        Scene.context.arc(Pos.Arc.X, Pos.Arc.Y, Pos.Arc.Radius - 5, this.Data.Status.SpinnyThing, Math.PI + this.Data.Status.SpinnyThing, true);
+        //Scene.context.rect(Pos.Box.X, Pos.Box.Y, Pos.Box.Width, Pos.Box.Height);
+        Scene.context.fillStyle = "white";
+        Scene.context.fill();
+        Scene.context.closePath();
+        Scene.context.globalAlpha = 1;
 
-        var dotAmount = Math.floor(this.Data.Position.Height / this.Data.Dots.GapBetweenDots);
+        if (this.Data.Dots.On) {
 
-        this.Data.Dots.AnimateID += (dt * 0.001) * this.Data.Dots.AnimateSpeed
+            var dotAmount = Math.floor(Coords.Height / this.Data.Dots.GapBetweenDots);
 
-        if (this.Data.Dots.AnimateID > dotAmount + 1) {
-            this.Data.Dots.AnimateID = 0;
-        }
+            this.Data.Dots.AnimateID += (dt * 0.001) * this.Data.Dots.AnimateSpeed
 
-        for (var i = 0; i <= dotAmount; i++) {
-            var dotYOffset = (i - (dotAmount / 2)) * this.Data.Dots.GapBetweenDots;
-
-            var dot = {
-                X: Pos.Arc.X,
-                Y: Pos.Arc.Y + dotYOffset
+            if (this.Data.Dots.AnimateID > dotAmount + 1) {
+                this.Data.Dots.AnimateID = 0;
             }
 
-            var sphereEdgeX = Math.sqrt(Math.pow(Pos.Size / 2, 2) - Math.pow(Math.abs(dotYOffset), 2));
+            for (var i = 0; i <= dotAmount; i++) {
+                var dotYOffset = (i - (dotAmount / 2)) * this.Data.Dots.GapBetweenDots;
 
-            if (this.Data.Position.Direction === 'Left') {
-                sphereEdgeX = -sphereEdgeX;
+                var dot = {
+                    X: Pos.Arc.X,
+                    Y: Pos.Arc.Y + dotYOffset
+                }
+
+                var sphereEdgeX = Math.sqrt(Math.pow(Pos.Size / 2, 2) - Math.pow(Math.abs(dotYOffset), 2));
+
+                if (this.Data.Position.Direction === 'Left') {
+                    sphereEdgeX = -sphereEdgeX;
+                }
+
+
+                var opacity = 0.25;
+
+                if (Math.abs(i - this.Data.Dots.AnimateID) <= 1) {
+                    var difference = 1 - Math.abs(i - this.Data.Dots.AnimateID);
+
+                    opacity += difference * 0.75;
+                } else if ((i === 0) && (this.Data.Dots.AnimateID > dotAmount)) {
+                    var difference = 1 - Math.abs((dotAmount + 1) - this.Data.Dots.AnimateID);
+
+                    opacity += difference * 0.75;
+                }
+
+                dot.X += sphereEdgeX;
+
+                Scene.context.globalAlpha = opacity;
+                Scene.context.beginPath();
+                Scene.context.arc(dot.X, dot.Y, 4, 0, 2 * Math.PI);
+                Scene.context.fillStyle = "grey";
+                Scene.context.fill();
+                Scene.context.stroke();
+                Scene.context.closePath();
+                Scene.context.globalAlpha = 1;
             }
-            
-            
-            var opacity = 0.25;
-            
-            if (Math.abs(i - this.Data.Dots.AnimateID) <= 1) {
-                var difference = 1 - Math.abs(i - this.Data.Dots.AnimateID);
-                
-                opacity += difference * 0.75;
-            } else if ((i === 0) && (this.Data.Dots.AnimateID > dotAmount)) {
-                var difference = 1 - Math.abs((dotAmount + 1) - this.Data.Dots.AnimateID);
-                
-                opacity += difference * 0.75;
-            }
-
-            dot.X += sphereEdgeX;
-
-            Scene.context.globalAlpha = opacity;
-            Scene.context.beginPath();
-            Scene.context.arc(dot.X, dot.Y, 4, 0, 2 * Math.PI);
-            Scene.context.fillStyle = "grey";
-            Scene.context.fill();
-            Scene.context.stroke();
-            Scene.context.closePath();
-            Scene.context.globalAlpha = 1;
         }
     }
 }
@@ -157,7 +164,7 @@ FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
  * Because this element containers a sphere edge aswell as a square background,
  * we will detect if the mouse is within the sphere, or within the box, to be
  * able to find out if it is being hovered over.
- * 
+ *
  * @param {Mouse} _Mouse
  * @returns {Boolean}
  */

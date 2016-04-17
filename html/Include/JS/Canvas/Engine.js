@@ -82,9 +82,9 @@ function drawIntroDots(dt) {
 /**
  * This function will display the users current FPS in the top left corner if
  * the key D is currently being pressed.
- * 
+ *
  * This is for debugging performance.
- * 
+ *
  * @param {Number} dt
  * @returns {undefined}
  */
@@ -92,10 +92,10 @@ function showFPS(dt) {
     /**
      * First we need to record the current FPS  in order to average out
      * all the recent records
-     * 
+     *
      * The reason why it needs to be averaged is that it fluctuates too much to
      * even be read.
-     * 
+     *
      * This code will attempt to average it to whatever the last second was.
      * So the more frames the user has, the more frames it will reference when
      * averaging.
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * Load all the additional containers for the page.
-     * 
+     *
      * @param {type} obj
      * @returns {undefined}
      */
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * Load all the timeline information and create Containers to hold all of it
-     * 
+     *
      * @param {type} obj
      * @returns {undefined}
      */
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
 /**
  * This is a native way to just do an AJAX request for a JSON file. It may need
  * to be extended upon for further browser support.
- * 
+ *
  * @param {String} URL
  * @param {Function} Func
  * @returns {undefined}
@@ -237,24 +237,24 @@ function loadJSON(URL, Func) {
 /**
  * This function adds a new timeline element to the page.
  * This information is usually loaded from TimelineElements.json under /Include/Data/
- * 
+ *
  * This function has three requirements.
  * 1. Coords - The Coords of the parent element that we will base these elements off
  *             Most of the positioning will be calculated live from the parent, however
  *             We still need this to find out the height of the parent, so we can
  *             make sure we actually position it below the parent
- * 
+ *
  * 2. Data   - The Timeline elements actual data. This includes Images, Text, all sorts
- * 
+ *
  * 3. OffsetID - The Timeline Elements ID. This stops timeline elements from overlapping
  *               As we can ensure they are positioned below all the other elements.
  *               We also use it with modulus to find out which direction this element will
  *               face.
- *               
- *                
+ *
+ *
  * This function will create a series of Containers, it is within these where the
  * information is stored and manipulated.
- * 
+ *
  * @param {Object} Coords
  * @param {Object} data
  * @param {Number} OffsetID
@@ -276,16 +276,28 @@ function loadTimelineElement(Coords, data, OffsetID) {
         Data: {
             Position: {
                 X: Element.X,
-                Y: Coords.Height + 50 + (Element.Height * OffsetID),
+                Y: (Coords.Y + Coords.Height) + 50 + (Element.Height * OffsetID),
                 Width: Element.Width,
                 Height: Element.Height,
                 CenterOffset: "X",
                 Centered: "X",
-                Parent: "containerTitle",
-                Mobile: {
+                Responsive: {
                     On: true,
-                    Y: Coords.Height + 50 + ((Element.Height + 70) * OffsetID),
-                    X: (OffsetID % 2 === 1) ? 50 : -50
+                    Queries: [
+                        {
+                            On: true,
+                            maxWidth: 1030,
+                            X: (OffsetID % 2 === 1) ? 50 : -50,
+                            Y: (Coords.Y + Coords.Height) + 50 + ((Element.Height + 70) * OffsetID)
+                        }, {
+                            On: true,
+                            maxWidth: 700,
+                            Width: "100%",
+                            Height: (Element.Height * 2),
+                            X: 0,
+                            Y: (Coords.Y + Coords.Height) + 50 + (((Element.Height * 2) + 70) * OffsetID)
+                        }
+                    ]
                 }
             }
         }
@@ -296,8 +308,8 @@ function loadTimelineElement(Coords, data, OffsetID) {
             Position: {
                 X: 0,
                 Y: 0,
-                Width: Element.Width,
-                Height: Element.Height,
+                Width: "100%",
+                Height: "100%",
                 Direction: (OffsetID % 2 === 1) ? 'Left' : 'Right',
                 Parent: TimelineName + '-Container'
             },
@@ -321,7 +333,7 @@ function loadTimelineElement(Coords, data, OffsetID) {
             Position: {
                 X: 25,
                 Y: 0,
-                Width: Element.Width - 50,
+                Width: "100%-50px",
                 Height: 24,
                 Parent: TimelineName + '-Container'
             },
@@ -344,9 +356,20 @@ function loadTimelineElement(Coords, data, OffsetID) {
             Position: {
                 X: 20 + xv,
                 Y: 30,
-                Width: Element.Width - 40 - SphereOffset,
+                Width: "100%-" + (40 + SphereOffset) + "px",
                 Height: Element.Height - 60,
-                Parent: TimelineName + '-Container'
+                Parent: TimelineName + '-Container',
+                Responsive: {
+                    On: true,
+                    Queries: [
+                        {
+                            On: true,
+                            maxWidth: 700,
+                            Width: "100%-30px",
+                            X: 15
+                        }
+                    ]
+                }
             },
             Text: {
                 On: true,
@@ -366,10 +389,20 @@ function loadTimelineElement(Coords, data, OffsetID) {
         Data: {
             Position: {
                 X: 20 + xv,
-                Y: Element.Height - 5,
+                Y: "100%-5px",
                 Width: 10,
                 Height: 20,
-                Parent: TimelineName + '-Container'
+                Parent: TimelineName + '-Container',
+                Responsive: {
+                    On: true,
+                    Queries: [
+                        {
+                            On: true,
+                            maxWidth: 700,
+                            X: 15
+                        }
+                    ]
+                }
             },
             Text: {
                 On: true,
@@ -386,12 +419,25 @@ function loadTimelineElement(Coords, data, OffsetID) {
     Containers.push(new PictureBox(TimelineName + '-Picture', {
         Data: {
             Position: {
-                X: ((OffsetID % 2 === 1) ? 0 : Element.Width),
+                X: ((OffsetID % 2 === 1) ? 0 : "100%"),
                 Y: Element.Height / 2,
                 Width: 200,
                 Height: 200,
                 Centered: true,
-                Parent: TimelineName + '-Container'
+                Parent: TimelineName + '-Container',
+                Responsive: {
+                    On: true,
+                    Queries: [
+                        {
+                            On: true,
+                            maxWidth: 700,
+                            Y: "100%-" + (Element.Height / 2 + 15) + "px",
+                            X: 0,
+                            CenterOffset: "X"
+
+                        }
+                    ]
+                }
             },
             Image: {
                 On: true,
@@ -412,12 +458,22 @@ function loadTimelineElement(Coords, data, OffsetID) {
             Containers.push(new TextBox(btnName, {
                 Data: {
                     Position: {
-                        X: ((OffsetID % 2 === 1) ? Element.Width - (40 * (i + 1)) : (40 * i)),
-                        Y: Element.Height,
+                        X: ((OffsetID % 2 === 1) ? "100%-" + (40 * (i + 1)) + "px": (40 * i)),
+                        Y: "100%",
                         Width: 40,
                         Height: 40,
                         Centered: false,
-                        Parent: TimelineName + '-Container'
+                        Parent: TimelineName + '-Container',
+                        Responsive: {
+                            On: true,
+                            Queries: [
+                                {
+                                    On: true,
+                                    maxWidth: 700,
+                                    X: (40 * i)
+                                }
+                            ]
+                        }
                     },
                     Text: {
                         On: true,
