@@ -1066,7 +1066,7 @@ Container.prototype.drawBackground = function (X, Y, dt) {
  */
 Container.prototype.draw = function (dt) {
     var Coords = this.getCoords();
-    if ((Coords) && (this.withinFrustrum(Coords))) {
+    if ((Coords.Visible) && (this.withinFrustrum(Coords))) {
         for (var i = 0; i < this.RenderQueue.Items.length; i++) {
             var e = this.RenderQueue.Items[i];
             if (typeof this[e] === 'function') {
