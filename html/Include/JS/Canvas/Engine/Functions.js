@@ -9,3 +9,17 @@
 function OpenURL(URL) {
     window.open(URL, '_blank');
 }
+
+/**
+ * This function compares two highscore elements and sorts them descendingly
+ * @param {Highscore Class} a
+ * @param {Highscore Class} b
+ * @returns {Number}
+ */
+function compareScore(a, b) {
+    if (a.Score > b.Score)
+        return -1;
+    if (a.Score < b.Score)
+        return 1;
+    return 0;
+}

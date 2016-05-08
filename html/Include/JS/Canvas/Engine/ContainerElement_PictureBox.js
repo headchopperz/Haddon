@@ -1,22 +1,13 @@
 /**
- * This array holds all the loaded Images in one place
- * An image is stored into this array according to the base64 version of its URL
- * If you do LoadedImages.length, it will return 0, even if its fulled of Images
- * 
- * @type Array
- */
-var LoadedImages = [];
-
-/**
- * This function is a child of Container, it handles the loading and rendering of
+ * This function is a child of ContainerElement, it handles the loading and rendering of
  * images.
  * It can also work as a slideshow for multiple images.
  * 
  * @param {String} name
  * @param {Object} settings
- * @returns {PictureBox}
+ * @returns {ContainerElement_PictureBox}
  */
-var PictureBox = function (name, settings) {
+var ContainerElement_PictureBox = function (name, settings) {
     this.constructor(name, settings);
 
     this.import({
@@ -68,8 +59,8 @@ var PictureBox = function (name, settings) {
     this.RenderQueue.add("drawPictures");
 }
 
-PictureBox.prototype = Object.create(Container.prototype);
-PictureBox.prototype.constructor = Container;
+ContainerElement_PictureBox.prototype = Object.create(ContainerElement.prototype);
+ContainerElement_PictureBox.prototype.constructor = ContainerElement;
 
 /**
  * This method draws the loaded picture onto the screen.
@@ -88,50 +79,14 @@ PictureBox.prototype.constructor = Container;
  * @param {Number} Opacity
  * @returns {undefined}
  */
-PictureBox.prototype.drawPicture = function (X, Y, dt, ImageURL, Opacity) {
+ContainerElement_PictureBox.prototype.drawPicture = function (X, Y, dt, ImageURL, Opacity) {
     /**
-     * First we need to find out if we have already loaded this image on this page before
-     * we Base64 the URL of the image to create a uniform naming system with basic characters
+     * If the image has not been loaded yet, then nothing will appear.
      */
-    var ImageName = window.btoa(ImageURL);
-    if (typeof LoadedImages[ImageName] === 'undefined') {
-        /**
-         * If the Image has not been loaded, then we need to spend our time loading it in the background
-         */
-        LoadedImages[ImageName] = new Image();
-        LoadedImages[ImageName].src = ImageURL;
-    } else if (LoadedImages[ImageName].complete) {
-        /**
-         * Now the image has been fully loaded we need to render it.
-         * 
-         * The two options is to dynamically crop the edges and to force it into a circle
-         * or to just draw it normally...
-         */
-        if (this.Data.Image.Circle) {
-            var Size = (this.Data.Position.Width + this.Data.Position.Height) / 2;
-
-            Scene.context.globalAlpha = Opacity;
-            Scene.context.save();
-            Scene.context.beginPath();
-            Scene.context.arc(X + (Size / 2), Y + (Size / 2), Size / 2, 0, Math.PI * 2, true);
-            Scene.context.fillStyle = "black";
-            Scene.context.fill();
-            Scene.context.closePath();
-            Scene.context.clip();
-
-
-            Scene.context.drawImage(LoadedImages[ImageName], X, Y, Size, Size);
-
-            Scene.context.beginPath();
-            Scene.context.arc(X, Y, Size / 2, 0, Math.PI * 2, true);
-            Scene.context.clip();
-            Scene.context.closePath();
-
-
-            Scene.context.restore();
-        } else {
-            Scene.context.drawImage(LoadedImages[ImageName], X, Y, this.Data.Position.Width, this.Data.Position.Height);
-        }
+    if (this.Data.Image.Circle) {
+        Scene.drawImageRound(X, Y, this.Data.Position.Width, this.Data.Position.Height, ImageURL, Opacity);
+    } else {
+        Scene.drawImage(X, Y, this.Data.Position.Width, this.Data.Position.Height, ImageURL, Opacity);
     }
 }
 
@@ -147,7 +102,7 @@ PictureBox.prototype.drawPicture = function (X, Y, dt, ImageURL, Opacity) {
  * @param {Number} dt
  * @returns {undefined}
  */
-PictureBox.prototype.drawPictures = function (X, Y, dt) {
+ContainerElement_PictureBox.prototype.drawPictures = function (X, Y, dt) {
     /**
      * If there are no image sources... then theres nothing we can draw...
      */
@@ -182,7 +137,7 @@ PictureBox.prototype.drawPictures = function (X, Y, dt) {
              * We want to make sure that the next image is actually a different image
              */
             if (this.Data.Image.NextID !== this.Data.Image.CurrentID) {
-                
+
                 /**
                  * Now we want to draw this new image in accordance to how much it has already
                  * faded in.
@@ -216,22 +171,22 @@ PictureBox.prototype.drawPictures = function (X, Y, dt) {
  * @param {type} _Mouse
  * @returns {Boolean}
  */
-PictureBox.prototype.isHovered = function (_Mouse) {
+ContainerElement_PictureBox.prototype.isHovered = function (_Mouse) {
     var Coords = this.getCoords();
-    
+
     var returnVar = false;
-    
-    
+
+
     if (this.Data.Image.Circle) {
         var Size = (this.Data.Position.Width + this.Data.Position.Height) / 2;
 
-        returnVar = ((Coords) && (Math.sqrt(Math.pow(_Mouse.X - (Coords.X + (Size / 2)), 2) + Math.pow(_Mouse.Y - (Coords.Y + (Size / 2)), 2)) < Size / 2));
+        returnVar = ((Coords.Visible) && (Math.sqrt(Math.pow(_Mouse.X - (Coords.X + (Size / 2)), 2) + Math.pow(_Mouse.Y - (Coords.Y + (Size / 2)), 2)) < Size / 2));
     } else {
-        returnVar = ((Coords) && ((_Mouse.X < Coords.X + Coords.Width) &&
+        returnVar = ((Coords.Visible) && ((_Mouse.X < Coords.X + Coords.Width) &&
                 (_Mouse.X > Coords.X) &&
                 (_Mouse.Y < Coords.Y + Coords.Height) &&
                 (_Mouse.Y > Coords.Y)));
     }
-    
+
     return returnVar;
 }

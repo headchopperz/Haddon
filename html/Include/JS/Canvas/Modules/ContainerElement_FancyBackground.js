@@ -6,18 +6,18 @@
  *
  * This class is kinda bodged together really quickly... It should be ideally
  * remade... Hammered a triangle peg into a circle hole type thing.
- *
+ * 
  * @param {String} name
  * @param {Object} settings
- * @returns {FancySpankyCircleThing}
+ * @returns {ContainerElement_PictureBox}
  */
-var FancySpankyCircleThing = function (name, settings) {
+var ContainerElement_FancyBackground = function (name, settings) {
     this.constructor(name, settings);
 
     this.import({
         Data: {
             Position: {
-                Direction: "Left"
+                Direction: "Left"                
             },
             Status: {
                 SpinnyThing: 0
@@ -33,12 +33,10 @@ var FancySpankyCircleThing = function (name, settings) {
     });
 
     this.import(settings);
-
-    this.RenderQueue.add("drawPicture");
 }
 
-FancySpankyCircleThing.prototype = Object.create(Container.prototype);
-FancySpankyCircleThing.prototype.constructor = Container;
+ContainerElement_FancyBackground.prototype = Object.create(ContainerElement.prototype);
+ContainerElement_FancyBackground.prototype.constructor = ContainerElement;
 
 /**
  * Because this element actually has a weird shape, i need to do some special calculations
@@ -51,7 +49,7 @@ FancySpankyCircleThing.prototype.constructor = Container;
  * @param {Number} Y
  * @returns {FancySpankyCircleThing.prototype.calcPosInfo.FancySpankyCircleThingAnonym$1}
  */
-FancySpankyCircleThing.prototype.calcPosInfo = function (X, Y) {
+ContainerElement_FancyBackground.prototype.calcPosInfo = function (X, Y) {
     var Coords = this.getCoords();
     var Size = Coords.Height;
 
@@ -75,7 +73,7 @@ FancySpankyCircleThing.prototype.calcPosInfo = function (X, Y) {
     }
 }
 
-FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
+ContainerElement_FancyBackground.prototype.drawBackground = function (X, Y, dt) {
     var Pos = this.calcPosInfo(X, Y);
     var Coords = this.getCoords();
 
@@ -168,11 +166,11 @@ FancySpankyCircleThing.prototype.drawBackground = function (X, Y, dt) {
  * @param {Mouse} _Mouse
  * @returns {Boolean}
  */
-FancySpankyCircleThing.prototype.isHovered = function (_Mouse) {
+ContainerElement_FancyBackground.prototype.isHovered = function (_Mouse) {
     var Coords = this.getCoords();
     var Pos = this.calcPosInfo(Coords.X, Coords.Y);
 
-    return ((Coords) && (((_Mouse.X < Pos.Box.X + (Pos.Size * 2)) &&
+    return ((Coords.Visible) && (((_Mouse.X < Pos.Box.X + (Pos.Size * 2)) &&
             (_Mouse.X > Pos.Box.X) &&
             (_Mouse.Y < Pos.Box.Y + Pos.Size) &&
             (_Mouse.Y > Pos.Box.Y)) ||

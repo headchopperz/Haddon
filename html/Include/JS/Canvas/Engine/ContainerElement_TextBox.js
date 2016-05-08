@@ -1,5 +1,5 @@
 /**
- * This class is responsible for handling container elements with text 
+ * This class is responsible for handling ContainerElement elements with text 
  * 
  * Text drawing is suprisingly computational heavy, and some things may need to
  * be done to speed this up
@@ -9,9 +9,9 @@
  * 
  * @param {String} name
  * @param {String} settings
- * @returns {TextBox}
+ * @returns {ContainerElement_TextBox}
  */
-var TextBox = function (name, settings) {
+var ContainerElement_TextBox = function (name, settings) {
     this.constructor(name, settings);
     this.import({
         Data: {
@@ -42,9 +42,12 @@ var TextBox = function (name, settings) {
                  */
                 Value: "...",
                 /**
-                 * What is the texts padding, from the outside of the container
+                 * What is the texts padding, from the outside of the ContainerElement
                  */
                 Padding: 15,
+                PaddingTop: 0,
+                PaddingLeft: 0,
+                PaddingRight: 0,
                 /**
                  * Is there a space between the letters? Unfortunantely i cannot
                  * define this space in px or em, but it is either true or false
@@ -62,9 +65,9 @@ var TextBox = function (name, settings) {
                 Font: "VT323,Georgia",
                 /**
                  * What is the alignment of the text, you can set this to
-                 * left, middle or right
+                 * left, center or right
                  */
-                Align: "middle",
+                Align: "center",
                 /**
                  * What is the size of the text in px
                  */
@@ -80,7 +83,7 @@ var TextBox = function (name, settings) {
                 Opacity: 1
             },
             /**
-             * Do we want to wrap this text to fit the container it is in?
+             * Do we want to wrap this text to fit the ContainerElement it is in?
              */
             WrapText: {
                 On: false,
@@ -102,8 +105,8 @@ var TextBox = function (name, settings) {
                 SpaceDistance: 14
             },
             /**
-             * The below is a class for an editable version of the text container
-             * The textbox feature is currently not fully implemented
+             * The below is a class for an editable version of the text ContainerElement
+             * The ContainerElement_TextBox feature is currently not fully implemented
              */
             TextBox: {
                 On: false,
@@ -132,7 +135,7 @@ var TextBox = function (name, settings) {
 
     this.RenderQueue.add("drawText");
 
-    this.Events.onClick.push({
+    this.Events.onRelease.push({
         Function: "selectTextBox",
         Parameters: [
             this
@@ -140,8 +143,8 @@ var TextBox = function (name, settings) {
     });
 }
 
-TextBox.prototype = Object.create(Container.prototype);
-TextBox.prototype.constructor = Container;
+ContainerElement_TextBox.prototype = Object.create(ContainerElement.prototype);
+ContainerElement_TextBox.prototype.constructor = ContainerElement;
 
 /**
  * This function turns a string of text into an array of strings which are wordwrapped
@@ -167,18 +170,19 @@ TextBox.prototype.constructor = Container;
  * 
  * @returns {Array}
  */
-TextBox.prototype.wrapText = function () {
+ContainerElement_TextBox.prototype.wrapText = function () {
     if ((this.Data.WrapText.On) && ((this.Data.Text.Value !== this.Data.WrapText.UnwrappedText) || (this.Data.WrapText.currentCacheID !== Scene.resizeCachedID))) {
-        var Text = this.Data.Text.Value.split(/\r?\n/g);
+        var Text = this.Data.Text.Value.toString().split(/\r?\n/g);
         var Coords = this.getCoords();
 
         for (var i = 0; i < Text.length; i++) {
             Text[i] = Text[i].trim();
             var e = Text[i];
             
-            Scene.context.font = this.Data.Text.Size + "px " + this.Data.Text.Font;
-            if (Scene.context.measureText(e).width > Coords.Width) {
-                var splitCharacter = Math.floor(e.length * (Coords.Width / Scene.context.measureText(e).width));
+            var textSize = Scene.getTextSize(e, this.Data.Text.Size + "px " + this.Data.Text.Font);
+            
+            if (textSize > Coords.Width) {
+                var splitCharacter = Math.floor(e.length * (Coords.Width / textSize));
 
                 var ClosestSpace = this.getClosestSpace(e, splitCharacter);
                 if (splitCharacter - ClosestSpace < this.Data.WrapText.SpaceDistance) {
@@ -192,13 +196,13 @@ TextBox.prototype.wrapText = function () {
             }
             Text[i] = Text[i].trim();
         }
-        
+
         this.Data.WrapText.Value = Text;
 
         this.Data.WrapText.UnwrappedText = this.Data.Text.Value;
         this.Data.WrapText.currentCacheID = Scene.resizeCachedID;
     }
-    return (this.Data.WrapText.On) ? this.Data.WrapText.Value : [this.Data.Text.Value.trim()];
+    return (this.Data.WrapText.On) ? this.Data.WrapText.Value : [this.Data.Text.Value.toString().trim()];
 }
 
 /**
@@ -209,7 +213,7 @@ TextBox.prototype.wrapText = function () {
  * @param {Integer} index
  * @returns {Integer}
  */
-TextBox.prototype.getClosestSpace = function (Text, index) {
+ContainerElement_TextBox.prototype.getClosestSpace = function (Text, index) {
     var ClosestSpace = -1000;
 
     for (var i = index; i >= 0; i--) {
@@ -224,12 +228,12 @@ TextBox.prototype.getClosestSpace = function (Text, index) {
 }
 
 /**
- * When the textbox info has changed
+ * When the ContainerElement_TextBox info has changed
  * This function operates behind the scenes
  * @type function
  * @returns {null}
  */
-TextBox.prototype._onChanged = function () {
+ContainerElement_TextBox.prototype._onChanged = function () {
     this.Data.TextBox._oldValue = this.Data.TextBox.Value;
 
     if (this.Events.onChanged.length > 0) {
@@ -246,7 +250,7 @@ TextBox.prototype._onChanged = function () {
 
 /**
  * This method draws the text to the screen, it is added to the RenderQueue in
- * Container
+ * ContainerElement
  * 
  * 
  * @param {Integer} X
@@ -254,7 +258,7 @@ TextBox.prototype._onChanged = function () {
  * @param {Integer} dt
  * @returns {undefined}
  */
-TextBox.prototype.drawText = function (X, Y, dt) {
+ContainerElement_TextBox.prototype.drawText = function (X, Y, dt) {
     if (this.Data.Text.On) {
         var Coords = this.getCoords();
 
@@ -267,41 +271,44 @@ TextBox.prototype.drawText = function (X, Y, dt) {
                 Y: Y + (i * (this.Data.Text.Size + this.Data.Text.LineGap))
             };
 
-            Scene.context.font = this.Data.Text.Size + "px " + this.Data.Text.Font;
-            Scene.context.globalAlpha = this.Data.Text.Opacity;
-            
             if (this.Data.Text.Center) {
-                Scene.context.textAlign = 'center';
                 Text.X += (Coords.Width / 2);
                 Text.Y += (Coords.Height / 2) + (this.Data.Text.Size / 4);
-            } else if (this.Data.Text.Align === 'right') {
-                Scene.context.textAlign = this.Data.Text.Align;
-                Text.X += (Coords.Width);
             } else {
-                Scene.context.textAlign = this.Data.Text.Align;
+                Text.Y += this.Data.Text.Padding + this.Data.Text.PaddingTop;
+            }
+
+            if (this.Data.Text.Align === 'right') {
+                Text.X += (Coords.Width) - this.Data.Text.Padding + this.Data.Text.PaddingRight;
+            } else if (this.Data.Text.Align === 'left') {
+                Text.X = X + this.Data.Text.Padding + this.Data.Text.PaddingLeft;
             }
 
             if (this.Data.TextBox.On) {
                 Text.Value += this.Data.TextBox.Value;
             }
-            if (this === Scene.SelectedButton) {
-                Text.Value += "_";
+            if (this.Data.Description === Scene.Data.Info.SelectedTextBox) {
+                Text.Value += (Math.round((new Date().getTime() / 1000) / 0.5) % 2) ? "_" : " ";
             }
 
             if (this.Data.Text.LetterSpacing) {
                 Text.Value = Text.Value.split("").join(String.fromCharCode(8202));
             }
 
-            Scene.context.fillStyle = (this.Data.Status.Pressed) ? this.Data.Text.Pressed : this.Data.Text.Colour;
-            Scene.context.fillText(Text.Value, Text.X, Text.Y);
-            Scene.context.globalAlpha = 1;
+
+            Scene.drawText(Text.X, Text.Y, Text.Value,
+                    ({
+                        Opacity: this.Data.Text.Opacity,
+                        Align: this.Data.Text.Align,
+                        Colour: (this.Data.Status.Pressed) ? this.Data.Text.Pressed : this.Data.Text.Colour,
+                        Font: this.Data.Text.Size + "px " + this.Data.Text.Font
+                    }));
         }
     }
 }
 
 /**
- * This method is for editable TextBox elements, but is not fully supported as 
- * the site does not have any editable TextBox elements.
+ * This method is for editable TextBox elements
  * 
  * It is meant to record that the element is currently being selected, for future
  * keyboard inputs.
@@ -309,8 +316,8 @@ TextBox.prototype.drawText = function (X, Y, dt) {
  * @param {type} target
  * @returns {undefined}
  */
-TextBox.prototype.selectTextBox = function (target) {
-    if (this.Data.TextBox.On) {
-        Scene.SelectedButton = target;
+var selectTextBox = function (target) {
+    if (target.Data.TextBox.On) {
+        Scene.Data.Info.SelectedTextBox = target.Data.Description;
     }
 }

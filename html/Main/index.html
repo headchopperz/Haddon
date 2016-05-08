@@ -28,44 +28,57 @@
             Thankyou.<br/>
             - Michael Haddon
         </noscript>
-        <canvas id='scene' oncontextmenu='return true'></canvas>
-        <!-- Detect old browsers -->
-        <script type='text/javascript' src='/Include/JS/old_browser_detect.js'></script>
+        <canvas id='scene' oncontextmenu='return true'></canvas><!-- This file contains a list of all the possible keyboard KeyCodes that javascript can record -->
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/KeyCodes.js'></script>
         
-        <!-- This file contains a list of all the possible keyboard KeyCodes that javascript can record -->
-        <script type='text/javascript' src='/Include/JS/Canvas/KeyCodes.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Controller.js'></script>
         
         <!-- This file controls and handles the Scene. The Scene manages the canvas, and where on the canvas we will draw -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Scene.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Scene.js'></script>        
+        
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Game.js'></script>
         
         <!-- This file manages mouse events, and record the mouse information -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Mouse.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Mouse.js'></script>
         
         <!-- Any misc init stuff goes here. Like polyfills. -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Init.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Init.js'></script>
         
         <!-- This file holds all the various functions that the user can call on an event callback (for example, open a new tab) -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Functions.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Functions.js'></script>
         
         <!-- This file controls the keyboard events and records information like what keys are currently being pressed -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Key.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Key.js'></script>
+        
+        <script type='text/javascript' src='/Include/JS/Canvas/ModuleController.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/AudioElement.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Audio.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/ModelElement.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Model.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/EntityElement.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Entity.js'></script>
         
         <!-- This file contains the baseclass for all the drawn elements. Too much to describe shortly. -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Container.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/ContainerElement.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Container.js'></script>
         
-        <!-- This file contains TextBox which is a child of Container. TextBox handles the drawing of text elements. -->
-        <script type='text/javascript' src='/Include/JS/Canvas/TextBox.js'></script>
+        <!-- This file contains ContainerElement_TextBox which is a child of Container. ContainerElement_TextBox handles the drawing of text elements. -->
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/ContainerElement_TextBox.js'></script>
         
-        <!-- This file contains PictureBox which is a child of Container. PictureBox handles all the drawing of images -->
-        <script type='text/javascript' src='/Include/JS/Canvas/PictureBox.js'></script>
-        
-        <!-- This is also a child of Container. I didnt know what to call it, but it does the background behind each timeline element -->
-        <script type='text/javascript' src='/Include/JS/Canvas/FancySpankyCircleThing.js'></script>
+        <!-- This file contains ContainerElement_PictureBox which is a child of Container. ContainerElement_PictureBox handles all the drawing of images -->
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/ContainerElement_PictureBox.js'></script>
         
         <!-- This class contains any preloaded Container elements that need to be loaded ASAP. For example, a "loading..." textbox  -->
         <script type='text/javascript' src='/Include/JS/Canvas/Preloaded.js'></script>
         
+        <!-- This is also a child of Container. I didnt know what to call it, but it does the background behind each timeline element -->
+        <script type='text/javascript' src='/Include/JS/Canvas/Modules/ContainerElement_FancyBackground.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Modules/SceneOverride.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Modules/drawDots.js'></script>
+        
         <!-- This file contains the engine which brings all the above together and makes it all work. -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/MainLoop.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/GameLoad.js'></script>
+        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Core.js'></script>
     </body>
 </html>

@@ -1,17 +1,17 @@
 /**
- * Container is the parent class for all the other page elements
+ * ContainerElement is the parent class for all the other page elements
  *
- * Container controls the majority of events, sets up the renderqueue and defines
+ * ContainerElement controls the majority of events, sets up the renderqueue and defines
  * the base data variables
  *
  *
  *
  * @param {String} name
  * @param {Object} settings
- * @returns {Container.returnArray.Items}
+ * @returns {ContainerElement.returnArray.Items}
  */
 
-var Container = function (name, settings) {
+var ContainerElement = function (name, settings) {
     /**
      * This variable is responsible for holding all the data relevent to this object
      * The classes that extend this class will add/modify these values and not
@@ -19,14 +19,14 @@ var Container = function (name, settings) {
      */
     this.Data = {
         /**
-         * How shall we identify this container, keep this unique if you want to
-         * find it in future, the findContainer function references this
+         * How shall we identify this ContainerElement, keep this unique if you want to
+         * find it in future, the Container.find function references this
          */
         Description: "None",
         /**
          * Where is this button on the page?
          * These values may not actually be the absolute coordinates of this item
-         * but it could be the relative coordinates to another container, or
+         * but it could be the relative coordinates to another ContainerElement, or
          * even to the center of the page.
          * If you want the absolute values, you need to call this.getCoords()
          */
@@ -51,8 +51,8 @@ var Container = function (name, settings) {
             /**
              * To define the parent, you need to pass the description of the parent here
              * (so a string)
-             * This container will be positioned relatively to the parent, and
-             * if the parent is hidden, then this container will be hidden
+             * This ContainerElement will be positioned relatively to the parent, and
+             * if the parent is hidden, then this ContainerElement will be hidden
              */
             Parent: null,
             /**
@@ -84,13 +84,13 @@ var Container = function (name, settings) {
                 On: false,
                 /**
                  * The Queries are a list of all the responsive positional information 
-                 * of this Container.
+                 * of this ContainerElement.
                  * 
                  * The order of the queries is important, later queries will override
                  * previous ones.
                  * 
                  * The syntax is as follows:
-                 * (If an element is not entered, than it resorts to the containers default
+                 * (If an element is not entered, than it resorts to the ContainerElements default
                  * value)
                  * {
                  *    X: 0, //The new X coordinate
@@ -179,7 +179,9 @@ var Container = function (name, settings) {
         onClick: [],
         onRelease: [],
         onLeave: [],
-        onHover: []
+        onHover: [],
+        onKeyRelease: [],
+        onKeyPress: []
     };
 
     /**
@@ -226,7 +228,7 @@ var Container = function (name, settings) {
     };
 
     /**
-     * This class holds the various return information from the container
+     * This class holds the various return information from the ContainerElement
      * The reason this is seperated is that we can append new return information to this
      * This is so the children can append whichever return data they need
      */
@@ -288,7 +290,7 @@ var Container = function (name, settings) {
  * @param {Object} settings
  * @returns {undefined}
  */
-Container.prototype.import = function (settings) {
+ContainerElement.prototype.import = function (settings) {
     /**
      * I need to recode this function, i just cant think at the moment
      */
@@ -311,7 +313,7 @@ Container.prototype.import = function (settings) {
  * @param {Object} settings
  * @returns {undefined}
  */
-Container.prototype.loadObject = function (name, settings) {
+ContainerElement.prototype.loadObject = function (name, settings) {
     this.import(settings);
 
     this.Data.Description = name;
@@ -323,7 +325,7 @@ Container.prototype.loadObject = function (name, settings) {
  *
  * @returns {Boolean}
  */
-Container.prototype.withinFrustrum = function (Coords) {
+ContainerElement.prototype.withinFrustrum = function (Coords) {
     if ((typeof Coords === "undefined") || (Coords === null)) {
         Coords = this.getCoords();
     }
@@ -370,7 +372,7 @@ Container.prototype.withinFrustrum = function (Coords) {
  * @type function
  * @returns {null}
  */
-Container.prototype._onHover = function () {
+ContainerElement.prototype._onHover = function () {
     this.Data.Status.Hovered = true;
 
     if (this.Events.onHover.length > 0) {
@@ -391,7 +393,7 @@ Container.prototype._onHover = function () {
  * @type function
  * @returns {null}
  */
-Container.prototype._onClick = function () {
+ContainerElement.prototype._onClick = function () {
     this.Data.Status.Pressed = true;
 
     if (this.Events.onClick.length > 0) {
@@ -400,7 +402,7 @@ Container.prototype._onClick = function () {
 
             var fn = window[e.Function];
             if (typeof fn === "function") {
-                fn.apply(this, [e.Parameters]);
+                fn.apply(this, e.Parameters);
             }
         }
     }
@@ -413,7 +415,7 @@ Container.prototype._onClick = function () {
  * @type function
  * @returns {null}
  */
-Container.prototype._onRelease = function () {
+ContainerElement.prototype._onRelease = function () {
     this._onLeave();
 
     if (this.Events.onRelease.length > 0) {
@@ -422,7 +424,7 @@ Container.prototype._onRelease = function () {
 
             var fn = window[e.Function];
             if (typeof fn === "function") {
-                fn.apply(this, [e.Parameters]);
+                fn.apply(this, e.Parameters);
             }
         }
     }
@@ -434,7 +436,7 @@ Container.prototype._onRelease = function () {
  * @type function
  * @returns {null}
  */
-Container.prototype._onLeave = function () {
+ContainerElement.prototype._onLeave = function () {
     this.Data.Status.Pressed = false;
     this.Data.Status.Hovered = false;
 }
@@ -443,13 +445,13 @@ Container.prototype._onLeave = function () {
  * Retrieves the absolute positional information of the parents element.
  * If the element has no parent, then the parent is the Scene.
  *
- * @returns {Scene.Viewport|Container.getCoords()}
+ * @returns {Scene.Viewport|ContainerElement.getCoords()}
  */
-Container.prototype.getParent = function () {
+ContainerElement.prototype.getParent = function () {
     var returnVar = Scene.Viewport;
 
     if (typeof this.Data.Position.Parent === 'string') {
-        var Parent = findContainer(this.Data.Position.Parent);
+        var Parent = Container.find(this.Data.Position.Parent);
 
         returnVar = ((Parent !== null) && (Parent !== false) && (Parent.getCoords())) ? Parent.getCoords() : returnVar;
     }
@@ -458,13 +460,13 @@ Container.prototype.getParent = function () {
 }
 
 /**
- * This method parses all of the Responsive Queries that this container has
+ * This method parses all of the Responsive Queries that this ContainerElement has
  * It returns a class with all the updated relative positional information.
  * 
- * @param {Scene.Viewport|Container.getCoords()} Parent
- * @returns {Container.prototype.parseResponsiveQueries.returnVar}
+ * @param {Scene.Viewport|ContainerElement.getCoords()} Parent
+ * @returns {ContainerElement.prototype.parseResponsiveQueries.returnVar}
  */
-Container.prototype.parseResponsiveQueries = function (Parent) {
+ContainerElement.prototype.parseResponsiveQueries = function (Parent) {
     /**
      * Retrieve the current relative positional information
      * @type {object}
@@ -558,12 +560,12 @@ Container.prototype.parseResponsiveQueries = function (Parent) {
 }
 
 /**
- * Calculates and returns the absolute width of this container in pixels.
+ * Calculates and returns the absolute width of this ContainerElement in pixels.
  *
- * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @param {Scene.Viewport|ContainerElement.getCoords()} Parent
  * @returns {Number}
  */
-Container.prototype.getWidth = function (Parent, ResponsiveSize) {
+ContainerElement.prototype.getWidth = function (Parent, ResponsiveSize) {
     var returnVar = this.Data.Position.Width;
 
     /**
@@ -598,8 +600,7 @@ Container.prototype.getWidth = function (Parent, ResponsiveSize) {
      * Probably someone wrote the wrong positional information in this.Data.Position.Width
      */
     if (typeof returnVar !== "number") {
-        throw new Error("Failure to read element width for Container: \"" + this.Data.Description + "\"");
-        ;
+        throw new Error("Failure to read element width for ContainerElement: \"" + this.Data.Description + "\"");
     }
 
     return returnVar;
@@ -607,12 +608,12 @@ Container.prototype.getWidth = function (Parent, ResponsiveSize) {
 
 
 /**
- * Calculates and returns the absolute height of this container in pixels.
+ * Calculates and returns the absolute height of this ContainerElement in pixels.
  *
- * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @param {Scene.Viewport|ContainerElement.getCoords()} Parent
  * @returns {Number}
  */
-Container.prototype.getHeight = function (Parent, ResponsiveSize) {
+ContainerElement.prototype.getHeight = function (Parent, ResponsiveSize) {
     var returnVar = this.Data.Position.Height;
 
     /**
@@ -646,20 +647,20 @@ Container.prototype.getHeight = function (Parent, ResponsiveSize) {
      * Probably someone wrote the wrong positional information in this.Data.Position.Height
      */
     if (typeof returnVar !== "number") {
-        throw new Error("Failure to read element height for Container: \"" + this.Data.Description + "\"");
+        throw new Error("Failure to read element height for ContainerElement: \"" + this.Data.Description + "\"");
     }
 
     return returnVar;
 }
 
 /**
- * Calculates and returns the absolute X of this container in pixels.
+ * Calculates and returns the absolute X of this ContainerElement in pixels.
  *
- * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @param {Scene.Viewport|ContainerElement.getCoords()} Parent
  * @param {Number} Width
  * @returns {Number}
  */
-Container.prototype.getX = function (Parent, ResponsiveSize, Width) {
+ContainerElement.prototype.getX = function (Parent, ResponsiveSize, Width) {
     /**
      * When we calculate the current X, we want to take into account the different
      * size information for small monitors
@@ -698,7 +699,7 @@ Container.prototype.getX = function (Parent, ResponsiveSize, Width) {
      * Probably someone wrote the wrong positional information in this.Data.Position.Height
      */
     if (typeof returnVar !== "number") {
-        throw new Error("Failure to read element X for Container: \"" + this.Data.Description + "\"");
+        throw new Error("Failure to read element X for ContainerElement: \"" + this.Data.Description + "\"");
     }
 
     /**
@@ -735,13 +736,13 @@ Container.prototype.getX = function (Parent, ResponsiveSize, Width) {
 
 
 /**
- * Calculates and returns the absolute Y of this container in pixels.
+ * Calculates and returns the absolute Y of this ContainerElement in pixels.
  *
- * @param {Scene.Viewport|Container.getCoords()} Parent
+ * @param {Scene.Viewport|ContainerElement.getCoords()} Parent
  * @param {Number} Height
  * @returns {Number}
  */
-Container.prototype.getY = function (Parent, ResponsiveSize, Height) {
+ContainerElement.prototype.getY = function (Parent, ResponsiveSize, Height) {
     /**
      * When we calculate the current Y, we want to take into account the different
      * size information for small monitors
@@ -780,7 +781,7 @@ Container.prototype.getY = function (Parent, ResponsiveSize, Height) {
      * Probably someone wrote the wrong positional information in this.Data.Position.Height
      */
     if (typeof returnVar !== "number") {
-        throw new Error("Failure to read element Y for Container: \"" + this.Data.Description + "\"");
+        throw new Error("Failure to read element Y for ContainerElement: \"" + this.Data.Description + "\"");
     }
 
     /**
@@ -818,10 +819,10 @@ Container.prototype.getY = function (Parent, ResponsiveSize, Height) {
  * This method finds out if the current element is visible.
  * It will also check its parent to make sure its parent is visible too.
  *
- * @param {Container.getCoords()|Scene} Parent
+ * @param {ContainerElement.getCoords()|Scene} Parent
  * @returns {Boolean}
  */
-Container.prototype.getVisible = function (Parent) {
+ContainerElement.prototype.getVisible = function (Parent) {
     var returnVar = this.Data.Status.Visible;
 
     /**
@@ -853,7 +854,7 @@ Container.prototype.getVisible = function (Parent) {
  * @param {Number} ParentSizeModifier
  * @returns {Number}
  */
-Container.prototype.convertPositionalString = function (PositionalValue, ParentSizeModifier) {
+ContainerElement.prototype.convertPositionalString = function (PositionalValue, ParentSizeModifier) {
     var returnVar = PositionalValue;
 
     if (typeof returnVar === 'string') {
@@ -937,30 +938,30 @@ Container.prototype.convertPositionalString = function (PositionalValue, ParentS
 }
 
 /**
- * Returns the absolute positioning information of this container that is
+ * Returns the absolute positioning information of this ContainerElement that is
  * stored in cache.
  *
  * If the cache is invalid, then this method will return false.
  *
- * @returns {Boolean|Container.AbsolutePosition}
+ * @returns {Boolean|ContainerElement.AbsolutePosition}
  */
-Container.prototype.getCache = function () {
+ContainerElement.prototype.getCache = function () {
     var returnVar = ((this.Data.Position.CachePositioning) &&
-            (typeof this.AbsolutePosition !== "undefined") && (this.AbsolutePosition !== null) && (this.Data.Position.currentCacheID === Scene.cachedID));
+            (typeof this.AbsolutePosition !== "undefined") && (this.AbsolutePosition !== null) && (this.Data.Position.currentCacheID === Scene.Data.CacheID.Positional));
 
     return (returnVar ? this.AbsolutePosition : false);
 }
 
 /**
- * This calculates the current absolute position of the container.
+ * This calculates the current absolute position of the ContainerElement.
  *
  * This method saves the calculations to a cache, and the cache should be referenced
  * with this.getCache(), this method should only be called if this.getCache() returns false
  * (meaning the cache is invalid).
  *
- * @returns {Container.AbsolutePosition}
+ * @returns {ContainerElement.AbsolutePosition}
  */
-Container.prototype.calculatePosition = function () {
+ContainerElement.prototype.calculatePosition = function () {
     /**
      * Calculate the various positional information.
      * These methods share similar reference variables (IE the current parents position).
@@ -990,7 +991,7 @@ Container.prototype.calculatePosition = function () {
     /**
      * Update the currentCacheID's so future getCache requests should return true
      */
-    this.Data.Position.currentCacheID = Scene.cachedID;
+    this.Data.Position.currentCacheID = Scene.Data.CacheID.Positional;
 
     /**
      * Return the relevent positional information
@@ -999,11 +1000,11 @@ Container.prototype.calculatePosition = function () {
 }
 
 /**
- * Get the current containers absolute coordinates from the top left of the canvas.
+ * Get the current ContainerElements absolute coordinates from the top left of the canvas.
  *
- * @returns {Container.AbsolutePosition}
+ * @returns {ContainerElement.AbsolutePosition}
  */
-Container.prototype.getCoords = function () {
+ContainerElement.prototype.getCoords = function () {
     /**
      * If this information has been stored in a cache then we just want to simply
      * restore the information from the cache.
@@ -1019,7 +1020,7 @@ Container.prototype.getCoords = function () {
 }
 
 /**
- * Draw the containers background and outline, this is the most basic renderqueue item
+ * Draw the ContainerElements background and outline, this is the most basic renderqueue item
  *
  *
  * @param {Integer} X
@@ -1027,44 +1028,30 @@ Container.prototype.getCoords = function () {
  * @param {Integer} dt
  * @returns {undefined}
  */
-Container.prototype.drawBackground = function (X, Y, dt) {
+ContainerElement.prototype.drawBackground = function (X, Y, dt) {
     if ((this.Data.Fill.On) || (this.Data.Outline.On)) {
-        Scene.context.beginPath();
-        Scene.context.rect(X, Y, this.Data.Position.Width, this.Data.Position.Height);
 
-        /**
-         * If the container has a background colour
-         */
-        if ((this.Data.Fill.On) && (this.Data.Fill.Colour !== null)) {
-            Scene.context.globalAlpha = this.Data.Fill.Opacity;
-            Scene.context.fillStyle = (this.Data.Status.Pressed) ? this.Data.Fill.Pressed : (this.Data.Status.Hovered && this.Data.Hover.On) ? this.Data.Hover.Colour : this.Data.Fill.Colour;
-            Scene.context.fill();
-            Scene.context.globalAlpha = 1;
-        }
-
-        /**
-         * If the container has an outline
-         */
-        if (this.Data.Outline.On) {
-            Scene.context.globalAlpha = this.Data.Outline.Opacity;
-            Scene.context.strokeStyle = (this.Data.Status.Pressed) ? this.Data.Outline.Pressed : this.Data.Outline.Colour;
-            Scene.context.stroke();
-            Scene.context.globalAlpha = 1;
-        }
-
-        Scene.context.closePath();
+        Scene.drawRect(X, Y, this.Data.Position.Width, this.Data.Position.Height,
+                ((this.Data.Fill.On) ? {
+                    Opacity: this.Data.Fill.Opacity,
+                    Colour: (this.Data.Status.Pressed) ? this.Data.Fill.Pressed : (this.Data.Status.Hovered && this.Data.Hover.On) ? this.Data.Hover.Colour : this.Data.Fill.Colour
+                } : null),
+                ((this.Data.Outline.On) ? {
+                    Opacity: this.Data.Outline.Opacity,
+                    Colour: (this.Data.Status.Pressed) ? this.Data.Outline.Pressed : this.Data.Outline.Colour
+                } : null));
     }
 }
 
 /**
- * This function is responsible for all the containers drawing.
+ * This function is responsible for all the ContainerElements drawing.
  * Child classes should not modify this class, but instead modify the renderqueue
  *
  *
  * @param {Integer} dt
  * @returns {undefined}
  */
-Container.prototype.draw = function (dt) {
+ContainerElement.prototype.draw = function (dt) {
     var Coords = this.getCoords();
     if ((Coords.Visible) && (this.withinFrustrum(Coords))) {
         for (var i = 0; i < this.RenderQueue.Items.length; i++) {
@@ -1076,11 +1063,11 @@ Container.prototype.draw = function (dt) {
     }
 }
 
-Container.prototype.getEvents = function () {
+ContainerElement.prototype.getEvents = function () {
     return this.Events;
 }
 
-Container.prototype.getData = function () {
+ContainerElement.prototype.getData = function () {
     return this.Data;
 }
 
@@ -1088,7 +1075,7 @@ Container.prototype.getData = function () {
  * This removes any cached data
  * @returns {undefined}
  */
-Container.prototype.resetCache = function () {
+ContainerElement.prototype.resetCache = function () {
     this.AbsolutePosition = null;
 }
 
@@ -1096,48 +1083,12 @@ Container.prototype.resetCache = function () {
  * Is this element currently being hovered over?
  *
  * @param {Object} _Mouse
- * @returns {Container.prototype.isHovered.Coords|Container.getCoords|Boolean}
+ * @returns {ContainerElement.prototype.isHovered.Coords|ContainerElement.getCoords|Boolean}
  */
-Container.prototype.isHovered = function (_Mouse) {
+ContainerElement.prototype.isHovered = function (_Mouse) {
     var Coords = this.getCoords();
-    return ((Coords) && ((_Mouse.X < Coords.X + Coords.Width) &&
+    return ((Coords.Visible) && ((_Mouse.X < Coords.X + Coords.Width) &&
             (_Mouse.X > Coords.X) &&
             (_Mouse.Y < Coords.Y + Coords.Height) &&
             (_Mouse.Y > Coords.Y)));
-}
-
-/**
- * Containers is responsible for storing all the information regarding the
- * containers in one easy to reference place.
- * This is so we can loop over the items when we need to reference all of them.
- * @type Array
- */
-var Containers = new Array();
-
-/**
- * This function draws the buttons to the screen
- * @param {int} dt - ms since last load
- * @returns {null}
- */
-function drawContainers(dt) {
-    Containers.forEach(function (e) {
-        e.draw(dt);
-    });
-}
-
-/**
- * This function will find a container with a particular description.
- * This is referenced and used when finding parent classes.
- *
- * @param {String} name
- * @returns {findContainer.e|Boolean}
- */
-function findContainer(name) {
-    for (var i = 0; i < Containers.length; i++) {
-        var e = Containers[i];
-        if (name === e.Data.Description) {
-            return e;
-        }
-    }
-    return false;
 }

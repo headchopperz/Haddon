@@ -1,4 +1,4 @@
-Containers.push(new Container('containerTitle', {
+Container.add(new ContainerElement('containerTitle', {
     Data: {
         Position: {
             X: 0,
@@ -25,7 +25,7 @@ Containers.push(new Container('containerTitle', {
     }
 }));
 
-Containers.push(new TextBox('textTitleHelloWorld', {
+Container.add(new ContainerElement_TextBox('textTitleHelloWorld', {
     Data: {
         Position: {
             X: 0,
@@ -45,7 +45,7 @@ Containers.push(new TextBox('textTitleHelloWorld', {
     }
 }));
 
-Containers.push(new TextBox('textTitleDescription', {
+Container.add(new ContainerElement_TextBox('textTitleDescription', {
     Data: {
         Position: {
             X: 0,
