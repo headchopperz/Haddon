@@ -17,7 +17,7 @@ var SceneController = function () {
         Width: 1200,
         Height: 500,
         Visible: true,
-        MinWidth: 1200,
+        MinWidth: 345,
         MaxWidth: 1200
     };
 
