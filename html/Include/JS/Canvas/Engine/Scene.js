@@ -94,13 +94,8 @@ SceneController.prototype.drawImageRound = function (X, Y, Width, Height, ImageU
 
         } else {
             var Size = (Width + Height) / 2;
-            
-            console.log({
-                X: X + (Size / 2),
-                Y: Y + (Size / 2),
-                Radius: Size / 2
-            })
 
+            this.context.globalAlpha = Opacity;
             this.context.save();
             this.context.beginPath();
             this.context.arc(X + (Size / 2), Y + (Size / 2), Size / 2, 0, Math.PI * 2, true);
@@ -109,10 +104,8 @@ SceneController.prototype.drawImageRound = function (X, Y, Width, Height, ImageU
             this.context.closePath();
             this.context.clip();
             
-            this.context.globalCompositeOperation = 'source-in';
-            this.context.globalAlpha = Opacity;
+            this.context.globalCompositeOperation = 'lighten';
             this.context.drawImage(loadedImage, X, Y, Size, Size);
-            this.context.globalAlpha = 1;
 
             this.context.beginPath();
             this.context.arc(X, Y, Size / 2, 0, Math.PI * 2, true);
@@ -121,6 +114,7 @@ SceneController.prototype.drawImageRound = function (X, Y, Width, Height, ImageU
 
 
             this.context.restore();
+            this.context.globalAlpha = 1;
         }
     }
 }
