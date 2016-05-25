@@ -18,6 +18,8 @@
                     "URL": "https://github.com/mhaddon/SimpleFacts/archive/master.zip"
                 }
             ],
+            "Date": "Wednesday 25th of May 2016",
+            "Description": "\"Simple Facts\" is a simple instant messaging application made in PHP and JS, which allows the user to subscribe to various channels and recieve updates.\r\n\r\nIt uses Websockets with Ratchet to recieve the messages and uses ZeroMQ to asynchronously save the data to a database.\r\nIt also uses Vue.js which respects MVVM in order to render the information."
         }
     }, {
         "Data": {
