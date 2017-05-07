@@ -1,6 +1,76 @@
 [
     {
         "Data": {
+            "Title": "Sound of Jersey",
+            "Images": [
+                "/Include/Images/Sound/1.jpg",
+                "/Include/Images/Sound/2.jpg"
+            ],
+            "Buttons": [
+                {
+                    "Name": "www",
+                    "URL": "https://www.sound.je/"
+                },{
+                    "Name": "GH",
+                    "URL": "https://github.com/mhaddon/Sound.je"
+                },{
+                    "Name": "FB",
+                    "URL": "https://www.facebook.com/SoundofJerseyCI/"
+                }
+            ],
+            "Date": "Ongoing since 2016",
+            "Description": "A continuation and complete pivot from my NestedBird project.\r\n\r\nThe Sound of Jersey project is a website designed to try to bring together the musical community of Jersey and the rest of the Channel Islands.\r\n\r\nThe website is written with Java/Spring Boot for the backend and VueJS for the frontend.\r\nThis project is completely opensource under AGPL."
+        }
+    },{
+        "Data": {
+            "Title": "Eat Local",
+            "Images": [
+                "/Include/Images/Me/3.jpg"
+            ],
+            "Buttons": [
+                {
+                    "Name": "www",
+                    "URL": "http://eatlocal.djcp.co.uk/"
+                }
+            ],
+            "Date": "Tuesday 10th of January 2017",
+            "Description": "As part of the course I did hosted by Digital Jersey, with a team of three other people, we created an application in Ruby with Rails for a local startup.\r\nThe experience helped me get used to working with other people in a team."
+        }
+    },{
+        "Data": {
+            "Title": "Digital Jersey Course",
+            "Images": [
+                "https://www.digital.je/media/Images-Logos/hub%20logo%20small.jpg"
+            ],
+            "Buttons": [
+                {
+                    "Name": "www",
+                    "URL": "https://www.digitalhub.je/resources-courses/digital-jersey-coding-course/"
+                }
+            ],
+            "Date": "Tuesday 10th of January 2017",
+            "Description": "To further understand my knowledge of programming and to get more familiar with the industry, I took a six month course on programming in HTML/CSS/Ruby/Rails.\r\nOne of the things I learnt the most from this course was a deeper and better understanding of linux operating systems."
+        }
+    },{
+        "Data": {
+            "Title": "Junior Developer for Twelve40",
+            "Images": [
+                "http://twelve40.cdn.code.je/wp-content/uploads/2016/12/twelve40-logo-purple-1.png"
+            ],
+            "Buttons": [
+                {
+                    "Name": "www",
+                    "URL": "http://twelve40.com/"
+                },{
+                    "Name": "www",
+                    "URL": "https://www.islandslotto.com"
+                }
+            ],
+            "Date": "Thursday 1st of September 2016",
+            "Description": "Worked for Twelve40, working on the front-end website with javascript/html/css/jquery, managing a PHP/Silverstripe website and also creating tools with Java."
+        }
+    },{
+        "Data": {
             "Title": "Simple Spring Boot App",
             "Images": [
                 "/Include/Images/SpringBoot/1.jpg",
@@ -134,7 +204,7 @@
                     "URL": "https://www.facebook.com/NestedBird/"
                 }
             ],
-            "Date": "Ongoing since 2012",
+            "Date": "2012 until 2016",
             "Description": "NestedBird has been an ongoing project of mine for a very long time.\r\nI have always had a passion for programming and music, and NestedBird was the fusion of both of these passions.\r\n\r\nNestedBird is a service for local communities to support their local bands.\r\nIt is written in PHP, HTML, JS and SCSS and uses technologies like Amazon AWS, MySQL and Nginx."
         }
     }, {
