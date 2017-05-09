@@ -2,11 +2,36 @@
     {
         "Type": "TextBox",
         "Data": {
+            "Description": "disclaimer",
+            "Position": {
+                "X": 0,
+                "Y": -180,
+                "Width": 350,
+                "Height": 100,
+                "CenterOffset": true,
+                "Centered": true,
+                "Parent": "containerTitle"
+            },
+            "Text": {
+                "On": true,
+                "Value": "This is a fun experimental project used to test my abilities.\r\nThis is not intended to be an example of a real-world project.\r\nThis page is entirely drawn in a HTML5 canvas element.",
+                "Font": "Roboto,Georgia",
+                "Size": 10,
+                "Colour": "white",
+                "LetterSpacing": true
+            },
+            "WrapText": {
+                "On": true
+            }
+        }
+    },{
+        "Type": "TextBox",
+        "Data": {
             "Description": "textTitleDescription2",
             "Position": {
                 "X": 0,
                 "Y": 45,
-                "Width": 400,
+                "Width": 200,
                 "Height": 100,
                 "CenterOffset": true,
                 "Centered": true,
