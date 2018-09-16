@@ -1,87 +1,406 @@
-<!DOCTYPE html>
 <html>
     <head>
-        <meta charset='utf-8'>
-        <title>Hello World</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <meta charset="UTF-8"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato|Roboto|Roboto+Slab|Raleway" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i|Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <style>
+            /* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
 
+            html, body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed,
+            figure, figcaption, footer, header, hgroup,
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
+            }
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure,
+            footer, header, hgroup, menu, nav, section {
+                display: block;
+            }
+            body {
+                line-height: 1;
+            }
+            ol, ul {
+                list-style: none;
+            }
+            blockquote, q {
+                quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                content: '';
+                content: none;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+        </style>
+        <style>
+            body {
+                background-color: #363636;
+                /*font-family: 'Roboto Slab', serif;*/
+                color: #ececec;
+                font-family: 'Raleway', serif;
+                font-size: 14px;
+                font-weight: 100;
+            }
 
-        <link rel='stylesheet' type='text/css' href='/Include/CSS/stylesheet.css'/>
-        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+            main {
+                margin: auto;
+                height: 100%;
+                max-width: 800px;
+                padding: 12px;
+            }
 
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-              <script src='https://html5shim.googlecode.com/svn/trunk/html5.js'></script>
-        <![endif]-->
+            h1 {
+                font-family: 'Lato', sans-serif;
+                font-weight: 300;
+                color: #ececec;
+                text-align: center;
+                font-size: 36px;
+            }
+
+            h2 {
+                font-family: 'Lato', sans-serif;
+                font-weight: 400;
+                color: #ececec;
+                font-size: 24px;
+                display: flex;
+            }
+
+            h3 {
+                font-family: 'Lato', sans-serif;
+                font-weight: 400;
+                color: #e2b323;
+                font-size: 18px;
+                display: flex;
+                margin-bottom: 5px;
+            }
+
+            h4 {
+                font-family: 'Lato', sans-serif;
+                font-weight: 400;
+                color: #ececec;
+                font-size: 14px;
+                display: flex;
+                margin-bottom: 5px;
+            }
+
+            h2 .underline {
+                border-bottom: 1px #ececec solid;
+                flex-grow:100;
+                margin-left:10px;
+            }
+
+            h1 b {
+                font-weight: 600;
+            }
+
+            p.subtext {
+                font-size: 12px;
+                text-align: center;
+                color: #b57623;
+                font-weight: 400;
+            }
+
+            p.subtext2 {
+                font-family: 'Lato', sans-serif;
+                font-size: 12px;
+                text-align: center;
+                color: #ececec;
+                font-weight: 300;
+                font-style: italic;
+            }
+
+            p.subtext3 {
+                font-family: 'Lato', sans-serif;
+                font-size: 10px;
+                text-align: center;
+                font-weight: 300;
+                color: #ececec;
+            }
+
+            .mb8 {
+                margin-bottom: 8px;
+            }
+
+            .po {
+                color: #b57623;
+            }
+
+            section {
+                margin-bottom: 25px;
+            }
+
+            article {
+                line-height: 1.3em;
+                margin-top:15px;
+            }
+
+            article p {
+                margin-bottom: 12px;
+            }
+
+            ul {
+                list-style: circle inside;
+            }
+
+            article.content--flex {
+                display: flex;
+            }
+
+            b {
+                font-weight: 600;
+            }
+
+            a {
+                color: #78c5ec;
+                text-decoration: none;
+                font-weight: bold;
+                font-family: 'Lato', sans-serif;
+            }
+        </style>
+
     </head>
-    <body style='overflow-x:hidden;overflow-y:auto;'>
-        <noscript class='noscriptblock'>
-            This website is partly experimental and uses Javascript extensively in order to function.<br/>
-            Please enable Javascript.<br/>
-            If you are cautious about the pages code, then it is available here: <a href='https://github.com/mhaddon/Haddon'>https://github.com/mhaddon/Haddon</a><br/>
-            If your browser does not support Javascript, then please try one of these following browsers:<br/>
-            <a href='https://www.google.com/chrome/browser/'>Google Chrome</a>,<br/>
-            <a href='https://www.mozilla.org/'>Mozilla Firefox</a>,<br/>
-            <a href='https://www.microsoft.com/en-us/windows/microsoft-edge'>Microsoft Edge</a>,<br/>
-            <a href='http://midori-browser.org/'>Midori</a> or<br/>
-            <a href='https://www.opera.com/download'>Opera</a>.<br/><br/>
-            Thankyou.<br/>
-            - Michael Haddon
-        </noscript>
-        <canvas id='scene' oncontextmenu='return true'></canvas><!-- This file contains a list of all the possible keyboard KeyCodes that javascript can record -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/KeyCodes.js'></script>
-        
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Controller.js'></script>
-        
-        <!-- This file controls and handles the Scene. The Scene manages the canvas, and where on the canvas we will draw -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Scene.js'></script>        
-        
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Game.js'></script>
-        
-        <!-- This file manages mouse events, and record the mouse information -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Mouse.js'></script>
-        
-        <!-- Any misc init stuff goes here. Like polyfills. -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Init.js'></script>
-        
-        <!-- This file holds all the various functions that the user can call on an event callback (for example, open a new tab) -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Functions.js'></script>
-        
-        <!-- This file controls the keyboard events and records information like what keys are currently being pressed -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Key.js'></script>
-        
-        <script type='text/javascript' src='/Include/JS/Canvas/ModuleController.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/AudioElement.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Audio.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/ModelElement.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Model.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/EntityElement.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Entity.js'></script>
-        
-        <!-- This file contains the baseclass for all the drawn elements. Too much to describe shortly. -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/ContainerElement.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Container.js'></script>
-        
-        <!-- This file contains ContainerElement_TextBox which is a child of Container. ContainerElement_TextBox handles the drawing of text elements. -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/ContainerElement_TextBox.js'></script>
-        
-        <!-- This file contains ContainerElement_PictureBox which is a child of Container. ContainerElement_PictureBox handles all the drawing of images -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/ContainerElement_PictureBox.js'></script>
-        
-        <!-- This class contains any preloaded Container elements that need to be loaded ASAP. For example, a "loading..." textbox  -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Preloaded.js'></script>
-        
-        <!-- This is also a child of Container. I didnt know what to call it, but it does the background behind each timeline element -->
-        <script type='text/javascript' src='/Include/JS/Canvas/Modules/ContainerElement_FancyBackground.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Modules/SceneOverride.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Modules/drawDots.js'></script>
-        
-        <!-- This file contains the engine which brings all the above together and makes it all work. -->
-        <script type='text/javascript' src='/Include/JS/Canvas/MainLoop.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/GameLoad.js'></script>
-        <script type='text/javascript' src='/Include/JS/Canvas/Engine/Core.js'></script>
 
-        <div class="LI-profile-badge"  data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="dark" data-vanity="majhaddon"><a class="LI-simple-link" href='https://je.linkedin.com/in/majhaddon?trk=profile-badge'>Michael Haddon</a></div>
-        <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
+    <body>
+        <main>
+            <h1 class="mb8">Michael <b>Haddon</b></h1>
+            <p class="subtext mb8">Infrastructure Engineer • Site Reliability Engineer • Software Engineer</p>
+            <p class="subtext2 mb8">Gouda, The Netherlands</p>
+            <p class="subtext3 mb8">
+                <a href="mailto:recruitment.mhaddon@gmail.com"><i class="fas fa-envelope"></i> recruitment.mhaddon@gmail.com</a>
+                <span style="padding:0 15px;">|</span>
+                <a href="https://github.com/mhaddon/" target="_blank"><i class="fab fa-github"></i> mhaddon</a>
+                <span style="padding:0 15px;">|</span>
+                <a href="https://www.linkedin.com/in/majhaddon/" target="_blank"><i class="fab fa-linkedin"></i> majhaddon</a>
+            </p>
+
+            <section>
+                <h2>
+                    <span><span class="po">Int</span>roduction</span>
+                    <span class="underline"></span>
+                </h2>
+                <article class="content" style="margin-bottom:-5px;">
+                    <p>I am an extremely passionate <b>Full-Stack Developer</b> constantly trying to improve my own skills and learn from new experiences. My favourite way to spend my pastime is creating my own applications and tools to help me learn skills which i believe will be critical for my current and future job prospects.</p>
+                    <p>I specialise as a <b>DevOps Engineer</b> which I believe is the perfect combination of my professional <b>Systems Administrator</b> experience and my hobby <b>Development</b> experience.</p>
+                    <p>I have recently, and very happily, moved to <b>The Netherlands</b> to pursue my career and meet like-minded developers who love everything <b>Open Source</b> and <b>Linux</b>.</p>
+                    <p>I hope this curriculum vitae is the start of a wonderful and memorable experience for both of us.</p>
+                </article>
+            </section>
+
+            <section>
+                <h2>
+                    <span><span class="po">Exp</span>erience</span>
+                    <span class="underline"></span>
+                </h2>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Lunatech Labs</h3>
+                        <h4>Consultant Site Reliability/Infrastructure Engineer</h4>
+                        <ul>
+                            <li>Managing over <b>200 AWS EC2</b> instances across <b>15 clusters</b></li>
+                            <li>Developing automated deployment solutions with <b>Terraform</b> and <b>Ansible</b></li>
+                            <li>Developing <b>CI/CD</b> pipelines with <b>Jenkins</b>, including automatic <b>Nightly</b> build testing</li>
+                            <!--<li>Creation and maintenance of intranet applications to automate internal work</li>-->
+                            <li>Orchestrating <b>Docker</b> and <b>UCR</b> containers with <b>DC/OS</b> and <b>Kubernetes</b></li>
+                            <!--<li>Hosting internal workshops for inter-project knowledge sharing</li>-->
+                            <li>Collaborating closely with international teams remotely and in-person</li>
+                            <li>Coordinating infrastructure support with international clients</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Rotterdam, The Netherlands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">Sep. 2017 - Present</p>
+                    </section>
+                </article>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Twelve40</h3>
+                        <h4>Full-Stack Developer</h4>
+                        <ul>
+                            <li>Maintaining and upgrading <b>PHP</b> website using the <b>Silverstripe</b> framework</li>
+                            <li>Maintaining and upgrading <b>Javascript</b> frontend from ECMAScript 5 to ECMAScript 6</li>
+                            <li>Maintaining and upgrading <b>CSS</b> architecture to <b>SCSS</b></li>
+                            <li>Development of <b>Java</b> tools for automated testing</li>
+                            <li>Creation and configuration of many <b>LAMP</b> virtual servers</li>
+                            <li>Creating a local development environment with <b>Vagrant</b> and <b>Puppet</b></li>
+                            <li>Working closely with clients across three continents</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Jersey, Channel Islands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">Sep. 2016 - Aug. 2017</p>
+                    </section>
+                </article>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>The Processor Centre</h3>
+                        <h4>Consultant Systems Administrator & Technical Support</h4>
+                        <ul>
+                            <li>Maintaining the IT infrastructure of <b>30+</b> local companies mostly in the hospitality and finance industries</li>
+                            <li>Data offsite backup, testing recovery media and recovering data</li>
+                            <li>Configuring Servers, Firewalls, Routers and High Resilience servers</li>
+                            <li>Providing phone and on-site technical support</li>
+                            <li>Managing <b>Windows</b> and <b>Linux</b> systems</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Jersey, Channel Islands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">Mar. 2012 - Aug. 2016</p>
+                    </section>
+                </article>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Freelance</h3>
+                        <h4>Website Development</h4>
+                        <ul>
+                            <li>Worked with clients in the local hospitality, education and music industry</li>
+                            <li>Created bespoke websites with Content Management Systems</li>
+                            <li>Built with the <b>LAMP</b> & <b>LEMP</b> stack</li>
+                            <li>Hosted on my own <b>CentOS</b> servers and later <b>AWS EC2</b></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Jersey, Channel Islands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right; margin-bottom: 0px;">July. 2010 - Sep. 2014</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right;">intermittent</p>
+                    </section>
+                </article>
+            </section>
+
+            <section>
+                <h2>
+                    <span><span class="po">Edu</span>cation</span>
+                    <span class="underline"></span>
+                </h2>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Lightbend</h3>
+                        <h4>Scala Language - Professional</h4>
+                    </section>
+                    <section>
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Rotterdam, The Netherlands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">2017</p>
+                    </section>
+                </article>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Lightbend</h3>
+                        <h4>Apache Spark for Scala</h4>
+                    </section>
+                    <section>
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Rotterdam, The Netherlands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">2017</p>
+                    </section>
+                </article>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Digital Jersey</h3>
+                        <h4>Industry Validated Coding Programme</h4>
+                        <p>To broaden my knowledge about programming I signed up to a local sponsored coding programme.</p>
+                        <ul>
+                            <li>3 months of education on developing websites with Ruby and Ruby on Rails</li>
+                            <li>3 month group project on developing a website for a local startup in the catering industry</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Jersey, Channel Islands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">2016</p>
+                    </section>
+                </article>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Highlands</h3>
+                        <h4>BTEC (Business and Technology Education) Diploma</h4>
+                        <b>Covered:</b>
+                        <ul>
+                            <li>Object Orientated Programming in C#</li>
+                            <li>Programming in Flash</li>
+                            <li>Software development processes of Scrum, Agile and Waterfall methodologies</li>
+                            <li>Server Networking</li>
+                            <li>Core understanding of computer operations</li>
+                        </ul>
+                        <br/>
+                        <b>Results:</b>
+                        <ul>
+                            <li>BTEC National Diploma for IT Practitioners: <b>​Triple Distinction</b></li>
+                            <li>COMPTIA A+ Essential Support Skills: <b>​Pass</b></li>
+                            <li>COMPTIA A+ Practical Applications: ​<b>Pass</b></li>
+                            <li>COMPTIA Network+: <b>​Pass</b></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Jersey, Channel Islands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">2009 - 2011</p>
+                    </section>
+                </article>
+            </section>
+
+            <section>
+                <h2>
+                    <span><span class="po">Hob</span>by Projects</span>
+                    <span class="underline"></span>
+                </h2>
+                <article class="content">
+                    <p>Professionally I specialise in <b>DevOps</b> roles. However programming is my main hobby. I believe this is great as it allows me to think of <b>DevOps</b> like a developer, but use my professional <b>SysAdmin</b> experience to solve the problems.</p>
+                </article>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Sound of Jersey</h3>
+                        <p>A website to support local Jersey musicians by keeping people informed about local music events and releases.</p>
+                        <ul>
+                            <li><b>Open Source</b> and available to view at: <a href="​https://github.com/mhaddon/Sound.je">​github.com/mhaddon/Sound.je</a></li>
+                            <li>Creation of <b>Vagrant</b> & <b>Puppet</b> development server at: ​<a href="​https://github.com/mhaddon/Sound.je.Vagrant">github.com/mhaddon/Sound.je.Vagrant</a></li>
+                            <li><b>REST</b> server written using <b>Java</b> with <b>Spring Boot</b></li>
+                            <li>Frontend webapp written using <b>Vue.js</b></li>
+                            <li>Website available online at: ​<a href="https://www.sound.je">https://www.sound.je</a></li>
+                        </ul>
+                    </section>
+                    <section style="min-width: 160px;text-align: right;">
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Jersey, Channel Islands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">2017</p>
+                    </section>
+                </article>
+                <article class="content content--flex">
+                    <section style="flex-grow:100;">
+                        <h3>Digital Jersey Hackathon</h3>
+                        <p>I attended a local <b>36 hour hackathon</b> themed around video games. I did not have time to plan any ideas but desperately wanted to attempt to finish. I am quite proud of what I was able to make in such a short space of time.</p>
+                        <ul>
+                            <li>Source code available to view at: ​<a href="https://github.com/mhaddon/HackJSY">github.com/mhaddon/HackJSY</a></li>
+                            <li>Slightly Revised version: <a href="https://github.com/mhaddon/Alien-Escape-Revolution">github.com/mhaddon/Alien-Escape-Revolution</a></li>
+                        </ul>
+                    </section>
+                    <section style="min-width: 160px;text-align: right;">
+                        <p style="color: #b57623; font-style: italic; margin-bottom: 0;">Jersey, Channel Islands</p>
+                        <p style="font-family: 'Lato', sans-serif; font-size: 12px; text-align: right">2016</p>
+                    </section>
+                </article>
+                <article class="content" style="text-align: center; font-style: italic;">
+                    <p>The above list only lists the projects which I believe are the most significant and most recent.</p>
+                    <p>For a bigger (but still not complete) list of projects and for further information please go to my website at:</p>
+                    <p><a href="https://michael.haddon.me/Main/timeline.html">https://michael.haddon.me/Main/timeline.html</a></p>
+                </article>
+            </section>
+        </main>
     </body>
 </html>
